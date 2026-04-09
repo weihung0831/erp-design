@@ -1,0 +1,1369 @@
+<!DOCTYPE html>
+<html lang="zh-TW" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Electronics ERP — Design System Preview</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=General+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Geist+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  /* ========== CSS CUSTOM PROPERTIES ========== */
+  :root {
+    --bg-deep: #07090E;
+    --bg-surface-1: #0D1117;
+    --bg-surface-2: #161B22;
+    --bg-surface-3: #1C2333;
+    --bg-surface-4: #242D3D;
+
+    --accent-primary: #00E5FF;
+    --accent-primary-dim: rgba(0, 229, 255, 0.15);
+    --accent-primary-glow: rgba(0, 229, 255, 0.4);
+    --accent-secondary: #7C3AED;
+    --accent-secondary-dim: rgba(124, 58, 237, 0.15);
+
+    --text-primary: #E6EDF3;
+    --text-secondary: #8B949E;
+    --text-muted: #484F58;
+    --text-on-accent: #07090E;
+
+    --success: #3FB950;
+    --success-dim: rgba(63, 185, 80, 0.15);
+    --success-glow: rgba(63, 185, 80, 0.4);
+    --warning: #D29922;
+    --warning-dim: rgba(210, 153, 34, 0.15);
+    --warning-glow: rgba(210, 153, 34, 0.4);
+    --error: #F85149;
+    --error-dim: rgba(248, 81, 73, 0.15);
+    --error-glow: rgba(248, 81, 73, 0.4);
+    --info: #58A6FF;
+    --info-dim: rgba(88, 166, 255, 0.15);
+
+    --border-subtle: rgba(255, 255, 255, 0.06);
+    --border-standard: rgba(255, 255, 255, 0.08);
+    --border-emphasis: rgba(255, 255, 255, 0.12);
+
+    --glass-bg: rgba(13, 17, 23, 0.7);
+    --glass-border: rgba(255, 255, 255, 0.08);
+    --glass-blur: blur(20px);
+
+    --radius-sm: 4px;
+    --radius-md: 8px;
+    --radius-lg: 12px;
+    --radius-xl: 16px;
+    --radius-pill: 9999px;
+
+    --font-display: 'General Sans', system-ui, -apple-system, sans-serif;
+    --font-body: 'DM Sans', system-ui, -apple-system, sans-serif;
+    --font-mono: 'Geist Mono', ui-monospace, 'SF Mono', 'Menlo', monospace;
+
+    --shadow-glow-cyan: 0 0 20px rgba(0, 229, 255, 0.15), 0 0 60px rgba(0, 229, 255, 0.05);
+    --shadow-glow-violet: 0 0 20px rgba(124, 58, 237, 0.15);
+    --shadow-card: 0 2px 8px rgba(0, 0, 0, 0.3), 0 0 1px rgba(255, 255, 255, 0.05);
+    --shadow-elevated: 0 8px 32px rgba(0, 0, 0, 0.4), 0 0 1px rgba(255, 255, 255, 0.06);
+  }
+
+  /* ========== LIGHT MODE ========== */
+  [data-theme="light"] {
+    --bg-deep: #F0F2F5;
+    --bg-surface-1: #FFFFFF;
+    --bg-surface-2: #F7F8FA;
+    --bg-surface-3: #EEF0F4;
+    --bg-surface-4: #E4E7EC;
+
+    --accent-primary: #0097A7;
+    --accent-primary-dim: rgba(0, 151, 167, 0.1);
+    --accent-primary-glow: rgba(0, 151, 167, 0.25);
+    --accent-secondary: #6D28D9;
+    --accent-secondary-dim: rgba(109, 40, 217, 0.1);
+
+    --text-primary: #1A1D23;
+    --text-secondary: #5A6270;
+    --text-muted: #9CA3AD;
+    --text-on-accent: #FFFFFF;
+
+    --success: #16A34A;
+    --success-dim: rgba(22, 163, 74, 0.1);
+    --success-glow: rgba(22, 163, 74, 0.2);
+    --warning: #B45309;
+    --warning-dim: rgba(180, 83, 9, 0.1);
+    --warning-glow: rgba(180, 83, 9, 0.2);
+    --error: #DC2626;
+    --error-dim: rgba(220, 38, 38, 0.1);
+    --error-glow: rgba(220, 38, 38, 0.2);
+    --info: #2563EB;
+    --info-dim: rgba(37, 99, 235, 0.1);
+
+    --border-subtle: rgba(0, 0, 0, 0.06);
+    --border-standard: rgba(0, 0, 0, 0.1);
+    --border-emphasis: rgba(0, 0, 0, 0.15);
+
+    --glass-bg: rgba(255, 255, 255, 0.8);
+    --glass-border: rgba(0, 0, 0, 0.08);
+
+    --shadow-glow-cyan: 0 0 20px rgba(0, 151, 167, 0.1);
+    --shadow-glow-violet: 0 0 20px rgba(109, 40, 217, 0.1);
+    --shadow-card: 0 1px 3px rgba(0, 0, 0, 0.08), 0 0 1px rgba(0, 0, 0, 0.05);
+    --shadow-elevated: 0 4px 16px rgba(0, 0, 0, 0.1), 0 0 1px rgba(0, 0, 0, 0.06);
+  }
+
+  /* ========== RESET & BASE ========== */
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: var(--font-body);
+    font-size: 14px;
+    line-height: 1.5;
+    color: var(--text-primary);
+    background: var(--bg-deep);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  /* ========== THEME TOGGLE ========== */
+  .theme-toggle {
+    position: fixed;
+    top: 16px;
+    right: 16px;
+    z-index: 1000;
+    background: var(--glass-bg);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    border: 1px solid var(--glass-border);
+    border-radius: var(--radius-pill);
+    padding: 8px 16px;
+    color: var(--text-primary);
+    font-family: var(--font-body);
+    font-size: 12px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .theme-toggle:hover { border-color: var(--accent-primary); box-shadow: var(--shadow-glow-cyan); }
+
+  /* ========== PREVIEW LAYOUT ========== */
+  .preview-wrapper {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 80px 32px 64px;
+  }
+
+  .hero {
+    text-align: center;
+    margin-bottom: 80px;
+  }
+  .hero-label {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--accent-primary);
+    margin-bottom: 16px;
+  }
+  .hero h1 {
+    font-family: var(--font-display);
+    font-size: 56px;
+    font-weight: 700;
+    line-height: 1.05;
+    letter-spacing: -1.5px;
+    color: var(--text-primary);
+    margin-bottom: 16px;
+  }
+  .hero h1 span {
+    background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .hero p {
+    font-size: 18px;
+    color: var(--text-secondary);
+    max-width: 560px;
+    margin: 0 auto;
+    line-height: 1.6;
+  }
+
+  /* ========== SECTION ========== */
+  .section {
+    margin-bottom: 64px;
+  }
+  .section-title {
+    font-family: var(--font-display);
+    font-size: 24px;
+    font-weight: 600;
+    letter-spacing: -0.5px;
+    color: var(--text-primary);
+    margin-bottom: 8px;
+  }
+  .section-desc {
+    font-size: 14px;
+    color: var(--text-secondary);
+    margin-bottom: 32px;
+  }
+
+  /* ========== COLOR SWATCHES ========== */
+  .swatches {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    gap: 12px;
+  }
+  .swatch {
+    background: var(--bg-surface-2);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    transition: transform 0.15s ease;
+  }
+  .swatch:hover { transform: translateY(-2px); }
+  .swatch-color {
+    height: 64px;
+    position: relative;
+  }
+  .swatch-color.glow::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 0;
+    opacity: 0.6;
+  }
+  .swatch-info {
+    padding: 10px 12px;
+  }
+  .swatch-name {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 2px;
+  }
+  .swatch-hex {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--text-muted);
+  }
+
+  /* ========== TYPOGRAPHY SPECIMEN ========== */
+  .type-specimen {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+  .type-row {
+    display: grid;
+    grid-template-columns: 200px 1fr;
+    align-items: baseline;
+    gap: 24px;
+    padding: 16px 0;
+    border-bottom: 1px solid var(--border-subtle);
+  }
+  .type-meta {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--text-muted);
+    line-height: 1.6;
+  }
+  .type-meta strong {
+    color: var(--text-secondary);
+    font-weight: 500;
+  }
+
+  /* ========== COMPONENT SHOWCASE ========== */
+  .components-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 24px;
+  }
+  @media (max-width: 768px) {
+    .components-grid { grid-template-columns: 1fr; }
+    .type-row { grid-template-columns: 1fr; }
+  }
+
+  .component-card {
+    background: var(--bg-surface-1);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-lg);
+    padding: 24px;
+  }
+  .component-label {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: 16px;
+  }
+
+  /* Buttons */
+  .btn-row { display: flex; gap: 12px; flex-wrap: wrap; align-items: center; }
+  .btn {
+    font-family: var(--font-body);
+    font-size: 13px;
+    font-weight: 600;
+    padding: 8px 20px;
+    border-radius: var(--radius-md);
+    border: none;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .btn-primary {
+    background: var(--accent-primary);
+    color: var(--text-on-accent);
+    box-shadow: 0 0 12px var(--accent-primary-dim);
+  }
+  .btn-primary:hover {
+    box-shadow: 0 0 20px var(--accent-primary-glow);
+    transform: translateY(-1px);
+  }
+  .btn-secondary {
+    background: var(--accent-secondary);
+    color: #fff;
+    box-shadow: 0 0 12px var(--accent-secondary-dim);
+  }
+  .btn-secondary:hover {
+    box-shadow: 0 0 20px var(--shadow-glow-violet);
+    transform: translateY(-1px);
+  }
+  .btn-ghost {
+    background: transparent;
+    color: var(--text-secondary);
+    border: 1px solid var(--border-standard);
+  }
+  .btn-ghost:hover {
+    color: var(--text-primary);
+    border-color: var(--border-emphasis);
+    background: var(--bg-surface-3);
+  }
+  .btn-danger {
+    background: var(--error-dim);
+    color: var(--error);
+    border: 1px solid rgba(248, 81, 73, 0.2);
+  }
+  .btn-danger:hover { box-shadow: 0 0 12px var(--error-glow); }
+
+  /* Inputs */
+  .input-group { display: flex; flex-direction: column; gap: 6px; }
+  .input-label {
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--text-secondary);
+  }
+  .input {
+    background: var(--bg-surface-2);
+    border: 1px solid var(--border-standard);
+    border-radius: var(--radius-sm);
+    padding: 8px 12px;
+    color: var(--text-primary);
+    font-family: var(--font-body);
+    font-size: 13px;
+    outline: none;
+    transition: border-color 0.15s ease, box-shadow 0.15s ease;
+    width: 100%;
+  }
+  .input:focus {
+    border-color: var(--accent-primary);
+    box-shadow: 0 0 0 3px var(--accent-primary-dim);
+  }
+  .input::placeholder { color: var(--text-muted); }
+
+  /* Badges */
+  .badge-row { display: flex; gap: 8px; flex-wrap: wrap; }
+  .badge {
+    font-family: var(--font-body);
+    font-size: 11px;
+    font-weight: 600;
+    padding: 3px 10px;
+    border-radius: var(--radius-pill);
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+  }
+  .badge::before {
+    content: '';
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+  .badge-success {
+    background: var(--success-dim);
+    color: var(--success);
+  }
+  .badge-success::before {
+    background: var(--success);
+    box-shadow: 0 0 6px var(--success-glow);
+  }
+  .badge-warning {
+    background: var(--warning-dim);
+    color: var(--warning);
+  }
+  .badge-warning::before {
+    background: var(--warning);
+    box-shadow: 0 0 6px var(--warning-glow);
+  }
+  .badge-error {
+    background: var(--error-dim);
+    color: var(--error);
+  }
+  .badge-error::before {
+    background: var(--error);
+    box-shadow: 0 0 6px var(--error-glow);
+  }
+  .badge-info {
+    background: var(--accent-primary-dim);
+    color: var(--accent-primary);
+  }
+  .badge-info::before {
+    background: var(--accent-primary);
+    box-shadow: 0 0 6px var(--accent-primary-glow);
+  }
+
+  /* ========== ERP DASHBOARD MOCKUP ========== */
+  .mockup-container {
+    background: var(--bg-deep);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-xl);
+    overflow: hidden;
+    box-shadow: var(--shadow-elevated);
+  }
+
+  .erp-layout {
+    display: grid;
+    grid-template-columns: 220px 1fr;
+    grid-template-rows: 56px 1fr;
+    height: 680px;
+  }
+
+  /* Sidebar */
+  .sidebar {
+    grid-row: 1 / -1;
+    background: var(--bg-surface-1);
+    border-right: 1px solid var(--border-subtle);
+    padding: 16px 0;
+    display: flex;
+    flex-direction: column;
+  }
+  .sidebar-brand {
+    padding: 0 16px 16px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    border-bottom: 1px solid var(--border-subtle);
+    margin-bottom: 8px;
+  }
+  .sidebar-logo {
+    width: 32px;
+    height: 32px;
+    background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+    border-radius: var(--radius-md);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 14px;
+    color: #fff;
+    box-shadow: 0 0 12px var(--accent-primary-dim);
+  }
+  .sidebar-brand-text {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 15px;
+    color: var(--text-primary);
+  }
+  .sidebar-brand-sub {
+    font-size: 10px;
+    color: var(--text-muted);
+    font-weight: 400;
+  }
+
+  .sidebar-nav { flex: 1; padding: 8px; }
+  .nav-section-label {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    padding: 16px 12px 6px;
+  }
+  .nav-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 12px;
+    border-radius: var(--radius-md);
+    color: var(--text-secondary);
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.12s ease;
+    position: relative;
+  }
+  .nav-item:hover {
+    background: var(--bg-surface-2);
+    color: var(--text-primary);
+  }
+  .nav-item.active {
+    background: var(--accent-primary-dim);
+    color: var(--accent-primary);
+  }
+  .nav-item.active::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 6px;
+    bottom: 6px;
+    width: 3px;
+    background: var(--accent-primary);
+    border-radius: 0 2px 2px 0;
+    box-shadow: 0 0 8px var(--accent-primary-glow);
+  }
+  .nav-icon {
+    width: 18px;
+    height: 18px;
+    opacity: 0.7;
+    flex-shrink: 0;
+  }
+  .nav-item.active .nav-icon { opacity: 1; }
+  .nav-badge-count {
+    margin-left: auto;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    font-weight: 600;
+    background: var(--error-dim);
+    color: var(--error);
+    padding: 1px 6px;
+    border-radius: var(--radius-pill);
+  }
+
+  /* Header */
+  .header {
+    background: var(--glass-bg);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    border-bottom: 1px solid var(--border-subtle);
+    display: flex;
+    align-items: center;
+    padding: 0 24px;
+    gap: 16px;
+  }
+  .header-search {
+    flex: 1;
+    max-width: 400px;
+    position: relative;
+  }
+  .header-search input {
+    background: var(--bg-surface-2);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-md);
+    padding: 6px 12px 6px 32px;
+    color: var(--text-primary);
+    font-family: var(--font-body);
+    font-size: 12px;
+    width: 100%;
+    outline: none;
+    transition: border-color 0.15s ease;
+  }
+  .header-search input:focus { border-color: var(--accent-primary); }
+  .header-search input::placeholder { color: var(--text-muted); }
+  .header-search-icon {
+    position: absolute;
+    left: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--text-muted);
+    font-size: 13px;
+  }
+  .header-shortcut {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--text-muted);
+    background: var(--bg-surface-3);
+    padding: 2px 6px;
+    border-radius: 3px;
+    border: 1px solid var(--border-subtle);
+    position: absolute;
+    right: 8px;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+  .header-right {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .header-icon-btn {
+    width: 32px;
+    height: 32px;
+    border-radius: var(--radius-md);
+    border: 1px solid var(--border-subtle);
+    background: transparent;
+    color: var(--text-secondary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    position: relative;
+    transition: all 0.12s ease;
+  }
+  .header-icon-btn:hover {
+    background: var(--bg-surface-2);
+    color: var(--text-primary);
+  }
+  .notification-dot {
+    position: absolute;
+    top: 4px;
+    right: 4px;
+    width: 7px;
+    height: 7px;
+    background: var(--error);
+    border-radius: 50%;
+    box-shadow: 0 0 6px var(--error-glow);
+  }
+  .avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 12px;
+    color: #fff;
+  }
+
+  /* Main content */
+  .main-content {
+    padding: 24px;
+    overflow-y: auto;
+    background: var(--bg-deep);
+  }
+  .main-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 24px;
+  }
+  .main-title {
+    font-family: var(--font-display);
+    font-size: 22px;
+    font-weight: 700;
+    letter-spacing: -0.3px;
+  }
+  .main-subtitle {
+    font-size: 13px;
+    color: var(--text-secondary);
+    margin-top: 2px;
+  }
+
+  /* KPI Cards */
+  .kpi-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    margin-bottom: 24px;
+  }
+  .kpi-card {
+    background: var(--glass-bg);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    border: 1px solid var(--glass-border);
+    border-radius: var(--radius-lg);
+    padding: 20px;
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+  }
+  .kpi-card:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-card);
+  }
+  .kpi-card::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    opacity: 0.6;
+  }
+  .kpi-card:nth-child(1)::after { background: linear-gradient(90deg, var(--accent-primary), transparent); }
+  .kpi-card:nth-child(2)::after { background: linear-gradient(90deg, var(--success), transparent); }
+  .kpi-card:nth-child(3)::after { background: linear-gradient(90deg, var(--warning), transparent); }
+  .kpi-card:nth-child(4)::after { background: linear-gradient(90deg, var(--accent-secondary), transparent); }
+
+  .kpi-label {
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--text-secondary);
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .kpi-value {
+    font-family: var(--font-display);
+    font-size: 28px;
+    font-weight: 700;
+    letter-spacing: -0.5px;
+    color: var(--text-primary);
+    margin-bottom: 6px;
+  }
+  .kpi-change {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 500;
+    display: inline-flex;
+    align-items: center;
+    gap: 3px;
+    padding: 2px 6px;
+    border-radius: var(--radius-sm);
+  }
+  .kpi-change.up { background: var(--success-dim); color: var(--success); }
+  .kpi-change.down { background: var(--error-dim); color: var(--error); }
+
+  /* Data Table */
+  .table-container {
+    background: var(--bg-surface-1);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+  }
+  .table-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 20px;
+    border-bottom: 1px solid var(--border-subtle);
+  }
+  .table-title {
+    font-family: var(--font-display);
+    font-size: 15px;
+    font-weight: 600;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  th {
+    text-align: left;
+    padding: 10px 16px;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    background: var(--bg-surface-2);
+    border-bottom: 1px solid var(--border-subtle);
+  }
+  td {
+    padding: 12px 16px;
+    font-size: 13px;
+    border-bottom: 1px solid var(--border-subtle);
+    color: var(--text-secondary);
+    transition: background 0.1s ease;
+  }
+  tr:hover td { background: var(--bg-surface-2); }
+  tr:last-child td { border-bottom: none; }
+  td.mono {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--text-primary);
+  }
+  td.amount {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text-primary);
+    font-variant-numeric: tabular-nums;
+  }
+  .table-status {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 11px;
+    font-weight: 600;
+    padding: 3px 10px;
+    border-radius: var(--radius-pill);
+  }
+  .table-status::before {
+    content: '';
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+  .status-approved {
+    background: var(--success-dim);
+    color: var(--success);
+  }
+  .status-approved::before {
+    background: var(--success);
+    box-shadow: 0 0 6px var(--success-glow);
+  }
+  .status-processing {
+    background: var(--accent-primary-dim);
+    color: var(--accent-primary);
+  }
+  .status-processing::before {
+    background: var(--accent-primary);
+    box-shadow: 0 0 6px var(--accent-primary-glow);
+    animation: pulse 2s ease-in-out infinite;
+  }
+  .status-pending {
+    background: var(--warning-dim);
+    color: var(--warning);
+  }
+  .status-pending::before {
+    background: var(--warning);
+    box-shadow: 0 0 6px var(--warning-glow);
+  }
+  .status-rejected {
+    background: var(--error-dim);
+    color: var(--error);
+  }
+  .status-rejected::before {
+    background: var(--error);
+    box-shadow: 0 0 6px var(--error-glow);
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; box-shadow: 0 0 6px var(--accent-primary-glow); }
+    50% { opacity: 0.5; box-shadow: 0 0 12px var(--accent-primary-glow); }
+  }
+
+  /* ========== GLASSMORPHISM DEMO ========== */
+  .glass-demo {
+    position: relative;
+    border-radius: var(--radius-xl);
+    overflow: hidden;
+    padding: 48px;
+    display: flex;
+    gap: 24px;
+    justify-content: center;
+    align-items: center;
+    min-height: 300px;
+  }
+  .glass-demo-bg {
+    position: absolute;
+    inset: 0;
+    background: var(--bg-deep);
+    z-index: 0;
+  }
+  .glass-demo-bg::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -20%;
+    width: 300px;
+    height: 300px;
+    background: radial-gradient(circle, var(--accent-primary-glow), transparent 70%);
+    border-radius: 50%;
+    animation: float1 8s ease-in-out infinite;
+  }
+  .glass-demo-bg::after {
+    content: '';
+    position: absolute;
+    bottom: -30%;
+    right: -10%;
+    width: 250px;
+    height: 250px;
+    background: radial-gradient(circle, rgba(124, 58, 237, 0.3), transparent 70%);
+    border-radius: 50%;
+    animation: float2 10s ease-in-out infinite;
+  }
+  @keyframes float1 {
+    0%, 100% { transform: translate(0, 0); }
+    50% { transform: translate(40px, 30px); }
+  }
+  @keyframes float2 {
+    0%, 100% { transform: translate(0, 0); }
+    50% { transform: translate(-30px, -20px); }
+  }
+  .glass-card {
+    position: relative;
+    z-index: 1;
+    background: var(--glass-bg);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    border: 1px solid var(--glass-border);
+    border-radius: var(--radius-lg);
+    padding: 24px;
+    width: 280px;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+  .glass-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-glow-cyan);
+  }
+  .glass-card-title {
+    font-family: var(--font-display);
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 8px;
+  }
+  .glass-card-value {
+    font-family: var(--font-mono);
+    font-size: 32px;
+    font-weight: 600;
+    color: var(--accent-primary);
+    margin-bottom: 4px;
+  }
+  .glass-card-meta {
+    font-size: 12px;
+    color: var(--text-muted);
+  }
+
+  /* ========== SPACING DEMO ========== */
+  .spacing-grid {
+    display: flex;
+    gap: 8px;
+    align-items: flex-end;
+    flex-wrap: wrap;
+  }
+  .spacing-block {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+  }
+  .spacing-bar {
+    background: var(--accent-primary-dim);
+    border: 1px solid var(--accent-primary);
+    border-radius: 2px;
+    width: 40px;
+    transition: height 0.3s ease;
+  }
+  .spacing-label {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--text-muted);
+  }
+
+  /* ========== RADIUS DEMO ========== */
+  .radius-row {
+    display: flex;
+    gap: 24px;
+    flex-wrap: wrap;
+  }
+  .radius-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+  }
+  .radius-box {
+    width: 64px;
+    height: 64px;
+    background: var(--accent-primary-dim);
+    border: 1px solid var(--accent-primary);
+  }
+  .radius-label {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--text-muted);
+    text-align: center;
+  }
+
+  /* ========== FOOTER ========== */
+  .footer {
+    text-align: center;
+    padding: 48px 0;
+    border-top: 1px solid var(--border-subtle);
+    margin-top: 64px;
+  }
+  .footer p {
+    font-size: 12px;
+    color: var(--text-muted);
+  }
+  .footer a {
+    color: var(--accent-primary);
+    text-decoration: none;
+  }
+</style>
+</head>
+<body>
+
+<button class="theme-toggle" onclick="toggleTheme()">
+  <span id="theme-icon">&#9790;</span>
+  <span id="theme-label">Dark</span>
+</button>
+
+<div class="preview-wrapper">
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-label">Design System Preview</div>
+    <h1>Electronics <span>ERP</span></h1>
+    <p>Industrial Luxe dark-mode design system. Precision meets premium. Electric cyan accents, glassmorphism depth, glow status indicators.</p>
+  </div>
+
+  <!-- COLOR PALETTE -->
+  <div class="section">
+    <div class="section-title">Color Palette</div>
+    <div class="section-desc">Backgrounds, accents, text, and semantic status colors</div>
+    <div class="swatches">
+      <div class="swatch"><div class="swatch-color" style="background:#07090E"></div><div class="swatch-info"><div class="swatch-name">Deep Dark</div><div class="swatch-hex">#07090E</div></div></div>
+      <div class="swatch"><div class="swatch-color" style="background:#0D1117"></div><div class="swatch-info"><div class="swatch-name">Surface 1</div><div class="swatch-hex">#0D1117</div></div></div>
+      <div class="swatch"><div class="swatch-color" style="background:#161B22"></div><div class="swatch-info"><div class="swatch-name">Surface 2</div><div class="swatch-hex">#161B22</div></div></div>
+      <div class="swatch"><div class="swatch-color" style="background:#1C2333"></div><div class="swatch-info"><div class="swatch-name">Surface 3</div><div class="swatch-hex">#1C2333</div></div></div>
+      <div class="swatch"><div class="swatch-color" style="background:#00E5FF"></div><div class="swatch-info"><div class="swatch-name">Electric Cyan</div><div class="swatch-hex">#00E5FF</div></div></div>
+      <div class="swatch"><div class="swatch-color" style="background:#7C3AED"></div><div class="swatch-info"><div class="swatch-name">Violet</div><div class="swatch-hex">#7C3AED</div></div></div>
+      <div class="swatch"><div class="swatch-color" style="background:#E6EDF3"></div><div class="swatch-info"><div class="swatch-name">Text Primary</div><div class="swatch-hex">#E6EDF3</div></div></div>
+      <div class="swatch"><div class="swatch-color" style="background:#8B949E"></div><div class="swatch-info"><div class="swatch-name">Text Secondary</div><div class="swatch-hex">#8B949E</div></div></div>
+      <div class="swatch"><div class="swatch-color" style="background:#3FB950"></div><div class="swatch-info"><div class="swatch-name">Success</div><div class="swatch-hex">#3FB950</div></div></div>
+      <div class="swatch"><div class="swatch-color" style="background:#D29922"></div><div class="swatch-info"><div class="swatch-name">Warning</div><div class="swatch-hex">#D29922</div></div></div>
+      <div class="swatch"><div class="swatch-color" style="background:#F85149"></div><div class="swatch-info"><div class="swatch-name">Error</div><div class="swatch-hex">#F85149</div></div></div>
+      <div class="swatch"><div class="swatch-color" style="background:#58A6FF"></div><div class="swatch-info"><div class="swatch-name">Info</div><div class="swatch-hex">#58A6FF</div></div></div>
+    </div>
+  </div>
+
+  <!-- TYPOGRAPHY -->
+  <div class="section">
+    <div class="section-title">Typography</div>
+    <div class="section-desc">General Sans for display, DM Sans for body, Geist Mono for data</div>
+    <div class="type-specimen">
+      <div class="type-row">
+        <div class="type-meta"><strong>Display XL</strong><br>General Sans 700<br>48px / -1.2px</div>
+        <div style="font-family:var(--font-display);font-size:48px;font-weight:700;letter-spacing:-1.2px;line-height:1.05">Dashboard Overview</div>
+      </div>
+      <div class="type-row">
+        <div class="type-meta"><strong>Display</strong><br>General Sans 600<br>32px / -0.8px</div>
+        <div style="font-family:var(--font-display);font-size:32px;font-weight:600;letter-spacing:-0.8px;line-height:1.1">Purchase Orders</div>
+      </div>
+      <div class="type-row">
+        <div class="type-meta"><strong>Heading</strong><br>General Sans 600<br>22px / -0.3px</div>
+        <div style="font-family:var(--font-display);font-size:22px;font-weight:600;letter-spacing:-0.3px;line-height:1.2">Recent Transactions</div>
+      </div>
+      <div class="type-row">
+        <div class="type-meta"><strong>Body</strong><br>DM Sans 400<br>14px / normal</div>
+        <div style="font-family:var(--font-body);font-size:14px;font-weight:400;line-height:1.5;color:var(--text-secondary)">All purchase orders for Q1 2026 are shown below. Filter by supplier, date range, or status to narrow results. Click any row to view full order details.</div>
+      </div>
+      <div class="type-row">
+        <div class="type-meta"><strong>Data</strong><br>Geist Mono 500<br>13px / tabular-nums</div>
+        <div style="font-family:var(--font-mono);font-size:13px;font-weight:500;line-height:1.4;font-variant-numeric:tabular-nums;color:var(--accent-primary)">PO-2026-0847 &nbsp; NT$1,234,567 &nbsp; 2026-04-10 &nbsp; IC-7805CT</div>
+      </div>
+      <div class="type-row">
+        <div class="type-meta"><strong>Label</strong><br>Geist Mono 500<br>10px / uppercase</div>
+        <div style="font-family:var(--font-mono);font-size:10px;font-weight:500;letter-spacing:1.5px;text-transform:uppercase;color:var(--text-muted)">Order Status &bull; Supplier &bull; Amount &bull; Date &bull; Actions</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- COMPONENTS -->
+  <div class="section">
+    <div class="section-title">Components</div>
+    <div class="section-desc">Buttons, inputs, badges, and form elements</div>
+    <div class="components-grid">
+      <div class="component-card">
+        <div class="component-label">Buttons</div>
+        <div class="btn-row">
+          <button class="btn btn-primary">New Order</button>
+          <button class="btn btn-secondary">Export</button>
+          <button class="btn btn-ghost">Cancel</button>
+          <button class="btn btn-danger">Delete</button>
+        </div>
+      </div>
+      <div class="component-card">
+        <div class="component-label">Status Badges</div>
+        <div class="badge-row">
+          <span class="badge badge-success">Approved</span>
+          <span class="badge badge-info">Processing</span>
+          <span class="badge badge-warning">Pending</span>
+          <span class="badge badge-error">Rejected</span>
+        </div>
+      </div>
+      <div class="component-card">
+        <div class="component-label">Text Input</div>
+        <div class="input-group">
+          <label class="input-label">Supplier Name</label>
+          <input class="input" type="text" placeholder="Search suppliers...">
+        </div>
+      </div>
+      <div class="component-card">
+        <div class="component-label">Select + Input</div>
+        <div style="display:flex;gap:12px">
+          <div class="input-group" style="flex:1">
+            <label class="input-label">Part Number</label>
+            <input class="input" type="text" value="IC-7805CT" style="color:var(--accent-primary)">
+          </div>
+          <div class="input-group" style="flex:1">
+            <label class="input-label">Quantity</label>
+            <input class="input" type="text" value="10,000" style="font-family:var(--font-mono);font-variant-numeric:tabular-nums">
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- GLASSMORPHISM -->
+  <div class="section">
+    <div class="section-title">Glassmorphism</div>
+    <div class="section-desc">Frosted glass panels with backdrop blur, glow accents, and floating depth</div>
+    <div class="glass-demo">
+      <div class="glass-demo-bg"></div>
+      <div class="glass-card">
+        <div class="glass-card-title">Monthly Revenue</div>
+        <div class="glass-card-value">$2.4M</div>
+        <div class="glass-card-meta">+12.3% from last month</div>
+      </div>
+      <div class="glass-card">
+        <div class="glass-card-title">Active Orders</div>
+        <div class="glass-card-value" style="color:var(--success)">847</div>
+        <div class="glass-card-meta">Processing pipeline healthy</div>
+      </div>
+      <div class="glass-card">
+        <div class="glass-card-title">Low Stock Alerts</div>
+        <div class="glass-card-value" style="color:var(--warning)">23</div>
+        <div class="glass-card-meta">Requires attention</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SPACING -->
+  <div class="section">
+    <div class="section-title">Spacing Scale</div>
+    <div class="section-desc">8px base unit, compact-first for data-dense ERP layouts</div>
+    <div class="spacing-grid">
+      <div class="spacing-block"><div class="spacing-bar" style="height:2px"></div><div class="spacing-label">2px</div></div>
+      <div class="spacing-block"><div class="spacing-bar" style="height:4px"></div><div class="spacing-label">4px</div></div>
+      <div class="spacing-block"><div class="spacing-bar" style="height:8px"></div><div class="spacing-label">8px</div></div>
+      <div class="spacing-block"><div class="spacing-bar" style="height:16px"></div><div class="spacing-label">16px</div></div>
+      <div class="spacing-block"><div class="spacing-bar" style="height:24px"></div><div class="spacing-label">24px</div></div>
+      <div class="spacing-block"><div class="spacing-bar" style="height:32px"></div><div class="spacing-label">32px</div></div>
+      <div class="spacing-block"><div class="spacing-bar" style="height:48px"></div><div class="spacing-label">48px</div></div>
+      <div class="spacing-block"><div class="spacing-bar" style="height:64px"></div><div class="spacing-label">64px</div></div>
+    </div>
+  </div>
+
+  <!-- BORDER RADIUS -->
+  <div class="section">
+    <div class="section-title">Border Radius</div>
+    <div class="section-desc">Hierarchical radius system: inputs (4px) to pills (full)</div>
+    <div class="radius-row">
+      <div class="radius-item"><div class="radius-box" style="border-radius:4px"></div><div class="radius-label">4px<br>sm</div></div>
+      <div class="radius-item"><div class="radius-box" style="border-radius:8px"></div><div class="radius-label">8px<br>md</div></div>
+      <div class="radius-item"><div class="radius-box" style="border-radius:12px"></div><div class="radius-label">12px<br>lg</div></div>
+      <div class="radius-item"><div class="radius-box" style="border-radius:16px"></div><div class="radius-label">16px<br>xl</div></div>
+      <div class="radius-item"><div class="radius-box" style="border-radius:9999px"></div><div class="radius-label">9999px<br>pill</div></div>
+    </div>
+  </div>
+
+  <!-- ERP DASHBOARD MOCKUP -->
+  <div class="section">
+    <div class="section-title">Dashboard Mockup</div>
+    <div class="section-desc">Realistic ERP dashboard with sidebar, KPI cards, and data table</div>
+    <div class="mockup-container">
+      <div class="erp-layout">
+        <!-- Sidebar -->
+        <div class="sidebar">
+          <div class="sidebar-brand">
+            <div class="sidebar-logo">E</div>
+            <div>
+              <div class="sidebar-brand-text">ElectroERP</div>
+              <div class="sidebar-brand-sub">Electronics Supply Chain</div>
+            </div>
+          </div>
+          <div class="sidebar-nav">
+            <div class="nav-section-label">Main</div>
+            <div class="nav-item active">
+              <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+              Dashboard
+            </div>
+            <div class="nav-item">
+              <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 4h2a2 2 0 012 2v14a2 2 0 01-2 2H6a2 2 0 01-2-2V6a2 2 0 012-2h2"/><rect x="8" y="2" width="8" height="4" rx="1"/></svg>
+              Orders
+              <span class="nav-badge-count">12</span>
+            </div>
+            <div class="nav-item">
+              <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/></svg>
+              Inventory
+            </div>
+            <div class="nav-item">
+              <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M12 2v4m0 12v4m10-10h-4M6 12H2m15.07-5.07l-2.83 2.83M9.76 14.24l-2.83 2.83m11.14 0l-2.83-2.83M9.76 9.76L6.93 6.93"/></svg>
+              BOM
+            </div>
+            <div class="nav-section-label">Supply Chain</div>
+            <div class="nav-item">
+              <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><path d="M14 2v6h6"/></svg>
+              Procurement
+            </div>
+            <div class="nav-item">
+              <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="3" width="15" height="13" rx="2"/><path d="M16 8h4l3 3v5a2 2 0 01-2 2h-1"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
+              Shipping
+            </div>
+            <div class="nav-item">
+              <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 20V10M12 20V4M6 20v-6"/></svg>
+              Reports
+            </div>
+          </div>
+        </div>
+
+        <!-- Header -->
+        <div class="header">
+          <div class="header-search">
+            <span class="header-search-icon">&#128269;</span>
+            <input type="text" placeholder="Search orders, parts, suppliers...">
+            <span class="header-shortcut">&#8984;K</span>
+          </div>
+          <div class="header-right">
+            <div class="header-icon-btn">
+              &#128276;
+              <span class="notification-dot"></span>
+            </div>
+            <div class="header-icon-btn">&#9881;</div>
+            <div class="avatar">WH</div>
+          </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+          <div class="main-header">
+            <div>
+              <div class="main-title">Dashboard</div>
+              <div class="main-subtitle">Electronics Supply Chain Overview &mdash; April 2026</div>
+            </div>
+            <div class="btn-row">
+              <button class="btn btn-ghost" style="font-size:12px;padding:6px 14px">Last 30 Days &#9662;</button>
+              <button class="btn btn-primary" style="font-size:12px;padding:6px 14px">+ New Order</button>
+            </div>
+          </div>
+
+          <!-- KPI Cards -->
+          <div class="kpi-grid">
+            <div class="kpi-card">
+              <div class="kpi-label">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--accent-primary)" stroke-width="2"><path d="M12 1v22M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>
+                Revenue
+              </div>
+              <div class="kpi-value">$2.4M</div>
+              <span class="kpi-change up">&#9650; 12.3%</span>
+            </div>
+            <div class="kpi-card">
+              <div class="kpi-label">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--success)" stroke-width="2"><path d="M16 4h2a2 2 0 012 2v14a2 2 0 01-2 2H6a2 2 0 01-2-2V6a2 2 0 012-2h2"/><rect x="8" y="2" width="8" height="4" rx="1"/></svg>
+                Active POs
+              </div>
+              <div class="kpi-value">847</div>
+              <span class="kpi-change up">&#9650; 8.1%</span>
+            </div>
+            <div class="kpi-card">
+              <div class="kpi-label">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--warning)" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+                Low Stock
+              </div>
+              <div class="kpi-value">23</div>
+              <span class="kpi-change down">&#9660; 5 items</span>
+            </div>
+            <div class="kpi-card">
+              <div class="kpi-label">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--accent-secondary)" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>
+                Suppliers
+              </div>
+              <div class="kpi-value">156</div>
+              <span class="kpi-change up">&#9650; 3 new</span>
+            </div>
+          </div>
+
+          <!-- Data Table -->
+          <div class="table-container">
+            <div class="table-header">
+              <div class="table-title">Recent Purchase Orders</div>
+              <div class="btn-row">
+                <button class="btn btn-ghost" style="font-size:11px;padding:4px 10px">Filter</button>
+                <button class="btn btn-ghost" style="font-size:11px;padding:4px 10px">Export</button>
+              </div>
+            </div>
+            <table>
+              <thead>
+                <tr>
+                  <th>PO Number</th>
+                  <th>Supplier</th>
+                  <th>Parts</th>
+                  <th>Amount</th>
+                  <th>Status</th>
+                  <th>Date</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td class="mono">PO-2026-0847</td>
+                  <td>Texas Instruments</td>
+                  <td style="color:var(--text-primary)">IC-7805CT &times;10,000</td>
+                  <td class="amount">$34,500</td>
+                  <td><span class="table-status status-approved">Approved</span></td>
+                  <td>2026-04-10</td>
+                </tr>
+                <tr>
+                  <td class="mono">PO-2026-0846</td>
+                  <td>Murata Manufacturing</td>
+                  <td style="color:var(--text-primary)">GRM188R71C104 &times;50,000</td>
+                  <td class="amount">$12,750</td>
+                  <td><span class="table-status status-processing">Processing</span></td>
+                  <td>2026-04-09</td>
+                </tr>
+                <tr>
+                  <td class="mono">PO-2026-0845</td>
+                  <td>Samsung Electro-Mechanics</td>
+                  <td style="color:var(--text-primary)">CL10B104KB8 &times;100,000</td>
+                  <td class="amount">$8,200</td>
+                  <td><span class="table-status status-pending">Pending</span></td>
+                  <td>2026-04-09</td>
+                </tr>
+                <tr>
+                  <td class="mono">PO-2026-0844</td>
+                  <td>Yageo Corporation</td>
+                  <td style="color:var(--text-primary)">RC0402FR-07100KL &times;200,000</td>
+                  <td class="amount">$3,400</td>
+                  <td><span class="table-status status-approved">Approved</span></td>
+                  <td>2026-04-08</td>
+                </tr>
+                <tr>
+                  <td class="mono">PO-2026-0843</td>
+                  <td>Nexperia</td>
+                  <td style="color:var(--text-primary)">BAT54S &times;25,000</td>
+                  <td class="amount">$6,125</td>
+                  <td><span class="table-status status-rejected">Rejected</span></td>
+                  <td>2026-04-07</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer">
+    <p>Electronics ERP Design System &mdash; Generated by /design-consultation</p>
+  </div>
+
+</div>
+
+<script>
+function toggleTheme() {
+  const html = document.documentElement;
+  const current = html.getAttribute('data-theme');
+  const next = current === 'dark' ? 'light' : 'dark';
+  html.setAttribute('data-theme', next);
+  document.getElementById('theme-icon').textContent = next === 'dark' ? '\u263E' : '\u2600';
+  document.getElementById('theme-label').textContent = next === 'dark' ? 'Dark' : 'Light';
+}
+</script>
+
+</body>
+</html>
