@@ -1,0 +1,1140 @@
+<!DOCTYPE html>
+<html lang="zh-Hant" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>食品廠 ERP — Design System Preview v2</title>
+<link rel="preconnect" href="https://fonts.bunny.net">
+<link href="https://fonts.bunny.net/css?family=plus-jakarta-sans:400,500,600,700,800|jetbrains-mono:400,500,600|noto-sans-tc:400,700" rel="stylesheet">
+<style>
+  /* ========== CSS Custom Properties ========== */
+  :root {
+    /* Primary — Gradient Green */
+    --primary: #10B981;
+    --primary-dark: #059669;
+    --primary-darker: #047857;
+    --primary-light: #34D399;
+    --primary-glow: rgba(16, 185, 129, 0.25);
+    --primary-gradient: linear-gradient(135deg, #059669, #10B981, #0D9488);
+    --primary-gradient-subtle: linear-gradient(135deg, rgba(5, 150, 105, 0.15), rgba(13, 148, 136, 0.08));
+
+    /* Traffic Light System */
+    --status-ok: #34D399;
+    --status-ok-glow: rgba(52, 211, 153, 0.2);
+    --status-ok-bg: rgba(52, 211, 153, 0.1);
+    --status-warn: #FBBF24;
+    --status-warn-glow: rgba(251, 191, 36, 0.2);
+    --status-warn-bg: rgba(251, 191, 36, 0.1);
+    --status-danger: #F87171;
+    --status-danger-glow: rgba(248, 113, 113, 0.2);
+    --status-danger-bg: rgba(248, 113, 113, 0.1);
+    --status-info: #60A5FA;
+    --status-info-bg: rgba(96, 165, 250, 0.1);
+
+    /* Dark Warm Neutrals */
+    --gray-100: #0F0E0D;
+    --gray-95: #161514;
+    --gray-90: #1C1B19;
+    --gray-85: #232220;
+    --gray-80: #2E2C2A;
+    --gray-70: #3D3B38;
+    --gray-60: #57534E;
+    --gray-50: #78716C;
+    --gray-40: #A8A29E;
+    --gray-30: #D6D3D1;
+    --gray-20: #E7E5E3;
+    --gray-10: #F5F5F4;
+
+    /* Semantic */
+    --text-primary: #F5F5F4;
+    --text-secondary: #A8A29E;
+    --text-muted: #78716C;
+    --border: rgba(255,255,255,0.08);
+    --border-subtle: rgba(255,255,255,0.04);
+    --surface: rgba(255,255,255,0.03);
+    --surface-hover: rgba(255,255,255,0.06);
+    --surface-glass: rgba(255,255,255,0.05);
+    --background: #0F0E0D;
+    --background-secondary: #161514;
+
+    /* Typography */
+    --font-display: 'Plus Jakarta Sans', 'Noto Sans TC', system-ui, sans-serif;
+    --font-body: 'Plus Jakarta Sans', 'Noto Sans TC', system-ui, sans-serif;
+    --font-data: 'JetBrains Mono', 'SF Mono', monospace;
+
+    /* Spacing */
+    --sp-2xs: 2px; --sp-xs: 4px; --sp-sm: 8px; --sp-md: 16px;
+    --sp-lg: 24px; --sp-xl: 32px; --sp-2xl: 48px; --sp-3xl: 64px;
+
+    /* Radius */
+    --radius-sm: 6px;
+    --radius-md: 10px;
+    --radius-lg: 14px;
+    --radius-xl: 20px;
+    --radius-pill: 9999px;
+
+    /* Motion */
+    --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+    --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+    --duration-fast: 150ms;
+    --duration-normal: 250ms;
+    --duration-slow: 400ms;
+  }
+
+  /* Light theme override */
+  [data-theme="light"] {
+    --text-primary: #1C1917;
+    --text-secondary: #57534E;
+    --text-muted: #78716C;
+    --border: rgba(0,0,0,0.08);
+    --border-subtle: rgba(0,0,0,0.04);
+    --surface: rgba(255,255,255,0.9);
+    --surface-hover: rgba(0,0,0,0.03);
+    --surface-glass: rgba(255,255,255,0.7);
+    --background: #FAFAF9;
+    --background-secondary: #F5F5F4;
+    --primary: #059669;
+    --primary-dark: #047857;
+    --primary-light: #10B981;
+    --primary-glow: rgba(5, 150, 105, 0.15);
+    --primary-gradient: linear-gradient(135deg, #047857, #059669, #0D9488);
+    --primary-gradient-subtle: linear-gradient(135deg, rgba(5, 150, 105, 0.08), rgba(13, 148, 136, 0.04));
+    --status-ok: #16A34A;
+    --status-ok-glow: rgba(22, 163, 74, 0.12);
+    --status-ok-bg: rgba(22, 163, 74, 0.08);
+    --status-warn: #D97706;
+    --status-warn-glow: rgba(217, 119, 6, 0.12);
+    --status-warn-bg: rgba(217, 119, 6, 0.08);
+    --status-danger: #DC2626;
+    --status-danger-glow: rgba(220, 38, 38, 0.12);
+    --status-danger-bg: rgba(220, 38, 38, 0.08);
+  }
+
+  /* ========== Base ========== */
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: var(--font-body);
+    font-size: 15px;
+    line-height: 1.5;
+    color: var(--text-primary);
+    background: var(--background);
+    transition: background var(--duration-normal) var(--ease-out),
+                color var(--duration-normal) var(--ease-out);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ========== Preview Header ========== */
+  .preview-header {
+    background: var(--background-secondary);
+    border-bottom: 1px solid var(--border);
+    padding: var(--sp-md) var(--sp-2xl);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    backdrop-filter: blur(20px) saturate(180%);
+  }
+  .preview-brand {
+    display: flex;
+    align-items: center;
+    gap: var(--sp-sm);
+  }
+  .preview-brand .logo-mark {
+    width: 32px; height: 32px;
+    background: var(--primary-gradient);
+    border-radius: var(--radius-sm);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 800;
+    font-size: 16px;
+    color: #fff;
+    box-shadow: 0 0 20px var(--primary-glow);
+  }
+  .preview-brand h1 {
+    font-family: var(--font-display);
+    font-size: 18px;
+    font-weight: 700;
+    background: var(--primary-gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .preview-brand .version {
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--text-muted);
+    background: var(--surface);
+    border: 1px solid var(--border);
+    padding: 2px 8px;
+    border-radius: var(--radius-pill);
+  }
+
+  .theme-toggle {
+    display: flex;
+    gap: 2px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    padding: 3px;
+  }
+  .theme-toggle button {
+    font-family: var(--font-body);
+    font-size: 13px;
+    font-weight: 600;
+    padding: 6px 14px;
+    border: none;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    background: transparent;
+    color: var(--text-muted);
+    transition: all var(--duration-fast) var(--ease-out);
+  }
+  .theme-toggle button.active {
+    background: var(--primary-gradient);
+    color: #fff;
+    box-shadow: 0 2px 8px var(--primary-glow);
+  }
+
+  .content { max-width: 1240px; margin: 0 auto; padding: var(--sp-2xl); }
+
+  section { margin-bottom: var(--sp-3xl); }
+
+  .section-title {
+    font-family: var(--font-display);
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--primary);
+    margin-bottom: var(--sp-lg);
+    padding-bottom: var(--sp-sm);
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    gap: var(--sp-sm);
+  }
+  .section-title::before {
+    content: '';
+    width: 3px;
+    height: 14px;
+    background: var(--primary-gradient);
+    border-radius: 2px;
+  }
+
+  /* ========== Hero Section ========== */
+  .hero {
+    padding: var(--sp-3xl) 0;
+    text-align: center;
+    position: relative;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 500px;
+    height: 500px;
+    background: radial-gradient(circle, var(--primary-glow) 0%, transparent 70%);
+    pointer-events: none;
+    opacity: 0.6;
+  }
+  .hero h2 {
+    font-family: var(--font-display);
+    font-size: 56px;
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    line-height: 1.05;
+    background: linear-gradient(135deg, var(--text-primary) 0%, var(--primary-light) 50%, var(--text-primary) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: var(--sp-md);
+    position: relative;
+  }
+  .hero p {
+    font-size: 18px;
+    color: var(--text-secondary);
+    max-width: 520px;
+    margin: 0 auto;
+    line-height: 1.6;
+    position: relative;
+  }
+  .hero .tagline {
+    font-family: var(--font-data);
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--primary);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: var(--sp-sm);
+    position: relative;
+  }
+
+  /* ========== Typography Specimen ========== */
+  .type-specimen { display: flex; flex-direction: column; gap: 0; }
+  .type-row {
+    display: grid;
+    grid-template-columns: 180px 1fr;
+    align-items: baseline;
+    gap: var(--sp-md);
+    padding: var(--sp-lg) 0;
+    border-bottom: 1px solid var(--border-subtle);
+    transition: background var(--duration-fast) var(--ease-out);
+  }
+  .type-row:hover { background: var(--surface); border-radius: var(--radius-md); margin: 0 calc(-1 * var(--sp-md)); padding-left: var(--sp-md); padding-right: var(--sp-md); }
+  .type-label {
+    font-family: var(--font-data);
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--text-muted);
+    line-height: 1.6;
+  }
+  .type-display {
+    font-family: var(--font-display);
+    font-size: 52px; font-weight: 800; line-height: 1.05; letter-spacing: -0.03em;
+  }
+  .type-h1 {
+    font-family: var(--font-display);
+    font-size: 36px; font-weight: 700; line-height: 1.15; letter-spacing: -0.02em;
+  }
+  .type-h2 {
+    font-family: var(--font-display);
+    font-size: 24px; font-weight: 700; line-height: 1.2; letter-spacing: -0.01em;
+  }
+  .type-h3 {
+    font-family: var(--font-display);
+    font-size: 18px; font-weight: 600; line-height: 1.3;
+  }
+  .type-body { font-size: 15px; font-weight: 400; line-height: 1.6; color: var(--text-secondary); }
+  .type-data {
+    font-family: var(--font-data);
+    font-size: 14px; font-weight: 400; line-height: 1.6;
+    color: var(--primary-light);
+  }
+  .type-data-lg {
+    font-family: var(--font-data);
+    font-size: 40px; font-weight: 600; line-height: 1;
+    font-variant-numeric: tabular-nums;
+    background: var(--primary-gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  /* ========== Color Palette ========== */
+  .color-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+    gap: var(--sp-sm);
+  }
+  .color-swatch {
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    border: 1px solid var(--border);
+    transition: transform var(--duration-fast) var(--ease-spring), box-shadow var(--duration-fast) var(--ease-out);
+  }
+  .color-swatch:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+  }
+  .color-swatch-fill { height: 64px; }
+  .color-swatch-fill.gradient { background: var(--primary-gradient) !important; }
+  .color-swatch-info {
+    padding: var(--sp-sm);
+    background: var(--surface);
+  }
+  .color-swatch-name { font-size: 12px; font-weight: 600; color: var(--text-primary); }
+  .color-swatch-hex { font-family: var(--font-data); font-size: 11px; color: var(--text-muted); }
+
+  .color-section-label {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--text-secondary);
+    margin-top: var(--sp-lg);
+    margin-bottom: var(--sp-sm);
+  }
+
+  /* ========== Traffic Light System ========== */
+  .traffic-demo {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--sp-md);
+  }
+  .traffic-card {
+    border-radius: var(--radius-lg);
+    padding: var(--sp-lg);
+    display: flex;
+    flex-direction: column;
+    gap: var(--sp-sm);
+    position: relative;
+    overflow: hidden;
+    backdrop-filter: blur(12px);
+    transition: transform var(--duration-fast) var(--ease-spring), box-shadow var(--duration-fast) var(--ease-out);
+  }
+  .traffic-card:hover {
+    transform: translateY(-2px);
+  }
+  .traffic-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+  }
+  .traffic-card.ok {
+    background: var(--status-ok-bg);
+    border: 1px solid rgba(52, 211, 153, 0.2);
+    box-shadow: 0 0 30px var(--status-ok-glow), inset 0 1px 0 rgba(52, 211, 153, 0.1);
+  }
+  .traffic-card.ok::before { background: linear-gradient(90deg, #059669, #34D399); }
+  .traffic-card.ok:hover { box-shadow: 0 0 40px var(--status-ok-glow), 0 8px 24px rgba(0,0,0,0.2); }
+
+  .traffic-card.warn {
+    background: var(--status-warn-bg);
+    border: 1px solid rgba(251, 191, 36, 0.2);
+    box-shadow: 0 0 30px var(--status-warn-glow), inset 0 1px 0 rgba(251, 191, 36, 0.1);
+  }
+  .traffic-card.warn::before { background: linear-gradient(90deg, #D97706, #FBBF24); }
+  .traffic-card.warn:hover { box-shadow: 0 0 40px var(--status-warn-glow), 0 8px 24px rgba(0,0,0,0.2); }
+
+  .traffic-card.danger {
+    background: var(--status-danger-bg);
+    border: 1px solid rgba(248, 113, 113, 0.2);
+    box-shadow: 0 0 30px var(--status-danger-glow), inset 0 1px 0 rgba(248, 113, 113, 0.1);
+    animation: pulse-danger 3s ease-in-out infinite;
+  }
+  .traffic-card.danger::before { background: linear-gradient(90deg, #DC2626, #F87171); }
+  .traffic-card.danger:hover { box-shadow: 0 0 40px var(--status-danger-glow), 0 8px 24px rgba(0,0,0,0.2); }
+
+  @keyframes pulse-danger {
+    0%, 100% { box-shadow: 0 0 30px var(--status-danger-glow), inset 0 1px 0 rgba(248, 113, 113, 0.1); }
+    50% { box-shadow: 0 0 50px rgba(248, 113, 113, 0.35), inset 0 1px 0 rgba(248, 113, 113, 0.15); }
+  }
+
+  .traffic-card .status-dot {
+    width: 8px; height: 8px; border-radius: 50%;
+    display: inline-block;
+    position: relative;
+  }
+  .traffic-card .status-dot::after {
+    content: '';
+    position: absolute;
+    inset: -3px;
+    border-radius: 50%;
+    background: currentColor;
+    opacity: 0.3;
+    animation: dot-pulse 2s ease-in-out infinite;
+  }
+  @keyframes dot-pulse {
+    0%, 100% { opacity: 0.3; transform: scale(1); }
+    50% { opacity: 0.1; transform: scale(1.5); }
+  }
+  .traffic-card.ok .status-dot { background: var(--status-ok); color: var(--status-ok); }
+  .traffic-card.warn .status-dot { background: var(--status-warn); color: var(--status-warn); }
+  .traffic-card.danger .status-dot { background: var(--status-danger); color: var(--status-danger); }
+  .traffic-card .label {
+    font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em;
+  }
+  .traffic-card.ok .label { color: var(--status-ok); }
+  .traffic-card.warn .label { color: var(--status-warn); }
+  .traffic-card.danger .label { color: var(--status-danger); }
+  .traffic-card .value {
+    font-family: var(--font-data);
+    font-size: 36px; font-weight: 600;
+    color: var(--text-primary);
+    line-height: 1;
+  }
+  .traffic-card .desc { font-size: 13px; color: var(--text-secondary); line-height: 1.4; }
+
+  /* ========== Components ========== */
+  .component-grid { display: flex; flex-wrap: wrap; gap: var(--sp-md); align-items: flex-start; }
+
+  .btn {
+    font-family: var(--font-body);
+    font-size: 14px; font-weight: 600;
+    padding: 10px 22px;
+    border-radius: var(--radius-md);
+    border: 1px solid transparent;
+    cursor: pointer;
+    transition: all var(--duration-fast) var(--ease-out);
+    display: inline-flex;
+    align-items: center;
+    gap: var(--sp-sm);
+    position: relative;
+    overflow: hidden;
+  }
+  .btn-primary {
+    background: var(--primary-gradient);
+    color: #fff;
+    box-shadow: 0 2px 12px var(--primary-glow);
+  }
+  .btn-primary:hover {
+    box-shadow: 0 4px 20px var(--primary-glow);
+    transform: translateY(-1px);
+  }
+  .btn-secondary {
+    background: var(--surface);
+    color: var(--text-primary);
+    border-color: var(--border);
+    backdrop-filter: blur(8px);
+  }
+  .btn-secondary:hover { background: var(--surface-hover); border-color: var(--primary); color: var(--primary); }
+  .btn-danger {
+    background: linear-gradient(135deg, #DC2626, #F87171);
+    color: #fff;
+    box-shadow: 0 2px 12px var(--status-danger-glow);
+  }
+  .btn-warning {
+    background: linear-gradient(135deg, #D97706, #FBBF24);
+    color: #fff;
+    box-shadow: 0 2px 12px var(--status-warn-glow);
+  }
+  .btn-ghost {
+    background: transparent;
+    color: var(--primary);
+  }
+  .btn-ghost:hover { background: var(--primary-gradient-subtle); }
+
+  /* Inputs */
+  .form-group { display: flex; flex-direction: column; gap: var(--sp-xs); min-width: 260px; }
+  .form-label { font-size: 12px; font-weight: 700; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.05em; }
+  .form-input {
+    font-family: var(--font-body);
+    font-size: 14px;
+    padding: 10px 14px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    background: var(--surface);
+    color: var(--text-primary);
+    backdrop-filter: blur(8px);
+    transition: all var(--duration-fast) var(--ease-out);
+  }
+  .form-input:focus {
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px var(--primary-glow), 0 0 20px var(--primary-glow);
+  }
+  .form-input.data-input {
+    font-family: var(--font-data);
+    font-size: 14px;
+    letter-spacing: 0.02em;
+    color: var(--primary-light);
+  }
+  .form-helper { font-size: 11px; color: var(--text-muted); }
+
+  /* ========== Mockup: Production Dashboard ========== */
+  .mockup-container {
+    background: var(--background);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-xl);
+    overflow: hidden;
+    box-shadow: 0 0 60px rgba(0,0,0,0.4), 0 0 120px var(--primary-glow);
+  }
+  .mockup-shell {
+    display: grid;
+    grid-template-columns: 240px 1fr;
+    grid-template-rows: 56px 1fr;
+    min-height: 680px;
+  }
+
+  /* Sidebar */
+  .mock-sidebar {
+    grid-row: 1 / -1;
+    background: linear-gradient(180deg, #161514, #0F0E0D);
+    border-right: 1px solid var(--border);
+    padding: var(--sp-md);
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+  .mock-sidebar .logo {
+    font-family: var(--font-display);
+    font-size: 15px; font-weight: 700;
+    padding: var(--sp-sm) var(--sp-sm) var(--sp-lg);
+    border-bottom: 1px solid var(--border);
+    margin-bottom: var(--sp-sm);
+    display: flex;
+    align-items: center;
+    gap: var(--sp-sm);
+  }
+  .mock-sidebar .logo .icon {
+    width: 30px; height: 30px;
+    background: var(--primary-gradient);
+    border-radius: var(--radius-sm);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 14px; font-weight: 800; color: #fff;
+    box-shadow: 0 0 16px var(--primary-glow);
+  }
+  .mock-sidebar .logo span {
+    background: var(--primary-gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .mock-sidebar .nav-section {
+    font-size: 10px; font-weight: 700; text-transform: uppercase;
+    letter-spacing: 0.1em; color: var(--text-muted);
+    padding: var(--sp-md) var(--sp-sm) var(--sp-xs);
+  }
+  .mock-sidebar .nav-item {
+    font-size: 13px; font-weight: 500;
+    padding: 8px 10px;
+    border-radius: var(--radius-sm);
+    color: var(--text-secondary);
+    cursor: pointer;
+    transition: all var(--duration-fast) var(--ease-out);
+    display: flex; align-items: center; gap: var(--sp-sm);
+  }
+  .mock-sidebar .nav-item:hover { color: #F5F5F4; background: rgba(255,255,255,0.08); }
+  .mock-sidebar .nav-item.active {
+    color: #fff;
+    background: var(--primary-gradient);
+    box-shadow: 0 2px 12px var(--primary-glow);
+  }
+  .mock-sidebar .nav-icon {
+    width: 18px; height: 18px;
+    border-radius: 4px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 10px;
+  }
+
+  /* Top bar */
+  .mock-topbar {
+    background: var(--background-secondary);
+    border-bottom: 1px solid var(--border);
+    padding: 0 var(--sp-lg);
+    display: flex; align-items: center; justify-content: space-between;
+    backdrop-filter: blur(12px);
+  }
+  .mock-topbar .breadcrumb {
+    font-size: 13px; color: var(--text-muted);
+  }
+  .mock-topbar .breadcrumb strong {
+    color: var(--text-primary); font-weight: 600;
+  }
+  .mock-topbar .topbar-actions {
+    display: flex; gap: var(--sp-sm); align-items: center;
+  }
+  .mock-topbar .avatar {
+    width: 32px; height: 32px;
+    border-radius: 50%;
+    background: var(--primary-gradient);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 13px; font-weight: 700; color: #fff;
+    box-shadow: 0 0 12px var(--primary-glow);
+  }
+  .mock-topbar .notif {
+    width: 32px; height: 32px;
+    border-radius: var(--radius-sm);
+    background: var(--surface);
+    border: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 14px; cursor: pointer;
+    position: relative;
+  }
+  .mock-topbar .notif-badge {
+    position: absolute; top: -4px; right: -4px;
+    width: 16px; height: 16px;
+    background: linear-gradient(135deg, #DC2626, #F87171);
+    border-radius: 50%;
+    font-size: 9px; font-weight: 700; color: #fff;
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 0 8px var(--status-danger-glow);
+    animation: pulse-danger 2s ease-in-out infinite;
+  }
+
+  /* Main */
+  .mock-main {
+    padding: var(--sp-lg);
+    background: var(--background);
+    overflow-y: auto;
+  }
+  .mock-main .page-header {
+    display: flex; justify-content: space-between; align-items: center;
+    margin-bottom: var(--sp-lg);
+  }
+  .mock-main .page-header h2 {
+    font-family: var(--font-display);
+    font-size: 22px; font-weight: 700; letter-spacing: -0.01em;
+  }
+  .mock-main .page-header .time-badge {
+    font-family: var(--font-data);
+    font-size: 12px; font-weight: 500;
+    color: var(--status-ok);
+    background: var(--status-ok-bg);
+    border: 1px solid rgba(52, 211, 153, 0.2);
+    padding: 4px 12px;
+    border-radius: var(--radius-pill);
+    display: flex; align-items: center; gap: 6px;
+  }
+  .mock-main .page-header .time-badge::before {
+    content: '';
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--status-ok);
+    animation: dot-pulse 2s ease-in-out infinite;
+  }
+
+  /* KPI */
+  .kpi-row {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: var(--sp-md);
+    margin-bottom: var(--sp-lg);
+  }
+  .kpi-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: var(--sp-md) var(--sp-lg);
+    position: relative;
+    overflow: hidden;
+    backdrop-filter: blur(12px);
+    transition: transform var(--duration-fast) var(--ease-spring), box-shadow var(--duration-fast) var(--ease-out);
+  }
+  .kpi-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+  }
+  .kpi-card::before {
+    content: '';
+    position: absolute; left: 0; top: 0; bottom: 0;
+    width: 3px;
+  }
+  .kpi-card::after {
+    content: '';
+    position: absolute; top: 0; right: 0;
+    width: 100px; height: 100px;
+    border-radius: 50%;
+    filter: blur(40px);
+    opacity: 0.15;
+    pointer-events: none;
+  }
+  .kpi-card.ok::before { background: var(--primary-gradient); }
+  .kpi-card.ok::after { background: var(--status-ok); }
+  .kpi-card.warn::before { background: linear-gradient(180deg, #D97706, #FBBF24); }
+  .kpi-card.warn::after { background: var(--status-warn); }
+  .kpi-card.danger::before { background: linear-gradient(180deg, #DC2626, #F87171); }
+  .kpi-card.danger::after { background: var(--status-danger); }
+  .kpi-card .kpi-label {
+    font-size: 11px; font-weight: 700; color: var(--text-muted);
+    text-transform: uppercase; letter-spacing: 0.06em;
+    margin-bottom: var(--sp-xs);
+    position: relative;
+  }
+  .kpi-card .kpi-value {
+    font-family: var(--font-data);
+    font-size: 30px; font-weight: 600;
+    color: var(--text-primary);
+    line-height: 1.1;
+    position: relative;
+  }
+  .kpi-card .kpi-sub {
+    font-size: 12px; color: var(--text-muted);
+    margin-top: var(--sp-xs);
+    position: relative;
+  }
+
+  /* Data table */
+  .data-table-container {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    backdrop-filter: blur(12px);
+  }
+  .table-header {
+    padding: var(--sp-md) var(--sp-lg);
+    border-bottom: 1px solid var(--border);
+    display: flex; justify-content: space-between; align-items: center;
+  }
+  .table-header h3 {
+    font-family: var(--font-display);
+    font-size: 15px; font-weight: 700;
+  }
+
+  table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  thead th {
+    text-align: left;
+    padding: 10px var(--sp-md);
+    font-size: 10px; font-weight: 700;
+    text-transform: uppercase; letter-spacing: 0.08em;
+    color: var(--text-muted);
+    background: var(--background-secondary);
+    border-bottom: 1px solid var(--border);
+  }
+  tbody td {
+    padding: 10px var(--sp-md);
+    border-bottom: 1px solid var(--border-subtle);
+  }
+  tbody tr {
+    transition: background var(--duration-fast) var(--ease-out);
+  }
+  tbody tr:hover { background: var(--surface-hover); }
+  .td-data {
+    font-family: var(--font-data);
+    font-size: 12px;
+    color: var(--text-secondary);
+  }
+  .td-status {
+    display: inline-flex; align-items: center; gap: 6px;
+    font-size: 11px; font-weight: 700;
+    padding: 3px 10px;
+    border-radius: var(--radius-pill);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+  .td-status::before {
+    content: '';
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: currentColor;
+  }
+  .td-status.ok { background: var(--status-ok-bg); color: var(--status-ok); box-shadow: 0 0 8px var(--status-ok-glow); }
+  .td-status.warn { background: var(--status-warn-bg); color: var(--status-warn); box-shadow: 0 0 8px var(--status-warn-glow); }
+  .td-status.danger { background: var(--status-danger-bg); color: var(--status-danger); box-shadow: 0 0 8px var(--status-danger-glow); }
+
+  /* ========== Spacing & Radius ========== */
+  .spacing-demo { display: flex; flex-wrap: wrap; gap: var(--sp-md); align-items: flex-end; }
+  .spacing-block { display: flex; flex-direction: column; align-items: center; gap: var(--sp-xs); }
+  .spacing-visual {
+    background: var(--primary-gradient-subtle);
+    border: 1px solid rgba(16, 185, 129, 0.3);
+    border-radius: 3px;
+    width: 48px;
+  }
+  .spacing-label {
+    font-family: var(--font-data);
+    font-size: 10px; color: var(--text-muted); text-align: center;
+  }
+  .radius-demo { display: flex; gap: var(--sp-lg); align-items: center; flex-wrap: wrap; }
+  .radius-sample {
+    width: 80px; height: 56px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: center;
+    transition: border-color var(--duration-fast) var(--ease-out);
+  }
+  .radius-sample:hover { border-color: var(--primary); }
+  .radius-sample span {
+    font-family: var(--font-data);
+    font-size: 11px; color: var(--text-muted);
+  }
+
+  hr.divider {
+    border: none;
+    border-top: 1px solid var(--border);
+    margin: var(--sp-2xl) 0;
+  }
+
+  @media (max-width: 900px) {
+    .mockup-shell { grid-template-columns: 1fr; }
+    .mock-sidebar { display: none; }
+    .kpi-row { grid-template-columns: repeat(2, 1fr); }
+    .traffic-demo { grid-template-columns: 1fr; }
+    .hero h2 { font-size: 36px; }
+  }
+</style>
+</head>
+<body>
+
+<header class="preview-header">
+  <div class="preview-brand">
+    <div class="logo-mark">F</div>
+    <h1>FoodSafe ERP</h1>
+    <span class="version">v2.0</span>
+  </div>
+  <div class="theme-toggle">
+    <button onclick="setTheme('light')">Light</button>
+    <button class="active" onclick="setTheme('dark')">Dark</button>
+  </div>
+</header>
+
+<div class="content">
+
+  <!-- Hero -->
+  <section class="hero">
+    <div class="tagline">Design System</div>
+    <h2>資料狀態就是設計</h2>
+    <p>綠色是合規。紅色是警報。等寬是精確。每個視覺決策都有功能理由。</p>
+  </section>
+
+  <!-- Typography -->
+  <section>
+    <div class="section-title">Typography</div>
+    <div class="type-specimen">
+      <div class="type-row">
+        <div class="type-label">Display / 52px<br>Jakarta Sans, 800</div>
+        <div class="type-display">生產總覽儀表板</div>
+      </div>
+      <div class="type-row">
+        <div class="type-label">H1 / 36px<br>Jakarta Sans, 700</div>
+        <div class="type-h1">今日排程與品質追蹤</div>
+      </div>
+      <div class="type-row">
+        <div class="type-label">H2 / 24px<br>Jakarta Sans, 700</div>
+        <div class="type-h2">庫存管理 — 冷藏倉 A 區</div>
+      </div>
+      <div class="type-row">
+        <div class="type-label">H3 / 18px<br>Jakarta Sans, 600</div>
+        <div class="type-h3">HACCP 檢查點紀錄</div>
+      </div>
+      <div class="type-row">
+        <div class="type-label">Body / 15px<br>Jakarta Sans, 400</div>
+        <div class="type-body">本批次已通過金屬檢測及微生物檢驗，符合 ISO 22000 食品安全管理系統要求。出貨核准已由品管主管簽核。</div>
+      </div>
+      <div class="type-row">
+        <div class="type-label">Data / 14px<br>JetBrains Mono</div>
+        <div class="type-data">LOT-20260410-A003 &nbsp; 25.4kg &nbsp; 4.2°C &nbsp; pH 6.8 &nbsp; 2026-04-17T23:59</div>
+      </div>
+      <div class="type-row">
+        <div class="type-label">Data Large / 40px<br>JetBrains Mono, 600</div>
+        <div class="type-data-lg">12,847<span style="font-size:18px;opacity:0.5;margin-left:4px;-webkit-text-fill-color:var(--text-muted)">kg</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Colors -->
+  <section>
+    <div class="section-title">Color Palette</div>
+    <div class="color-section-label">Primary</div>
+    <div class="color-grid">
+      <div class="color-swatch"><div class="color-swatch-fill gradient"></div><div class="color-swatch-info"><div class="color-swatch-name">Primary Gradient</div><div class="color-swatch-hex">#059669 → #0D9488</div></div></div>
+      <div class="color-swatch"><div class="color-swatch-fill" style="background:#10B981"></div><div class="color-swatch-info"><div class="color-swatch-name">Primary</div><div class="color-swatch-hex">#10B981</div></div></div>
+      <div class="color-swatch"><div class="color-swatch-fill" style="background:#059669"></div><div class="color-swatch-info"><div class="color-swatch-name">Primary Dark</div><div class="color-swatch-hex">#059669</div></div></div>
+      <div class="color-swatch"><div class="color-swatch-fill" style="background:#34D399"></div><div class="color-swatch-info"><div class="color-swatch-name">Primary Light</div><div class="color-swatch-hex">#34D399</div></div></div>
+    </div>
+    <div class="color-section-label">Traffic Light</div>
+    <div class="color-grid">
+      <div class="color-swatch"><div class="color-swatch-fill" style="background:#34D399"></div><div class="color-swatch-info"><div class="color-swatch-name">OK / 合規</div><div class="color-swatch-hex">#34D399</div></div></div>
+      <div class="color-swatch"><div class="color-swatch-fill" style="background:#FBBF24"></div><div class="color-swatch-info"><div class="color-swatch-name">Warning / 注意</div><div class="color-swatch-hex">#FBBF24</div></div></div>
+      <div class="color-swatch"><div class="color-swatch-fill" style="background:#F87171"></div><div class="color-swatch-info"><div class="color-swatch-name">Danger / 異常</div><div class="color-swatch-hex">#F87171</div></div></div>
+      <div class="color-swatch"><div class="color-swatch-fill" style="background:#60A5FA"></div><div class="color-swatch-info"><div class="color-swatch-name">Info / 資訊</div><div class="color-swatch-hex">#60A5FA</div></div></div>
+    </div>
+    <div class="color-section-label">Warm Neutrals (Stone)</div>
+    <div class="color-grid">
+      <div class="color-swatch"><div class="color-swatch-fill" style="background:#0F0E0D"></div><div class="color-swatch-info"><div class="color-swatch-name">Gray 100</div><div class="color-swatch-hex">#0F0E0D</div></div></div>
+      <div class="color-swatch"><div class="color-swatch-fill" style="background:#1C1B19"></div><div class="color-swatch-info"><div class="color-swatch-name">Gray 90</div><div class="color-swatch-hex">#1C1B19</div></div></div>
+      <div class="color-swatch"><div class="color-swatch-fill" style="background:#2E2C2A"></div><div class="color-swatch-info"><div class="color-swatch-name">Gray 80</div><div class="color-swatch-hex">#2E2C2A</div></div></div>
+      <div class="color-swatch"><div class="color-swatch-fill" style="background:#57534E"></div><div class="color-swatch-info"><div class="color-swatch-name">Gray 60</div><div class="color-swatch-hex">#57534E</div></div></div>
+      <div class="color-swatch"><div class="color-swatch-fill" style="background:#A8A29E"></div><div class="color-swatch-info"><div class="color-swatch-name">Gray 40</div><div class="color-swatch-hex">#A8A29E</div></div></div>
+      <div class="color-swatch"><div class="color-swatch-fill" style="background:#D6D3D1"></div><div class="color-swatch-info"><div class="color-swatch-name">Gray 30</div><div class="color-swatch-hex">#D6D3D1</div></div></div>
+      <div class="color-swatch"><div class="color-swatch-fill" style="background:#F5F5F4;border:1px solid #E7E5E3"></div><div class="color-swatch-info"><div class="color-swatch-name">Gray 10</div><div class="color-swatch-hex">#F5F5F4</div></div></div>
+    </div>
+  </section>
+
+  <!-- Traffic Light -->
+  <section>
+    <div class="section-title">Traffic Light — 資料狀態即時視覺化</div>
+    <div class="traffic-demo">
+      <div class="traffic-card ok">
+        <div style="display:flex;align-items:center;gap:6px"><span class="status-dot"></span><span class="label">合規</span></div>
+        <div class="value">4.2°C</div>
+        <div class="desc">冷藏倉 A 區<br>允許: 0°C — 7°C</div>
+      </div>
+      <div class="traffic-card warn">
+        <div style="display:flex;align-items:center;gap:6px"><span class="status-dot"></span><span class="label">注意</span></div>
+        <div class="value">6.8°C</div>
+        <div class="desc">冷藏倉 B 區<br>接近上限 7°C</div>
+      </div>
+      <div class="traffic-card danger">
+        <div style="display:flex;align-items:center;gap:6px"><span class="status-dot"></span><span class="label">異常</span></div>
+        <div class="value">9.1°C</div>
+        <div class="desc">冷藏倉 C 區<br>超出允許範圍</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Components -->
+  <section>
+    <div class="section-title">Components</div>
+    <div class="color-section-label">Buttons</div>
+    <div class="component-grid" style="margin-bottom:var(--sp-lg)">
+      <button class="btn btn-primary">&#x2713; 確認入庫</button>
+      <button class="btn btn-secondary">取消</button>
+      <button class="btn btn-danger">&#x26A0; 報廢處理</button>
+      <button class="btn btn-warning">&#x23F8; 暫停產線</button>
+      <button class="btn btn-ghost">查看明細 &rarr;</button>
+    </div>
+    <div class="color-section-label">Form Inputs</div>
+    <div class="component-grid">
+      <div class="form-group">
+        <label class="form-label">批次號碼</label>
+        <input class="form-input data-input" type="text" value="LOT-20260410-A003" readonly>
+        <span class="form-helper">系統自動產生</span>
+      </div>
+      <div class="form-group">
+        <label class="form-label">入庫重量 (kg)</label>
+        <input class="form-input data-input" type="text" placeholder="0.00">
+      </div>
+      <div class="form-group">
+        <label class="form-label">備註</label>
+        <input class="form-input" type="text" placeholder="輸入備註...">
+      </div>
+    </div>
+  </section>
+
+  <!-- Spacing -->
+  <section>
+    <div class="section-title">Spacing (8px base)</div>
+    <div class="spacing-demo">
+      <div class="spacing-block"><div class="spacing-visual" style="height:2px"></div><div class="spacing-label">2xs<br>2</div></div>
+      <div class="spacing-block"><div class="spacing-visual" style="height:4px"></div><div class="spacing-label">xs<br>4</div></div>
+      <div class="spacing-block"><div class="spacing-visual" style="height:8px"></div><div class="spacing-label">sm<br>8</div></div>
+      <div class="spacing-block"><div class="spacing-visual" style="height:16px"></div><div class="spacing-label">md<br>16</div></div>
+      <div class="spacing-block"><div class="spacing-visual" style="height:24px"></div><div class="spacing-label">lg<br>24</div></div>
+      <div class="spacing-block"><div class="spacing-visual" style="height:32px"></div><div class="spacing-label">xl<br>32</div></div>
+      <div class="spacing-block"><div class="spacing-visual" style="height:48px"></div><div class="spacing-label">2xl<br>48</div></div>
+      <div class="spacing-block"><div class="spacing-visual" style="height:64px"></div><div class="spacing-label">3xl<br>64</div></div>
+    </div>
+  </section>
+
+  <!-- Radius -->
+  <section>
+    <div class="section-title">Border Radius</div>
+    <div class="radius-demo">
+      <div><div class="radius-sample" style="border-radius:6px"><span>6 sm</span></div></div>
+      <div><div class="radius-sample" style="border-radius:10px"><span>10 md</span></div></div>
+      <div><div class="radius-sample" style="border-radius:14px"><span>14 lg</span></div></div>
+      <div><div class="radius-sample" style="border-radius:20px"><span>20 xl</span></div></div>
+      <div><div class="radius-sample" style="border-radius:9999px;width:100px"><span>pill</span></div></div>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- Realistic Dashboard Mockup -->
+  <section>
+    <div class="section-title">Mockup — 生產儀表板</div>
+    <div class="mockup-container">
+      <div class="mockup-shell">
+        <nav class="mock-sidebar">
+          <div class="logo">
+            <div class="icon">F</div>
+            <span>FoodSafe</span>
+          </div>
+          <div class="nav-section">生產</div>
+          <div class="nav-item active"><span class="nav-icon">&#9632;</span>生產總覽</div>
+          <div class="nav-item"><span class="nav-icon">&#9711;</span>排程管理</div>
+          <div class="nav-item"><span class="nav-icon">&#9711;</span>品質追蹤</div>
+          <div class="nav-section">倉儲</div>
+          <div class="nav-item"><span class="nav-icon">&#9711;</span>庫存管理</div>
+          <div class="nav-item"><span class="nav-icon">&#9711;</span>進出貨</div>
+          <div class="nav-item"><span class="nav-icon">&#9711;</span>批次追溯</div>
+          <div class="nav-section">品管</div>
+          <div class="nav-item"><span class="nav-icon">&#9711;</span>HACCP 紀錄</div>
+          <div class="nav-item"><span class="nav-icon">&#9711;</span>檢驗報告</div>
+          <div class="nav-section">系統</div>
+          <div class="nav-item"><span class="nav-icon">&#9711;</span>人員管理</div>
+          <div class="nav-item"><span class="nav-icon">&#9711;</span>系統設定</div>
+        </nav>
+
+        <div class="mock-topbar">
+          <div class="breadcrumb">生產 / <strong>生產總覽</strong></div>
+          <div class="topbar-actions">
+            <button class="btn btn-primary" style="font-size:12px;padding:6px 14px">+ 新增工單</button>
+            <div class="notif">&#128276;<div class="notif-badge">3</div></div>
+            <div class="avatar">王</div>
+          </div>
+        </div>
+
+        <div class="mock-main">
+          <div class="page-header">
+            <h2>生產總覽</h2>
+            <div class="time-badge">即時更新 10:28</div>
+          </div>
+
+          <div class="kpi-row">
+            <div class="kpi-card ok">
+              <div class="kpi-label">今日產量</div>
+              <div class="kpi-value">12,847</div>
+              <div class="kpi-sub">kg · 達成率 96.2%</div>
+            </div>
+            <div class="kpi-card ok">
+              <div class="kpi-label">良品率</div>
+              <div class="kpi-value">99.3%</div>
+              <div class="kpi-sub">不良品 89 kg</div>
+            </div>
+            <div class="kpi-card warn">
+              <div class="kpi-label">設備稼動率</div>
+              <div class="kpi-value">78.4%</div>
+              <div class="kpi-sub">L-02 停機中</div>
+            </div>
+            <div class="kpi-card danger">
+              <div class="kpi-label">待處理異常</div>
+              <div class="kpi-value">3</div>
+              <div class="kpi-sub">溫度·品質·設備</div>
+            </div>
+          </div>
+
+          <div class="data-table-container">
+            <div class="table-header">
+              <h3>今日批次紀錄</h3>
+              <div style="display:flex;gap:8px">
+                <button class="btn btn-secondary" style="font-size:12px;padding:5px 12px">匯出</button>
+                <button class="btn btn-ghost" style="font-size:12px;padding:5px 12px">篩選</button>
+              </div>
+            </div>
+            <table>
+              <thead>
+                <tr>
+                  <th>批次號碼</th><th>產品</th><th>產線</th>
+                  <th style="text-align:right">數量</th><th>溫度</th><th>pH</th>
+                  <th>狀態</th><th>時間</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td class="td-data">LOT-20260410-A001</td><td>鮮奶吐司</td>
+                  <td class="td-data">L-01</td><td class="td-data" style="text-align:right">2,450 kg</td>
+                  <td class="td-data">4.2°C</td><td class="td-data">6.8</td>
+                  <td><span class="td-status ok">合規</span></td><td class="td-data">08:32</td>
+                </tr>
+                <tr>
+                  <td class="td-data">LOT-20260410-A002</td><td>全麥餐包</td>
+                  <td class="td-data">L-01</td><td class="td-data" style="text-align:right">1,820 kg</td>
+                  <td class="td-data">4.5°C</td><td class="td-data">6.5</td>
+                  <td><span class="td-status ok">合規</span></td><td class="td-data">09:15</td>
+                </tr>
+                <tr>
+                  <td class="td-data">LOT-20260410-B001</td><td>紅豆麻糬</td>
+                  <td class="td-data">L-02</td><td class="td-data" style="text-align:right">980 kg</td>
+                  <td class="td-data">6.8°C</td><td class="td-data">5.9</td>
+                  <td><span class="td-status warn">注意</span></td><td class="td-data">09:47</td>
+                </tr>
+                <tr>
+                  <td class="td-data">LOT-20260410-C001</td><td>鮮奶油蛋糕</td>
+                  <td class="td-data">L-03</td><td class="td-data" style="text-align:right">640 kg</td>
+                  <td class="td-data">9.1°C</td><td class="td-data">6.2</td>
+                  <td><span class="td-status danger">異常</span></td><td class="td-data">10:03</td>
+                </tr>
+                <tr>
+                  <td class="td-data">LOT-20260410-A003</td><td>起司貝果</td>
+                  <td class="td-data">L-01</td><td class="td-data" style="text-align:right">1,560 kg</td>
+                  <td class="td-data">3.8°C</td><td class="td-data">6.7</td>
+                  <td><span class="td-status ok">合規</span></td><td class="td-data">10:28</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<script>
+function setTheme(t) {
+  document.documentElement.setAttribute('data-theme', t);
+  document.querySelectorAll('.theme-toggle button').forEach(b => {
+    b.classList.toggle('active', b.textContent.toLowerCase() === t);
+  });
+}
+</script>
+</body>
+</html>
