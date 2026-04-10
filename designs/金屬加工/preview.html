@@ -1,0 +1,1549 @@
+<!DOCTYPE html>
+<html lang="zh-TW" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MetalForge ERP — Design System Preview</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:ital,opsz,wght@0,14..32,300;0,14..32,400;0,14..32,500;0,14..32,600;0,14..32,700;1,14..32,400&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Geist+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  /* ========== CSS CUSTOM PROPERTIES ========== */
+  :root {
+    --bg-deep: #0B0C10;
+    --bg-surface-1: #12141A;
+    --bg-surface-2: #1A1D26;
+    --bg-surface-3: #232733;
+    --bg-surface-4: #2C3140;
+
+    --accent-primary: #FF6B2C;
+    --accent-primary-dim: rgba(255, 107, 44, 0.15);
+    --accent-primary-glow: rgba(255, 107, 44, 0.4);
+    --accent-secondary: #64748B;
+    --accent-secondary-dim: rgba(100, 116, 139, 0.15);
+
+    --text-primary: #E8ECF4;
+    --text-secondary: #8891A0;
+    --text-muted: #4A5060;
+    --text-on-accent: #0B0C10;
+
+    --success: #22C55E;
+    --success-dim: rgba(34, 197, 94, 0.15);
+    --success-glow: rgba(34, 197, 94, 0.4);
+    --warning: #EAB308;
+    --warning-dim: rgba(234, 179, 8, 0.15);
+    --warning-glow: rgba(234, 179, 8, 0.4);
+    --error: #EF4444;
+    --error-dim: rgba(239, 68, 68, 0.15);
+    --error-glow: rgba(239, 68, 68, 0.4);
+    --info: #3B82F6;
+    --info-dim: rgba(59, 130, 246, 0.15);
+
+    --border-subtle: rgba(255, 255, 255, 0.06);
+    --border-standard: rgba(255, 255, 255, 0.08);
+    --border-emphasis: rgba(255, 255, 255, 0.12);
+    --border-accent: rgba(255, 107, 44, 0.2);
+
+    --radius-sm: 4px;
+    --radius-md: 8px;
+    --radius-lg: 12px;
+    --radius-xl: 16px;
+    --radius-pill: 9999px;
+
+    --font-display: 'Space Grotesk', system-ui, -apple-system, sans-serif;
+    --font-body: 'Inter', system-ui, -apple-system, sans-serif;
+    --font-mono: 'Geist Mono', ui-monospace, 'SF Mono', 'Menlo', monospace;
+
+    --gradient-forge: linear-gradient(135deg, #FF6B2C, #FF8F5C);
+    --gradient-steel: linear-gradient(135deg, #64748B, #94A3B8);
+    --gradient-heat: linear-gradient(135deg, #FF6B2C, #EAB308);
+
+    --shadow-card: 0 2px 8px rgba(0, 0, 0, 0.4), 0 0 1px rgba(255, 255, 255, 0.05);
+    --shadow-elevated: 0 8px 32px rgba(0, 0, 0, 0.5), 0 0 1px rgba(255, 255, 255, 0.06);
+    --shadow-glow-forge: 0 0 20px rgba(255, 107, 44, 0.15), 0 0 60px rgba(255, 107, 44, 0.05);
+    --shadow-glow-steel: 0 0 20px rgba(100, 116, 139, 0.15);
+  }
+
+  /* ========== LIGHT MODE ========== */
+  [data-theme="light"] {
+    --bg-deep: #F1F2F6;
+    --bg-surface-1: #FFFFFF;
+    --bg-surface-2: #F7F8FA;
+    --bg-surface-3: #EDEFF3;
+    --bg-surface-4: #E4E7EC;
+
+    --accent-primary: #E05A1B;
+    --accent-primary-dim: rgba(224, 90, 27, 0.1);
+    --accent-primary-glow: rgba(224, 90, 27, 0.25);
+    --accent-secondary: #475569;
+    --accent-secondary-dim: rgba(71, 85, 105, 0.1);
+
+    --text-primary: #1A1D26;
+    --text-secondary: #5A6270;
+    --text-muted: #9CA3AD;
+    --text-on-accent: #FFFFFF;
+
+    --success: #16A34A;
+    --success-dim: rgba(22, 163, 74, 0.1);
+    --success-glow: rgba(22, 163, 74, 0.2);
+    --warning: #CA8A04;
+    --warning-dim: rgba(202, 138, 4, 0.1);
+    --warning-glow: rgba(202, 138, 4, 0.2);
+    --error: #DC2626;
+    --error-dim: rgba(220, 38, 38, 0.1);
+    --error-glow: rgba(220, 38, 38, 0.2);
+    --info: #2563EB;
+    --info-dim: rgba(37, 99, 235, 0.1);
+
+    --border-subtle: rgba(0, 0, 0, 0.06);
+    --border-standard: rgba(0, 0, 0, 0.1);
+    --border-emphasis: rgba(0, 0, 0, 0.15);
+    --border-accent: rgba(224, 90, 27, 0.2);
+
+    --shadow-glow-forge: 0 0 20px rgba(224, 90, 27, 0.1);
+    --shadow-glow-steel: 0 0 20px rgba(71, 85, 105, 0.1);
+    --shadow-card: 0 1px 3px rgba(0, 0, 0, 0.08), 0 0 1px rgba(0, 0, 0, 0.05);
+    --shadow-elevated: 0 4px 16px rgba(0, 0, 0, 0.1), 0 0 1px rgba(0, 0, 0, 0.06);
+  }
+
+  /* ========== RESET & BASE ========== */
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: var(--font-body);
+    font-size: 14px;
+    line-height: 1.5;
+    color: var(--text-primary);
+    background: var(--bg-deep);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  /* ========== THEME TOGGLE ========== */
+  .theme-toggle {
+    position: fixed;
+    top: 16px;
+    right: 16px;
+    z-index: 1000;
+    background: var(--bg-surface-2);
+    border: 1px solid var(--border-standard);
+    border-radius: var(--radius-pill);
+    padding: 8px 16px;
+    color: var(--text-primary);
+    font-family: var(--font-body);
+    font-size: 12px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .theme-toggle:hover { border-color: var(--accent-primary); box-shadow: var(--shadow-glow-forge); }
+
+  /* ========== PREVIEW LAYOUT ========== */
+  .preview-wrapper {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 80px 32px 64px;
+  }
+
+  .hero {
+    text-align: center;
+    margin-bottom: 80px;
+  }
+  .hero-label {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--accent-primary);
+    margin-bottom: 16px;
+  }
+  .hero h1 {
+    font-family: var(--font-display);
+    font-size: 56px;
+    font-weight: 700;
+    line-height: 1.05;
+    letter-spacing: -1.5px;
+    color: var(--text-primary);
+    margin-bottom: 16px;
+  }
+  .hero h1 span {
+    background: var(--gradient-forge);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .hero p {
+    font-size: 18px;
+    color: var(--text-secondary);
+    max-width: 560px;
+    margin: 0 auto;
+    line-height: 1.6;
+  }
+
+  /* ========== SECTION ========== */
+  .section {
+    margin-bottom: 64px;
+  }
+  .section-title {
+    font-family: var(--font-display);
+    font-size: 24px;
+    font-weight: 600;
+    letter-spacing: -0.5px;
+    color: var(--text-primary);
+    margin-bottom: 8px;
+  }
+  .section-desc {
+    font-size: 14px;
+    color: var(--text-secondary);
+    margin-bottom: 32px;
+  }
+
+  /* ========== COLOR SWATCHES ========== */
+  .swatches {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    gap: 12px;
+  }
+  .swatch {
+    background: var(--bg-surface-2);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    transition: transform 0.15s ease;
+  }
+  .swatch:hover { transform: translateY(-2px); }
+  .swatch-color {
+    height: 64px;
+  }
+  .swatch-info {
+    padding: 10px 12px;
+  }
+  .swatch-name {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 2px;
+  }
+  .swatch-hex {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--text-muted);
+  }
+
+  /* ========== TYPOGRAPHY SPECIMEN ========== */
+  .type-specimen {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+  .type-row {
+    display: grid;
+    grid-template-columns: 200px 1fr;
+    align-items: baseline;
+    gap: 24px;
+    padding: 16px 0;
+    border-bottom: 1px solid var(--border-subtle);
+  }
+  .type-meta {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--text-muted);
+    line-height: 1.6;
+  }
+  .type-meta strong {
+    color: var(--text-secondary);
+    font-weight: 500;
+  }
+
+  /* ========== COMPONENT SHOWCASE ========== */
+  .components-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 24px;
+  }
+  @media (max-width: 768px) {
+    .components-grid { grid-template-columns: 1fr; }
+    .type-row { grid-template-columns: 1fr; }
+  }
+
+  .component-card {
+    background: var(--bg-surface-1);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-lg);
+    padding: 24px;
+  }
+  .component-label {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: 16px;
+  }
+
+  /* Buttons */
+  .btn-row { display: flex; gap: 12px; flex-wrap: wrap; align-items: center; }
+  .btn {
+    font-family: var(--font-body);
+    font-size: 13px;
+    font-weight: 600;
+    padding: 8px 20px;
+    border-radius: var(--radius-md);
+    border: none;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .btn-primary {
+    background: var(--accent-primary);
+    color: var(--text-on-accent);
+    box-shadow: 0 0 12px var(--accent-primary-dim);
+  }
+  .btn-primary:hover {
+    box-shadow: 0 0 20px var(--accent-primary-glow);
+    transform: translateY(-1px);
+  }
+  .btn-secondary {
+    background: transparent;
+    color: var(--accent-primary);
+    border: 1px solid var(--border-standard);
+  }
+  .btn-secondary:hover {
+    border-color: var(--accent-primary);
+    background: var(--accent-primary-dim);
+  }
+  .btn-ghost {
+    background: transparent;
+    color: var(--text-secondary);
+    border: 1px solid var(--border-standard);
+  }
+  .btn-ghost:hover {
+    color: var(--text-primary);
+    border-color: var(--border-emphasis);
+    background: var(--bg-surface-3);
+  }
+  .btn-danger {
+    background: var(--error-dim);
+    color: var(--error);
+    border: 1px solid rgba(239, 68, 68, 0.2);
+  }
+  .btn-danger:hover { box-shadow: 0 0 12px var(--error-glow); }
+
+  /* Inputs */
+  .input-group { display: flex; flex-direction: column; gap: 6px; }
+  .input-label {
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--text-secondary);
+  }
+  .input {
+    background: var(--bg-surface-2);
+    border: 1px solid var(--border-standard);
+    border-radius: var(--radius-sm);
+    padding: 8px 12px;
+    color: var(--text-primary);
+    font-family: var(--font-body);
+    font-size: 13px;
+    outline: none;
+    transition: border-color 0.15s ease, box-shadow 0.15s ease;
+    width: 100%;
+  }
+  .input:focus {
+    border-color: var(--accent-primary);
+    box-shadow: 0 0 0 3px var(--accent-primary-dim);
+  }
+  .input::placeholder { color: var(--text-muted); }
+
+  /* Badges */
+  .badge-row { display: flex; gap: 8px; flex-wrap: wrap; }
+  .badge {
+    font-family: var(--font-body);
+    font-size: 11px;
+    font-weight: 600;
+    padding: 3px 10px;
+    border-radius: var(--radius-pill);
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+  }
+  .badge::before {
+    content: '';
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+  .badge-success {
+    background: var(--success-dim);
+    color: var(--success);
+  }
+  .badge-success::before {
+    background: var(--success);
+    box-shadow: 0 0 6px var(--success-glow);
+  }
+  .badge-warning {
+    background: var(--warning-dim);
+    color: var(--warning);
+  }
+  .badge-warning::before {
+    background: var(--warning);
+    box-shadow: 0 0 6px var(--warning-glow);
+  }
+  .badge-error {
+    background: var(--error-dim);
+    color: var(--error);
+  }
+  .badge-error::before {
+    background: var(--error);
+    box-shadow: 0 0 6px var(--error-glow);
+    animation: alarm-pulse 1.5s ease-in-out infinite;
+  }
+  .badge-accent {
+    background: var(--accent-primary-dim);
+    color: var(--accent-primary);
+  }
+  .badge-accent::before {
+    background: var(--accent-primary);
+    box-shadow: 0 0 6px var(--accent-primary-glow);
+    animation: pulse 2s ease-in-out infinite;
+  }
+  .badge-info {
+    background: var(--accent-secondary-dim);
+    color: var(--accent-secondary);
+  }
+  .badge-info::before {
+    background: var(--accent-secondary);
+    box-shadow: 0 0 4px var(--shadow-glow-steel);
+  }
+
+  /* ========== ERP DASHBOARD MOCKUP ========== */
+  .mockup-container {
+    background: var(--bg-deep);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-xl);
+    overflow: hidden;
+    box-shadow: var(--shadow-elevated);
+  }
+
+  .erp-layout {
+    display: grid;
+    grid-template-columns: 220px 1fr;
+    grid-template-rows: 56px 1fr;
+    height: 720px;
+  }
+
+  /* Sidebar */
+  .sidebar {
+    grid-row: 1 / -1;
+    background: var(--bg-surface-1);
+    border-right: 1px solid var(--border-subtle);
+    padding: 16px 0;
+    display: flex;
+    flex-direction: column;
+  }
+  .sidebar-brand {
+    padding: 0 16px 16px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    border-bottom: 1px solid var(--border-subtle);
+    margin-bottom: 8px;
+  }
+  .sidebar-logo {
+    width: 32px;
+    height: 32px;
+    background: var(--gradient-forge);
+    border-radius: var(--radius-md);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 14px;
+    color: #fff;
+    box-shadow: 0 0 12px var(--accent-primary-dim);
+  }
+  .sidebar-brand-text {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 15px;
+    color: var(--text-primary);
+  }
+  .sidebar-brand-sub {
+    font-size: 10px;
+    color: var(--text-muted);
+    font-weight: 400;
+  }
+
+  .sidebar-nav { flex: 1; padding: 8px; }
+  .nav-section-label {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    padding: 16px 12px 6px;
+  }
+  .nav-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 12px;
+    border-radius: var(--radius-md);
+    color: var(--text-secondary);
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.12s ease;
+    position: relative;
+  }
+  .nav-item:hover {
+    background: var(--bg-surface-2);
+    color: var(--text-primary);
+  }
+  .nav-item.active {
+    background: var(--accent-primary-dim);
+    color: var(--accent-primary);
+  }
+  .nav-item.active::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 6px;
+    bottom: 6px;
+    width: 3px;
+    background: var(--accent-primary);
+    border-radius: 0 2px 2px 0;
+    box-shadow: 0 0 8px var(--accent-primary-glow);
+  }
+  .nav-icon {
+    width: 18px;
+    height: 18px;
+    opacity: 0.7;
+    flex-shrink: 0;
+  }
+  .nav-item.active .nav-icon { opacity: 1; }
+  .nav-badge-count {
+    margin-left: auto;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    font-weight: 600;
+    background: var(--error-dim);
+    color: var(--error);
+    padding: 1px 6px;
+    border-radius: var(--radius-pill);
+  }
+
+  /* Header */
+  .header {
+    background: var(--bg-surface-1);
+    border-bottom: 1px solid var(--border-subtle);
+    display: flex;
+    align-items: center;
+    padding: 0 24px;
+    gap: 16px;
+  }
+  .header-search {
+    flex: 1;
+    max-width: 400px;
+    position: relative;
+  }
+  .header-search input {
+    background: var(--bg-surface-2);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-md);
+    padding: 6px 12px 6px 32px;
+    color: var(--text-primary);
+    font-family: var(--font-body);
+    font-size: 12px;
+    width: 100%;
+    outline: none;
+    transition: border-color 0.15s ease;
+  }
+  .header-search input:focus { border-color: var(--accent-primary); }
+  .header-search input::placeholder { color: var(--text-muted); }
+  .header-search-icon {
+    position: absolute;
+    left: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--text-muted);
+    font-size: 13px;
+  }
+  .header-shortcut {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--text-muted);
+    background: var(--bg-surface-3);
+    padding: 2px 6px;
+    border-radius: 3px;
+    border: 1px solid var(--border-subtle);
+    position: absolute;
+    right: 8px;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+  .header-right {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .header-icon-btn {
+    width: 32px;
+    height: 32px;
+    border-radius: var(--radius-md);
+    border: 1px solid var(--border-subtle);
+    background: transparent;
+    color: var(--text-secondary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    position: relative;
+    transition: all 0.12s ease;
+  }
+  .header-icon-btn:hover {
+    background: var(--bg-surface-2);
+    color: var(--text-primary);
+  }
+  .notification-dot {
+    position: absolute;
+    top: 4px;
+    right: 4px;
+    width: 7px;
+    height: 7px;
+    background: var(--error);
+    border-radius: 50%;
+    box-shadow: 0 0 6px var(--error-glow);
+  }
+  .avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: var(--gradient-forge);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 12px;
+    color: #fff;
+  }
+
+  /* Main content */
+  .main-content {
+    padding: 24px;
+    overflow-y: auto;
+    background: var(--bg-deep);
+  }
+  .main-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 24px;
+  }
+  .main-title {
+    font-family: var(--font-display);
+    font-size: 22px;
+    font-weight: 700;
+    letter-spacing: -0.5px;
+  }
+  .main-subtitle {
+    font-size: 13px;
+    color: var(--text-secondary);
+    margin-top: 2px;
+  }
+
+  /* KPI Cards */
+  .kpi-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    margin-bottom: 24px;
+  }
+  .kpi-card {
+    background: var(--bg-surface-1);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-lg);
+    padding: 20px;
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
+  }
+  .kpi-card:hover {
+    transform: translateY(-1px);
+    border-color: var(--border-accent);
+    box-shadow: var(--shadow-card), 0 0 20px rgba(255, 107, 44, 0.08);
+  }
+  .kpi-card::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    opacity: 0.6;
+  }
+  .kpi-card:nth-child(1)::after { background: var(--gradient-forge); }
+  .kpi-card:nth-child(2)::after { background: linear-gradient(90deg, var(--success), transparent); }
+  .kpi-card:nth-child(3)::after { background: linear-gradient(90deg, var(--warning), transparent); }
+  .kpi-card:nth-child(4)::after { background: var(--gradient-steel); }
+
+  .kpi-label {
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--text-secondary);
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .kpi-value {
+    font-family: var(--font-display);
+    font-size: 28px;
+    font-weight: 700;
+    letter-spacing: -0.5px;
+    color: var(--text-primary);
+    margin-bottom: 6px;
+  }
+  .kpi-change {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 500;
+    display: inline-flex;
+    align-items: center;
+    gap: 3px;
+    padding: 2px 6px;
+    border-radius: var(--radius-sm);
+  }
+  .kpi-change.up { background: var(--success-dim); color: var(--success); }
+  .kpi-change.down { background: var(--error-dim); color: var(--error); }
+
+  /* Data Table */
+  .table-container {
+    background: var(--bg-surface-1);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+  }
+  .table-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 20px;
+    border-bottom: 1px solid var(--border-subtle);
+  }
+  .table-title {
+    font-family: var(--font-display);
+    font-size: 15px;
+    font-weight: 600;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  th {
+    text-align: left;
+    padding: 10px 16px;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    background: var(--bg-surface-2);
+    border-bottom: 1px solid var(--border-subtle);
+  }
+  td {
+    padding: 12px 16px;
+    font-size: 13px;
+    border-bottom: 1px solid var(--border-subtle);
+    color: var(--text-secondary);
+    transition: background 0.1s ease;
+  }
+  tr:hover td { background: var(--bg-surface-2); }
+  tr:last-child td { border-bottom: none; }
+  td.mono {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--accent-primary);
+  }
+  td.amount {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text-primary);
+    font-variant-numeric: tabular-nums;
+  }
+  .table-status {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 11px;
+    font-weight: 600;
+    padding: 3px 10px;
+    border-radius: var(--radius-pill);
+  }
+  .table-status::before {
+    content: '';
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+  .status-completed {
+    background: var(--success-dim);
+    color: var(--success);
+  }
+  .status-completed::before {
+    background: var(--success);
+    box-shadow: 0 0 6px var(--success-glow);
+  }
+  .status-running {
+    background: var(--accent-primary-dim);
+    color: var(--accent-primary);
+  }
+  .status-running::before {
+    background: var(--accent-primary);
+    box-shadow: 0 0 6px var(--accent-primary-glow);
+    animation: pulse 2s ease-in-out infinite;
+  }
+  .status-queued {
+    background: var(--warning-dim);
+    color: var(--warning);
+  }
+  .status-queued::before {
+    background: var(--warning);
+    box-shadow: 0 0 6px var(--warning-glow);
+  }
+  .status-alarm {
+    background: var(--error-dim);
+    color: var(--error);
+  }
+  .status-alarm::before {
+    background: var(--error);
+    box-shadow: 0 0 6px var(--error-glow);
+    animation: alarm-pulse 1.5s ease-in-out infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; box-shadow: 0 0 6px var(--accent-primary-glow); }
+    50% { opacity: 0.5; box-shadow: 0 0 12px var(--accent-primary-glow); }
+  }
+  @keyframes alarm-pulse {
+    0%, 100% { opacity: 1; box-shadow: 0 0 8px var(--error-glow); }
+    50% { opacity: 0.4; box-shadow: 0 0 16px var(--error-glow); }
+  }
+
+  /* ========== MACHINE STATUS PANEL ========== */
+  .machine-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    margin-top: 24px;
+  }
+  .machine-card {
+    background: var(--bg-surface-1);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-lg);
+    padding: 20px;
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.15s ease, border-color 0.15s ease;
+  }
+  .machine-card:hover {
+    transform: translateY(-1px);
+  }
+  .machine-card::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    opacity: 0.7;
+  }
+  .machine-card.running::after { background: var(--gradient-forge); }
+  .machine-card.running:hover { border-color: var(--border-accent); }
+  .machine-card.idle::after { background: var(--gradient-steel); }
+  .machine-card.alarm::after { background: linear-gradient(90deg, var(--error), transparent); }
+  .machine-card.alarm { border-color: rgba(239, 68, 68, 0.15); }
+  .machine-card.maintenance::after { background: linear-gradient(90deg, var(--warning), transparent); }
+
+  .machine-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 16px;
+  }
+  .machine-id {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-primary);
+  }
+  .machine-name {
+    font-size: 12px;
+    color: var(--text-secondary);
+    margin-top: 2px;
+  }
+  .machine-data {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+  .machine-metric {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+  .machine-metric-label {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--text-muted);
+  }
+  .machine-metric-value {
+    font-family: var(--font-mono);
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text-primary);
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* ========== FORGE GRADIENT DEMO ========== */
+  .forge-demo {
+    position: relative;
+    border-radius: var(--radius-xl);
+    overflow: hidden;
+    padding: 48px;
+    display: flex;
+    gap: 24px;
+    justify-content: center;
+    align-items: center;
+    min-height: 300px;
+  }
+  .forge-demo-bg {
+    position: absolute;
+    inset: 0;
+    background: var(--bg-deep);
+    z-index: 0;
+  }
+  .forge-demo-bg::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -20%;
+    width: 300px;
+    height: 300px;
+    background: radial-gradient(circle, var(--accent-primary-glow), transparent 70%);
+    border-radius: 50%;
+    animation: float1 8s ease-in-out infinite;
+  }
+  .forge-demo-bg::after {
+    content: '';
+    position: absolute;
+    bottom: -30%;
+    right: -10%;
+    width: 250px;
+    height: 250px;
+    background: radial-gradient(circle, rgba(234, 179, 8, 0.2), transparent 70%);
+    border-radius: 50%;
+    animation: float2 10s ease-in-out infinite;
+  }
+  @keyframes float1 {
+    0%, 100% { transform: translate(0, 0); }
+    50% { transform: translate(40px, 30px); }
+  }
+  @keyframes float2 {
+    0%, 100% { transform: translate(0, 0); }
+    50% { transform: translate(-30px, -20px); }
+  }
+  .forge-card {
+    position: relative;
+    z-index: 1;
+    background: rgba(18, 20, 26, 0.85);
+    border: 1px solid var(--border-standard);
+    border-radius: var(--radius-lg);
+    padding: 24px;
+    width: 240px;
+    overflow: hidden;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+  .forge-card::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    opacity: 0.7;
+  }
+  .forge-card:nth-child(2)::after { background: var(--gradient-forge); }
+  .forge-card:nth-child(3)::after { background: linear-gradient(90deg, var(--success), transparent); }
+  .forge-card:nth-child(4)::after { background: var(--gradient-heat); }
+  .forge-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-glow-forge);
+    border-color: var(--border-accent);
+  }
+  .forge-card-title {
+    font-family: var(--font-display);
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 8px;
+  }
+  .forge-card-value {
+    font-family: var(--font-mono);
+    font-size: 32px;
+    font-weight: 600;
+    color: var(--accent-primary);
+    margin-bottom: 4px;
+    font-variant-numeric: tabular-nums;
+  }
+  .forge-card-meta {
+    font-size: 12px;
+    color: var(--text-muted);
+  }
+
+  /* ========== SPACING DEMO ========== */
+  .spacing-grid {
+    display: flex;
+    gap: 8px;
+    align-items: flex-end;
+    flex-wrap: wrap;
+  }
+  .spacing-block {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+  }
+  .spacing-bar {
+    background: var(--accent-primary-dim);
+    border: 1px solid var(--accent-primary);
+    border-radius: 2px;
+    width: 40px;
+  }
+  .spacing-label {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--text-muted);
+  }
+
+  /* ========== RADIUS DEMO ========== */
+  .radius-row {
+    display: flex;
+    gap: 24px;
+    flex-wrap: wrap;
+  }
+  .radius-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+  }
+  .radius-box {
+    width: 64px;
+    height: 64px;
+    background: var(--accent-primary-dim);
+    border: 1px solid var(--accent-primary);
+  }
+  .radius-label {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--text-muted);
+    text-align: center;
+  }
+
+  /* ========== FOOTER ========== */
+  .footer {
+    text-align: center;
+    padding: 48px 0;
+    border-top: 1px solid var(--border-subtle);
+    margin-top: 64px;
+  }
+  .footer p {
+    font-size: 12px;
+    color: var(--text-muted);
+  }
+  .footer a {
+    color: var(--accent-primary);
+    text-decoration: none;
+  }
+</style>
+</head>
+<body>
+
+<button class="theme-toggle" onclick="toggleTheme()">
+  <span id="theme-icon">&#9790;</span>
+  <span id="theme-label">Dark</span>
+</button>
+
+<div class="preview-wrapper">
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-label">Design System Preview</div>
+    <h1>MetalForge <span>ERP</span></h1>
+    <p>Forge Command 深色設計系統。CNC 精密感遇上鍛造橙火花。冷鋼色表面、等寬數據、機台狀態脈衝。</p>
+  </div>
+
+  <!-- COLOR PALETTE -->
+  <div class="section">
+    <div class="section-title">Color Palette</div>
+    <div class="section-desc">暗鋼色背景、鍛造橙主色、冷鋼灰輔助、語義狀態色</div>
+    <div class="swatches">
+      <div class="swatch"><div class="swatch-color" style="background:#0B0C10"></div><div class="swatch-info"><div class="swatch-name">Carbon Steel</div><div class="swatch-hex">#0B0C10</div></div></div>
+      <div class="swatch"><div class="swatch-color" style="background:#12141A"></div><div class="swatch-info"><div class="swatch-name">Surface 1</div><div class="swatch-hex">#12141A</div></div></div>
+      <div class="swatch"><div class="swatch-color" style="background:#1A1D26"></div><div class="swatch-info"><div class="swatch-name">Surface 2</div><div class="swatch-hex">#1A1D26</div></div></div>
+      <div class="swatch"><div class="swatch-color" style="background:#232733"></div><div class="swatch-info"><div class="swatch-name">Surface 3</div><div class="swatch-hex">#232733</div></div></div>
+      <div class="swatch"><div class="swatch-color" style="background:#FF6B2C"></div><div class="swatch-info"><div class="swatch-name">Forge Orange</div><div class="swatch-hex">#FF6B2C</div></div></div>
+      <div class="swatch"><div class="swatch-color" style="background:#64748B"></div><div class="swatch-info"><div class="swatch-name">Cold Steel</div><div class="swatch-hex">#64748B</div></div></div>
+      <div class="swatch"><div class="swatch-color" style="background:#E8ECF4"></div><div class="swatch-info"><div class="swatch-name">Text Primary</div><div class="swatch-hex">#E8ECF4</div></div></div>
+      <div class="swatch"><div class="swatch-color" style="background:#8891A0"></div><div class="swatch-info"><div class="swatch-name">Text Secondary</div><div class="swatch-hex">#8891A0</div></div></div>
+      <div class="swatch"><div class="swatch-color" style="background:#22C55E"></div><div class="swatch-info"><div class="swatch-name">Success</div><div class="swatch-hex">#22C55E</div></div></div>
+      <div class="swatch"><div class="swatch-color" style="background:#EAB308"></div><div class="swatch-info"><div class="swatch-name">Warning</div><div class="swatch-hex">#EAB308</div></div></div>
+      <div class="swatch"><div class="swatch-color" style="background:#EF4444"></div><div class="swatch-info"><div class="swatch-name">Error</div><div class="swatch-hex">#EF4444</div></div></div>
+      <div class="swatch"><div class="swatch-color" style="background:#3B82F6"></div><div class="swatch-info"><div class="swatch-name">Info</div><div class="swatch-hex">#3B82F6</div></div></div>
+    </div>
+  </div>
+
+  <!-- TYPOGRAPHY -->
+  <div class="section">
+    <div class="section-title">Typography</div>
+    <div class="section-desc">Space Grotesk 精密標題、Inter 清晰內文、Geist Mono 等寬數據</div>
+    <div class="type-specimen">
+      <div class="type-row">
+        <div class="type-meta"><strong>Display XL</strong><br>Space Grotesk 700<br>48px / -1.5px</div>
+        <div style="font-family:var(--font-display);font-size:48px;font-weight:700;letter-spacing:-1.5px;line-height:1.05">生產總覽</div>
+      </div>
+      <div class="type-row">
+        <div class="type-meta"><strong>Display</strong><br>Space Grotesk 600<br>32px / -1.0px</div>
+        <div style="font-family:var(--font-display);font-size:32px;font-weight:600;letter-spacing:-1.0px;line-height:1.1">Machine Status</div>
+      </div>
+      <div class="type-row">
+        <div class="type-meta"><strong>Heading</strong><br>Space Grotesk 600<br>22px / -0.5px</div>
+        <div style="font-family:var(--font-display);font-size:22px;font-weight:600;letter-spacing:-0.5px;line-height:1.2">工單排程佇列</div>
+      </div>
+      <div class="type-row">
+        <div class="type-meta"><strong>Body</strong><br>Inter 400<br>14px / normal</div>
+        <div style="font-family:var(--font-body);font-size:14px;font-weight:400;line-height:1.5;color:var(--text-secondary)">CNC-M5-008 目前正在加工 WP-A7075-0823 工件。主軸轉速 8000RPM，進給率 1200mm/min。預計完工時間 14:30，刀具剩餘壽命 72%。</div>
+      </div>
+      <div class="type-row">
+        <div class="type-meta"><strong>Data</strong><br>Geist Mono 500<br>13px / tabular-nums</div>
+        <div style="font-family:var(--font-mono);font-size:13px;font-weight:500;line-height:1.4;font-variant-numeric:tabular-nums;color:var(--accent-primary)">WO-2026-0847 &nbsp; A7075-T6 &nbsp; &plusmn;0.02mm &nbsp; 8000RPM &nbsp; 1200mm/min</div>
+      </div>
+      <div class="type-row">
+        <div class="type-meta"><strong>Label</strong><br>Geist Mono 500<br>10px / uppercase</div>
+        <div style="font-family:var(--font-mono);font-size:10px;font-weight:500;letter-spacing:1.5px;text-transform:uppercase;color:var(--text-muted)">Machine &bull; Workpiece &bull; Tolerance &bull; RPM &bull; Feed Rate &bull; Status</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- COMPONENTS -->
+  <div class="section">
+    <div class="section-title">Components</div>
+    <div class="section-desc">按鈕、輸入、狀態標籤、表單元件</div>
+    <div class="components-grid">
+      <div class="component-card">
+        <div class="component-label">Buttons</div>
+        <div class="btn-row">
+          <button class="btn btn-primary">新建工單</button>
+          <button class="btn btn-secondary">匯出報表</button>
+          <button class="btn btn-ghost">取消</button>
+          <button class="btn btn-danger">停機</button>
+        </div>
+      </div>
+      <div class="component-card">
+        <div class="component-label">Status Badges</div>
+        <div class="badge-row">
+          <span class="badge badge-success">已完工</span>
+          <span class="badge badge-accent">加工中</span>
+          <span class="badge badge-warning">排隊中</span>
+          <span class="badge badge-error">異常停機</span>
+          <span class="badge badge-info">閒置</span>
+        </div>
+      </div>
+      <div class="component-card">
+        <div class="component-label">Text Input</div>
+        <div class="input-group">
+          <label class="input-label">工件編號</label>
+          <input class="input" type="text" placeholder="搜尋工件編號...">
+        </div>
+      </div>
+      <div class="component-card">
+        <div class="component-label">Data Inputs</div>
+        <div style="display:flex;gap:12px">
+          <div class="input-group" style="flex:1">
+            <label class="input-label">材料規格</label>
+            <input class="input" type="text" value="A7075-T6" style="font-family:var(--font-mono);color:var(--accent-primary)">
+          </div>
+          <div class="input-group" style="flex:1">
+            <label class="input-label">公差 (mm)</label>
+            <input class="input" type="text" value="&plusmn;0.02" style="font-family:var(--font-mono);font-variant-numeric:tabular-nums">
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FORGE GRADIENT DEMO -->
+  <div class="section">
+    <div class="section-title">Forge Gradient</div>
+    <div class="section-desc">鍛造橙漸層 + 暗鋼表面 + 頂部火花色條 — 金屬切削的視覺語言</div>
+    <div class="forge-demo">
+      <div class="forge-demo-bg"></div>
+      <div class="forge-card">
+        <div class="forge-card-title">本月產量</div>
+        <div class="forge-card-value">12,847</div>
+        <div class="forge-card-meta">件 &middot; 較上月 +8.3%</div>
+      </div>
+      <div class="forge-card">
+        <div class="forge-card-value" style="color:var(--success)">96.2%</div>
+        <div class="forge-card-title" style="margin-bottom:0">良率</div>
+        <div class="forge-card-meta">目標 95.0%</div>
+      </div>
+      <div class="forge-card">
+        <div class="forge-card-title">刀具壽命</div>
+        <div class="forge-card-value" style="color:var(--warning)">34%</div>
+        <div class="forge-card-meta">T-EM10-003 需更換</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SPACING -->
+  <div class="section">
+    <div class="section-title">Spacing Scale</div>
+    <div class="section-desc">8px 基準單位，Compact-first 適配資料密集型加工管理</div>
+    <div class="spacing-grid">
+      <div class="spacing-block"><div class="spacing-bar" style="height:2px"></div><div class="spacing-label">2px</div></div>
+      <div class="spacing-block"><div class="spacing-bar" style="height:4px"></div><div class="spacing-label">4px</div></div>
+      <div class="spacing-block"><div class="spacing-bar" style="height:8px"></div><div class="spacing-label">8px</div></div>
+      <div class="spacing-block"><div class="spacing-bar" style="height:16px"></div><div class="spacing-label">16px</div></div>
+      <div class="spacing-block"><div class="spacing-bar" style="height:24px"></div><div class="spacing-label">24px</div></div>
+      <div class="spacing-block"><div class="spacing-bar" style="height:32px"></div><div class="spacing-label">32px</div></div>
+      <div class="spacing-block"><div class="spacing-bar" style="height:48px"></div><div class="spacing-label">48px</div></div>
+      <div class="spacing-block"><div class="spacing-bar" style="height:64px"></div><div class="spacing-label">64px</div></div>
+    </div>
+  </div>
+
+  <!-- BORDER RADIUS -->
+  <div class="section">
+    <div class="section-title">Border Radius</div>
+    <div class="section-desc">CNC 精密層級圓角：input (4px) 到 pill (full)</div>
+    <div class="radius-row">
+      <div class="radius-item"><div class="radius-box" style="border-radius:4px"></div><div class="radius-label">4px<br>sm</div></div>
+      <div class="radius-item"><div class="radius-box" style="border-radius:8px"></div><div class="radius-label">8px<br>md</div></div>
+      <div class="radius-item"><div class="radius-box" style="border-radius:12px"></div><div class="radius-label">12px<br>lg</div></div>
+      <div class="radius-item"><div class="radius-box" style="border-radius:16px"></div><div class="radius-label">16px<br>xl</div></div>
+      <div class="radius-item"><div class="radius-box" style="border-radius:9999px"></div><div class="radius-label">9999px<br>pill</div></div>
+    </div>
+  </div>
+
+  <!-- ERP DASHBOARD MOCKUP -->
+  <div class="section">
+    <div class="section-title">Dashboard Mockup</div>
+    <div class="section-desc">金屬加工 ERP 儀表板 — Sidebar + KPI + 工單表格 + 機台狀態</div>
+    <div class="mockup-container">
+      <div class="erp-layout">
+        <!-- Sidebar -->
+        <div class="sidebar">
+          <div class="sidebar-brand">
+            <div class="sidebar-logo">M</div>
+            <div>
+              <div class="sidebar-brand-text">MetalForge</div>
+              <div class="sidebar-brand-sub">Metal Processing ERP</div>
+            </div>
+          </div>
+          <div class="sidebar-nav">
+            <div class="nav-section-label">Main</div>
+            <div class="nav-item active">
+              <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+              儀表板
+            </div>
+            <div class="nav-item">
+              <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 4h2a2 2 0 012 2v14a2 2 0 01-2 2H6a2 2 0 01-2-2V6a2 2 0 012-2h2"/><rect x="8" y="2" width="8" height="4" rx="1"/></svg>
+              工單管理
+              <span class="nav-badge-count">5</span>
+            </div>
+            <div class="nav-item">
+              <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M12 2v4m0 12v4m10-10h-4M6 12H2m15.07-5.07l-2.83 2.83M9.76 14.24l-2.83 2.83m11.14 0l-2.83-2.83M9.76 9.76L6.93 6.93"/></svg>
+              機台監控
+            </div>
+            <div class="nav-item">
+              <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14.7 6.3a1 1 0 000 1.4l1.6 1.6a1 1 0 001.4 0l3.77-3.77a6 6 0 01-7.94 7.94l-6.91 6.91a2.12 2.12 0 01-3-3l6.91-6.91a6 6 0 017.94-7.94l-3.76 3.76z"/></svg>
+              刀具管理
+            </div>
+            <div class="nav-section-label">Production</div>
+            <div class="nav-item">
+              <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/></svg>
+              材料庫存
+            </div>
+            <div class="nav-item">
+              <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/></svg>
+              品質檢測
+            </div>
+            <div class="nav-item">
+              <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 20V10M12 20V4M6 20v-6"/></svg>
+              生產報表
+            </div>
+          </div>
+        </div>
+
+        <!-- Header -->
+        <div class="header">
+          <div class="header-search">
+            <span class="header-search-icon">&#128269;</span>
+            <input type="text" placeholder="搜尋工單、工件、機台...">
+            <span class="header-shortcut">&#8984;K</span>
+          </div>
+          <div class="header-right">
+            <div class="header-icon-btn">
+              &#128276;
+              <span class="notification-dot"></span>
+            </div>
+            <div class="header-icon-btn">&#9881;</div>
+            <div class="avatar">WH</div>
+          </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+          <div class="main-header">
+            <div>
+              <div class="main-title">生產總覽</div>
+              <div class="main-subtitle">金屬加工車間即時狀態 &mdash; 2026 年 4 月</div>
+            </div>
+            <div class="btn-row">
+              <button class="btn btn-ghost" style="font-size:12px;padding:6px 14px">本月 &#9662;</button>
+              <button class="btn btn-primary" style="font-size:12px;padding:6px 14px">+ 新建工單</button>
+            </div>
+          </div>
+
+          <!-- KPI Cards -->
+          <div class="kpi-grid">
+            <div class="kpi-card">
+              <div class="kpi-label">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--accent-primary)" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M12 2v4m0 12v4m10-10h-4M6 12H2"/></svg>
+                機台稼動率
+              </div>
+              <div class="kpi-value">87.3%</div>
+              <span class="kpi-change up">&#9650; 3.2%</span>
+            </div>
+            <div class="kpi-card">
+              <div class="kpi-label">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--success)" stroke-width="2"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg>
+                良率
+              </div>
+              <div class="kpi-value">96.2%</div>
+              <span class="kpi-change up">&#9650; 0.8%</span>
+            </div>
+            <div class="kpi-card">
+              <div class="kpi-label">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--warning)" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+                待處理異常
+              </div>
+              <div class="kpi-value">3</div>
+              <span class="kpi-change down">&#9660; 需處理</span>
+            </div>
+            <div class="kpi-card">
+              <div class="kpi-label">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--accent-secondary)" stroke-width="2"><path d="M16 4h2a2 2 0 012 2v14a2 2 0 01-2 2H6a2 2 0 01-2-2V6a2 2 0 012-2h2"/><rect x="8" y="2" width="8" height="4" rx="1"/></svg>
+                進行中工單
+              </div>
+              <div class="kpi-value">24</div>
+              <span class="kpi-change up">&#9650; 6 件</span>
+            </div>
+          </div>
+
+          <!-- Data Table -->
+          <div class="table-container">
+            <div class="table-header">
+              <div class="table-title">工單進度</div>
+              <div class="btn-row">
+                <button class="btn btn-ghost" style="font-size:11px;padding:4px 10px">篩選</button>
+                <button class="btn btn-ghost" style="font-size:11px;padding:4px 10px">匯出</button>
+              </div>
+            </div>
+            <table>
+              <thead>
+                <tr>
+                  <th>工單號</th>
+                  <th>工件</th>
+                  <th>材料</th>
+                  <th>公差</th>
+                  <th>機台</th>
+                  <th>狀態</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td class="mono">WO-2026-0847</td>
+                  <td style="color:var(--text-primary)">法蘭盤 FL-200A</td>
+                  <td class="amount">A7075-T6</td>
+                  <td class="amount">&plusmn;0.02mm</td>
+                  <td style="color:var(--text-primary)">CNC-M5-008</td>
+                  <td><span class="table-status status-running">加工中</span></td>
+                </tr>
+                <tr>
+                  <td class="mono">WO-2026-0846</td>
+                  <td style="color:var(--text-primary)">軸承座 BH-150</td>
+                  <td class="amount">SUS304</td>
+                  <td class="amount">&plusmn;0.05mm</td>
+                  <td style="color:var(--text-primary)">CNC-L3-002</td>
+                  <td><span class="table-status status-completed">已完工</span></td>
+                </tr>
+                <tr>
+                  <td class="mono">WO-2026-0845</td>
+                  <td style="color:var(--text-primary)">齒輪箱蓋 GC-80</td>
+                  <td class="amount">FC250</td>
+                  <td class="amount">&plusmn;0.10mm</td>
+                  <td style="color:var(--text-primary)">CNC-M3-005</td>
+                  <td><span class="table-status status-queued">排隊中</span></td>
+                </tr>
+                <tr>
+                  <td class="mono">WO-2026-0844</td>
+                  <td style="color:var(--text-primary)">連桿 CR-45</td>
+                  <td class="amount">SCM440</td>
+                  <td class="amount">&plusmn;0.01mm</td>
+                  <td style="color:var(--text-primary)">CNC-M5-012</td>
+                  <td><span class="table-status status-running">加工中</span></td>
+                </tr>
+                <tr>
+                  <td class="mono">WO-2026-0843</td>
+                  <td style="color:var(--text-primary)">模具鑲件 MI-22</td>
+                  <td class="amount">SKD61</td>
+                  <td class="amount">&plusmn;0.005mm</td>
+                  <td style="color:var(--text-primary)">EDM-W1-003</td>
+                  <td><span class="table-status status-alarm">異常停機</span></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <!-- Machine Status -->
+          <div style="margin-top:24px">
+            <div class="table-title" style="margin-bottom:16px">機台即時狀態</div>
+            <div class="machine-grid">
+              <div class="machine-card running">
+                <div class="machine-header">
+                  <div>
+                    <div class="machine-id">CNC-M5-008</div>
+                    <div class="machine-name">五軸加工中心</div>
+                  </div>
+                  <span class="table-status status-running" style="font-size:10px;padding:2px 8px">加工中</span>
+                </div>
+                <div class="machine-data">
+                  <div class="machine-metric">
+                    <div class="machine-metric-label">RPM</div>
+                    <div class="machine-metric-value" style="color:var(--accent-primary)">8,000</div>
+                  </div>
+                  <div class="machine-metric">
+                    <div class="machine-metric-label">Feed</div>
+                    <div class="machine-metric-value">1,200</div>
+                  </div>
+                  <div class="machine-metric">
+                    <div class="machine-metric-label">Tool Life</div>
+                    <div class="machine-metric-value" style="color:var(--success)">72%</div>
+                  </div>
+                  <div class="machine-metric">
+                    <div class="machine-metric-label">Progress</div>
+                    <div class="machine-metric-value">64%</div>
+                  </div>
+                </div>
+              </div>
+              <div class="machine-card idle">
+                <div class="machine-header">
+                  <div>
+                    <div class="machine-id">CNC-L3-002</div>
+                    <div class="machine-name">CNC 車床</div>
+                  </div>
+                  <span class="badge badge-info" style="font-size:10px;padding:2px 8px">閒置</span>
+                </div>
+                <div class="machine-data">
+                  <div class="machine-metric">
+                    <div class="machine-metric-label">RPM</div>
+                    <div class="machine-metric-value" style="color:var(--text-muted)">0</div>
+                  </div>
+                  <div class="machine-metric">
+                    <div class="machine-metric-label">Feed</div>
+                    <div class="machine-metric-value" style="color:var(--text-muted)">0</div>
+                  </div>
+                  <div class="machine-metric">
+                    <div class="machine-metric-label">Tool Life</div>
+                    <div class="machine-metric-value" style="color:var(--success)">91%</div>
+                  </div>
+                  <div class="machine-metric">
+                    <div class="machine-metric-label">Last Job</div>
+                    <div class="machine-metric-value" style="font-size:12px">14:20</div>
+                  </div>
+                </div>
+              </div>
+              <div class="machine-card alarm">
+                <div class="machine-header">
+                  <div>
+                    <div class="machine-id">EDM-W1-003</div>
+                    <div class="machine-name">線切割放電機</div>
+                  </div>
+                  <span class="table-status status-alarm" style="font-size:10px;padding:2px 8px">異常</span>
+                </div>
+                <div class="machine-data">
+                  <div class="machine-metric">
+                    <div class="machine-metric-label">Error</div>
+                    <div class="machine-metric-value" style="color:var(--error);font-size:12px">E-0472</div>
+                  </div>
+                  <div class="machine-metric">
+                    <div class="machine-metric-label">Down</div>
+                    <div class="machine-metric-value" style="color:var(--error)">18min</div>
+                  </div>
+                  <div class="machine-metric">
+                    <div class="machine-metric-label">Wire</div>
+                    <div class="machine-metric-value" style="color:var(--warning)">斷線</div>
+                  </div>
+                  <div class="machine-metric">
+                    <div class="machine-metric-label">Impact</div>
+                    <div class="machine-metric-value" style="color:var(--error);font-size:12px">WO-0843</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer">
+    <p>MetalForge ERP Design System &mdash; Generated by /design-consultation</p>
+  </div>
+
+</div>
+
+<script>
+function toggleTheme() {
+  const html = document.documentElement;
+  const current = html.getAttribute('data-theme');
+  const next = current === 'dark' ? 'light' : 'dark';
+  html.setAttribute('data-theme', next);
+  document.getElementById('theme-icon').textContent = next === 'dark' ? '\u263E' : '\u2600';
+  document.getElementById('theme-label').textContent = next === 'dark' ? 'Dark' : 'Light';
+}
+</script>
+
+</body>
+</html>
