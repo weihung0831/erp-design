@@ -1,0 +1,1333 @@
+<!DOCTYPE html>
+<html lang="zh-Hant" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Logistics ERP — Design System Preview</title>
+  <link href="https://api.fontshare.com/v2/css?f[]=satoshi@400;500;600;700;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600&family=Geist+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    /* ============================================
+       CSS Custom Properties — Design System Tokens
+       ============================================ */
+    :root {
+      --font-display: 'Satoshi', system-ui, -apple-system, sans-serif;
+      --font-body: 'DM Sans', 'Geist', system-ui, -apple-system, sans-serif;
+      --font-mono: 'Geist Mono', ui-monospace, 'SF Mono', 'Menlo', monospace;
+    }
+
+    [data-theme="dark"] {
+      --bg-deep: #0A0D14;
+      --bg-surface-1: #111621;
+      --bg-surface-2: #1A2030;
+      --bg-surface-3: #222B3C;
+      --bg-surface-4: #2B3548;
+      --accent-primary: #F59E0B;
+      --accent-primary-dim: rgba(245, 158, 11, 0.15);
+      --accent-primary-glow: rgba(245, 158, 11, 0.4);
+      --accent-secondary: #3B82F6;
+      --accent-secondary-dim: rgba(59, 130, 246, 0.15);
+      --text-primary: #E8ECF1;
+      --text-secondary: #8892A0;
+      --text-muted: #4A5568;
+      --text-on-accent: #0A0D14;
+      --success: #34D399;
+      --success-dim: rgba(52, 211, 153, 0.15);
+      --success-glow: rgba(52, 211, 153, 0.4);
+      --warning: #FBBF24;
+      --warning-dim: rgba(251, 191, 36, 0.15);
+      --warning-glow: rgba(251, 191, 36, 0.4);
+      --error: #F87171;
+      --error-dim: rgba(248, 113, 113, 0.15);
+      --error-glow: rgba(248, 113, 113, 0.4);
+      --info: #60A5FA;
+      --info-dim: rgba(96, 165, 250, 0.15);
+      --border-shadow: 0 0 0 1px rgba(255, 255, 255, 0.06);
+      --border-shadow-hover: 0 0 0 1px rgba(245, 158, 11, 0.2);
+      --border-subtle: rgba(255, 255, 255, 0.06);
+      --border-standard: rgba(255, 255, 255, 0.08);
+      --shadow-card: 0 0 0 1px rgba(255, 255, 255, 0.06), 0 2px 8px rgba(0, 0, 0, 0.3);
+      --shadow-elevated: 0 0 0 1px rgba(255, 255, 255, 0.06), 0 8px 32px rgba(0, 0, 0, 0.4);
+      --shadow-glow-amber: 0 0 20px rgba(245, 158, 11, 0.15), 0 0 60px rgba(245, 158, 11, 0.05);
+    }
+
+    [data-theme="light"] {
+      --bg-deep: #F1F3F6;
+      --bg-surface-1: #FFFFFF;
+      --bg-surface-2: #F7F8FA;
+      --bg-surface-3: #EEF0F4;
+      --bg-surface-4: #E2E5EB;
+      --accent-primary: #D97706;
+      --accent-primary-dim: rgba(217, 119, 6, 0.12);
+      --accent-primary-glow: rgba(217, 119, 6, 0.3);
+      --accent-secondary: #2563EB;
+      --accent-secondary-dim: rgba(37, 99, 235, 0.12);
+      --text-primary: #1A1D23;
+      --text-secondary: #5A6270;
+      --text-muted: #9CA3AD;
+      --text-on-accent: #FFFFFF;
+      --success: #16A34A;
+      --success-dim: rgba(22, 163, 74, 0.12);
+      --success-glow: rgba(22, 163, 74, 0.3);
+      --warning: #D97706;
+      --warning-dim: rgba(217, 119, 6, 0.12);
+      --warning-glow: rgba(217, 119, 6, 0.3);
+      --error: #DC2626;
+      --error-dim: rgba(220, 38, 38, 0.12);
+      --error-glow: rgba(220, 38, 38, 0.3);
+      --info: #2563EB;
+      --info-dim: rgba(37, 99, 235, 0.12);
+      --border-shadow: 0 0 0 1px rgba(0, 0, 0, 0.08);
+      --border-shadow-hover: 0 0 0 1px rgba(217, 119, 6, 0.25);
+      --border-subtle: rgba(0, 0, 0, 0.06);
+      --border-standard: rgba(0, 0, 0, 0.1);
+      --shadow-card: 0 0 0 1px rgba(0, 0, 0, 0.08), 0 2px 8px rgba(0, 0, 0, 0.06);
+      --shadow-elevated: 0 0 0 1px rgba(0, 0, 0, 0.08), 0 8px 32px rgba(0, 0, 0, 0.1);
+      --shadow-glow-amber: 0 0 20px rgba(217, 119, 6, 0.12), 0 0 60px rgba(217, 119, 6, 0.04);
+    }
+
+    /* ============================================
+       Reset & Base
+       ============================================ */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: var(--font-body);
+      font-size: 14px;
+      line-height: 1.5;
+      color: var(--text-primary);
+      background: var(--bg-deep);
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    /* ============================================
+       Layout
+       ============================================ */
+    .preview-container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 48px 32px;
+    }
+
+    .section {
+      margin-bottom: 64px;
+    }
+
+    .section-label {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: 8px;
+    }
+
+    .section-title {
+      font-family: var(--font-display);
+      font-size: 32px;
+      font-weight: 700;
+      letter-spacing: -1.5px;
+      line-height: 1.1;
+      color: var(--text-primary);
+      margin-bottom: 24px;
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    .grid-3 {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 16px;
+    }
+
+    .grid-4 {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr 1fr;
+      gap: 16px;
+    }
+
+    @media (max-width: 768px) {
+      .grid-2, .grid-3, .grid-4 { grid-template-columns: 1fr; }
+      .preview-container { padding: 24px 16px; }
+    }
+
+    /* ============================================
+       Theme Toggle
+       ============================================ */
+    .theme-toggle {
+      position: fixed;
+      top: 16px;
+      right: 16px;
+      z-index: 100;
+      font-family: var(--font-body);
+      font-size: 13px;
+      font-weight: 600;
+      padding: 8px 16px;
+      border-radius: 9999px;
+      background: var(--bg-surface-2);
+      color: var(--text-secondary);
+      border: none;
+      cursor: pointer;
+      box-shadow: var(--shadow-card);
+      transition: all 150ms ease-out;
+    }
+    .theme-toggle:hover {
+      background: var(--bg-surface-3);
+      color: var(--text-primary);
+    }
+
+    /* ============================================
+       Hero
+       ============================================ */
+    .hero {
+      text-align: center;
+      padding: 80px 0 64px;
+      position: relative;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 400px;
+      height: 400px;
+      background: radial-gradient(circle, var(--accent-primary-glow) 0%, transparent 70%);
+      opacity: 0.3;
+      pointer-events: none;
+    }
+
+    .hero-title {
+      font-family: var(--font-display);
+      font-size: 48px;
+      font-weight: 900;
+      letter-spacing: -2px;
+      line-height: 1.05;
+      color: var(--text-primary);
+      margin-bottom: 16px;
+      position: relative;
+    }
+
+    .hero-title .accent {
+      color: var(--accent-primary);
+    }
+
+    .hero-subtitle {
+      font-family: var(--font-body);
+      font-size: 16px;
+      color: var(--text-secondary);
+      max-width: 500px;
+      margin: 0 auto;
+      line-height: 1.5;
+    }
+
+    /* ============================================
+       Typography Specimen
+       ============================================ */
+    .type-specimen {
+      padding: 24px;
+      background: var(--bg-surface-2);
+      border-radius: 8px;
+      box-shadow: var(--shadow-card);
+      margin-bottom: 12px;
+    }
+
+    .type-meta {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: 8px;
+    }
+
+    /* ============================================
+       Color Swatches
+       ============================================ */
+    .swatch-group {
+      margin-bottom: 24px;
+    }
+
+    .swatch-group-title {
+      font-family: var(--font-display);
+      font-size: 18px;
+      font-weight: 700;
+      letter-spacing: -0.3px;
+      color: var(--text-primary);
+      margin-bottom: 12px;
+    }
+
+    .swatch {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 16px;
+      background: var(--bg-surface-2);
+      border-radius: 8px;
+      box-shadow: var(--shadow-card);
+      margin-bottom: 8px;
+    }
+
+    .swatch-color {
+      width: 40px;
+      height: 40px;
+      border-radius: 8px;
+      flex-shrink: 0;
+    }
+
+    .swatch-info {
+      flex: 1;
+    }
+
+    .swatch-name {
+      font-family: var(--font-body);
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+
+    .swatch-hex {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    /* ============================================
+       Buttons
+       ============================================ */
+    .btn {
+      font-family: var(--font-body);
+      font-size: 14px;
+      font-weight: 600;
+      padding: 8px 20px;
+      border-radius: 8px;
+      border: none;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 150ms ease-out;
+    }
+
+    .btn-primary {
+      background: var(--accent-primary);
+      color: var(--text-on-accent);
+    }
+    .btn-primary:hover {
+      box-shadow: var(--shadow-glow-amber);
+      transform: translateY(-1px);
+    }
+
+    .btn-secondary {
+      background: transparent;
+      color: var(--accent-primary);
+      box-shadow: 0 0 0 1px var(--border-standard);
+    }
+    .btn-secondary:hover {
+      box-shadow: var(--border-shadow-hover);
+      background: var(--accent-primary-dim);
+    }
+
+    .btn-ghost {
+      background: transparent;
+      color: var(--text-secondary);
+    }
+    .btn-ghost:hover {
+      background: var(--bg-surface-3);
+      color: var(--text-primary);
+    }
+
+    .btn-danger {
+      background: var(--error-dim);
+      color: var(--error);
+      box-shadow: 0 0 0 1px rgba(248, 113, 113, 0.2);
+    }
+    .btn-danger:hover {
+      box-shadow: 0 0 12px var(--error-glow);
+    }
+
+    .btn-pill {
+      border-radius: 9999px;
+    }
+
+    /* ============================================
+       Nav Chips (Uber influence)
+       ============================================ */
+    .nav-chips {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .nav-chip {
+      font-family: var(--font-body);
+      font-size: 13px;
+      font-weight: 600;
+      padding: 8px 16px;
+      border-radius: 9999px;
+      background: var(--bg-surface-2);
+      color: var(--text-secondary);
+      border: none;
+      cursor: pointer;
+      transition: all 150ms ease-out;
+    }
+    .nav-chip:hover {
+      background: var(--bg-surface-3);
+      color: var(--text-primary);
+    }
+    .nav-chip.active {
+      background: var(--accent-primary);
+      color: var(--text-on-accent);
+      box-shadow: var(--shadow-glow-amber);
+    }
+
+    /* ============================================
+       Badges
+       ============================================ */
+    .badge {
+      font-family: var(--font-body);
+      font-size: 12px;
+      font-weight: 600;
+      padding: 3px 10px;
+      border-radius: 9999px;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+    }
+    .badge::before {
+      content: '';
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+    }
+
+    .badge-transit {
+      background: var(--accent-primary-dim);
+      color: var(--accent-primary);
+    }
+    .badge-transit::before {
+      background: var(--accent-primary);
+      box-shadow: 0 0 6px var(--accent-primary-glow);
+    }
+
+    .badge-delivered {
+      background: var(--success-dim);
+      color: var(--success);
+    }
+    .badge-delivered::before {
+      background: var(--success);
+      box-shadow: 0 0 6px var(--success-glow);
+    }
+
+    .badge-delayed {
+      background: var(--error-dim);
+      color: var(--error);
+    }
+    .badge-delayed::before {
+      background: var(--error);
+      box-shadow: 0 0 6px var(--error-glow);
+      animation: pulse 2s ease-in-out infinite;
+    }
+
+    .badge-pending {
+      background: var(--warning-dim);
+      color: var(--warning);
+    }
+    .badge-pending::before {
+      background: var(--warning);
+      box-shadow: 0 0 6px var(--warning-glow);
+    }
+
+    .badge-info {
+      background: var(--info-dim);
+      color: var(--info);
+    }
+    .badge-info::before {
+      background: var(--info);
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; box-shadow: 0 0 6px var(--error-glow); }
+      50% { opacity: 0.5; box-shadow: 0 0 12px var(--error-glow); }
+    }
+
+    /* ============================================
+       Cards
+       ============================================ */
+    .card {
+      background: var(--bg-surface-2);
+      border-radius: 8px;
+      box-shadow: var(--shadow-card);
+      border: none;
+      transition: all 150ms ease-out;
+    }
+    .card:hover {
+      box-shadow: var(--border-shadow-hover), 0 4px 16px rgba(0, 0, 0, 0.35);
+      transform: translateY(-1px);
+    }
+
+    /* ============================================
+       KPI Cards
+       ============================================ */
+    .kpi-card {
+      padding: 20px 24px;
+    }
+
+    .kpi-label {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: 8px;
+    }
+
+    .kpi-value {
+      font-family: var(--font-display);
+      font-size: 32px;
+      font-weight: 700;
+      letter-spacing: -1.5px;
+      color: var(--accent-primary);
+      line-height: 1.1;
+    }
+
+    .kpi-change {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      margin-top: 6px;
+    }
+    .kpi-change.up { color: var(--success); }
+    .kpi-change.down { color: var(--error); }
+
+    /* ============================================
+       Data Table
+       ============================================ */
+    .data-table-container {
+      background: var(--bg-surface-2);
+      border-radius: 8px;
+      box-shadow: var(--shadow-card);
+      overflow: hidden;
+    }
+
+    .data-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    .data-table thead {
+      background: var(--bg-surface-3);
+    }
+
+    .data-table th {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      padding: 10px 16px;
+      text-align: left;
+    }
+
+    .data-table td {
+      font-family: var(--font-body);
+      font-size: 13px;
+      color: var(--text-primary);
+      padding: 12px 16px;
+      border-bottom: 1px solid var(--border-subtle);
+    }
+
+    .data-table tr:last-child td {
+      border-bottom: none;
+    }
+
+    .data-table tr:hover td {
+      background: rgba(255, 255, 255, 0.02);
+    }
+
+    .data-mono {
+      font-family: var(--font-mono);
+      font-size: 13px;
+      font-weight: 500;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .data-tracking {
+      font-family: var(--font-mono);
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--accent-primary);
+      cursor: pointer;
+    }
+    .data-tracking:hover {
+      text-decoration: underline;
+    }
+
+    /* ============================================
+       Form Inputs
+       ============================================ */
+    .input-group {
+      margin-bottom: 16px;
+    }
+
+    .input-label {
+      font-family: var(--font-body);
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-secondary);
+      margin-bottom: 6px;
+      display: block;
+    }
+
+    .input {
+      font-family: var(--font-body);
+      font-size: 14px;
+      color: var(--text-primary);
+      background: var(--bg-surface-1);
+      border: none;
+      box-shadow: 0 0 0 1px var(--border-standard);
+      border-radius: 4px;
+      padding: 8px 12px;
+      width: 100%;
+      outline: none;
+      transition: all 150ms ease-out;
+    }
+    .input:focus {
+      box-shadow: 0 0 0 1px var(--accent-primary), 0 0 0 3px var(--accent-primary-dim), 0 0 20px var(--accent-primary-dim);
+    }
+    .input::placeholder {
+      color: var(--text-muted);
+    }
+
+    .input-data {
+      font-family: var(--font-mono);
+      color: var(--accent-primary);
+    }
+
+    /* ============================================
+       Sidebar Preview
+       ============================================ */
+    .sidebar-preview {
+      width: 220px;
+      background: var(--bg-surface-1);
+      border-radius: 12px;
+      box-shadow: var(--shadow-card);
+      padding: 16px 0;
+      flex-shrink: 0;
+    }
+
+    .sidebar-logo {
+      padding: 0 16px 16px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      border-bottom: 1px solid var(--border-subtle);
+      margin-bottom: 12px;
+    }
+
+    .sidebar-logo-icon {
+      width: 28px;
+      height: 28px;
+      background: var(--accent-primary);
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+    }
+
+    .sidebar-logo-text {
+      font-family: var(--font-display);
+      font-size: 16px;
+      font-weight: 700;
+      letter-spacing: -0.5px;
+      color: var(--text-primary);
+    }
+
+    .sidebar-section-label {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      padding: 12px 16px 6px;
+    }
+
+    .sidebar-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 16px;
+      color: var(--text-secondary);
+      font-size: 14px;
+      font-weight: 400;
+      cursor: pointer;
+      transition: all 100ms ease-out;
+      position: relative;
+    }
+    .sidebar-item:hover {
+      background: var(--bg-surface-2);
+      color: var(--text-primary);
+    }
+    .sidebar-item.active {
+      background: var(--accent-primary-dim);
+      color: var(--accent-primary);
+      font-weight: 600;
+    }
+    .sidebar-item.active::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 4px;
+      bottom: 4px;
+      width: 3px;
+      background: var(--accent-primary);
+      border-radius: 0 2px 2px 0;
+      box-shadow: 0 0 8px var(--accent-primary-glow);
+    }
+
+    .sidebar-item-icon {
+      width: 18px;
+      text-align: center;
+      font-size: 14px;
+      flex-shrink: 0;
+    }
+
+    .sidebar-badge {
+      margin-left: auto;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 600;
+      padding: 1px 6px;
+      border-radius: 9999px;
+      background: var(--error-dim);
+      color: var(--error);
+    }
+
+    /* ============================================
+       Dashboard Mockup
+       ============================================ */
+    .dashboard-mockup {
+      display: flex;
+      gap: 24px;
+      background: var(--bg-deep);
+      border-radius: 12px;
+      padding: 24px;
+      box-shadow: var(--shadow-elevated);
+      overflow-x: auto;
+    }
+
+    .dashboard-main {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .dashboard-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .dashboard-title {
+      font-family: var(--font-display);
+      font-size: 22px;
+      font-weight: 700;
+      letter-spacing: -0.5px;
+      color: var(--text-primary);
+    }
+
+    /* ============================================
+       Alerts
+       ============================================ */
+    .alert {
+      padding: 12px 16px;
+      border-radius: 8px;
+      font-size: 13px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 8px;
+    }
+    .alert-success {
+      background: var(--success-dim);
+      color: var(--success);
+      box-shadow: 0 0 0 1px rgba(52, 211, 153, 0.15);
+    }
+    .alert-warning {
+      background: var(--warning-dim);
+      color: var(--warning);
+      box-shadow: 0 0 0 1px rgba(251, 191, 36, 0.15);
+    }
+    .alert-error {
+      background: var(--error-dim);
+      color: var(--error);
+      box-shadow: 0 0 0 1px rgba(248, 113, 113, 0.15);
+    }
+    .alert-info {
+      background: var(--info-dim);
+      color: var(--info);
+      box-shadow: 0 0 0 1px rgba(96, 165, 250, 0.15);
+    }
+
+    /* ============================================
+       Utilities
+       ============================================ */
+    .flex { display: flex; }
+    .flex-wrap { flex-wrap: wrap; }
+    .items-center { align-items: center; }
+    .gap-8 { gap: 8px; }
+    .gap-12 { gap: 12px; }
+    .gap-16 { gap: 16px; }
+    .gap-24 { gap: 24px; }
+    .mt-8 { margin-top: 8px; }
+    .mt-16 { margin-top: 16px; }
+    .mt-24 { margin-top: 24px; }
+    .mb-8 { margin-bottom: 8px; }
+    .mb-16 { margin-bottom: 16px; }
+    .text-muted { color: var(--text-muted); }
+    .text-secondary { color: var(--text-secondary); }
+
+    .divider {
+      height: 1px;
+      background: var(--border-subtle);
+      margin: 48px 0;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Theme Toggle -->
+  <button class="theme-toggle" onclick="toggleTheme()">
+    <span id="theme-icon">&#9790;</span> 切換主題
+  </button>
+
+  <div class="preview-container">
+
+    <!-- ==================== HERO ==================== -->
+    <section class="hero">
+      <div class="hero-title">
+        <span class="accent">Logistics</span> ERP
+      </div>
+      <p class="hero-subtitle">
+        物流指揮中心 — 倉儲管理、運輸排程、訂單追蹤、車隊管理。Industrial Command 設計系統。
+      </p>
+    </section>
+
+    <!-- ==================== TYPOGRAPHY ==================== -->
+    <section class="section">
+      <div class="section-label">Typography</div>
+      <div class="section-title">字型系統</div>
+
+      <div class="type-specimen">
+        <div class="type-meta">DISPLAY / SATOSHI 900 &mdash; 48px / -2.0px tracking</div>
+        <div style="font-family: var(--font-display); font-size: 48px; font-weight: 900; letter-spacing: -2px; line-height: 1.05;">
+          倉儲運輸調度中心
+        </div>
+      </div>
+
+      <div class="type-specimen">
+        <div class="type-meta">HEADING / SATOSHI 700 &mdash; 32px / -1.5px tracking</div>
+        <div style="font-family: var(--font-display); font-size: 32px; font-weight: 700; letter-spacing: -1.5px; line-height: 1.1;">
+          今日車隊總覽
+        </div>
+      </div>
+
+      <div class="type-specimen">
+        <div class="type-meta">HEADING SM / SATOSHI 700 &mdash; 22px / -0.5px tracking</div>
+        <div style="font-family: var(--font-display); font-size: 22px; font-weight: 700; letter-spacing: -0.5px; line-height: 1.2;">
+          即時運輸追蹤
+        </div>
+      </div>
+
+      <div class="grid-2 mt-16">
+        <div class="type-specimen">
+          <div class="type-meta">BODY / DM SANS 400 &mdash; 14px</div>
+          <div style="font-family: var(--font-body); font-size: 14px; font-weight: 400; line-height: 1.5; color: var(--text-primary);">
+            本月共完成 2,847 筆配送訂單，準時率達 96.3%。高雄倉庫出貨量較上月成長 12%，主要來自電子商務通路的訂單增長。
+          </div>
+        </div>
+        <div class="type-specimen">
+          <div class="type-meta">DATA / GEIST MONO 500 &mdash; 13px / tabular-nums</div>
+          <div style="font-family: var(--font-mono); font-size: 13px; font-weight: 500; line-height: 1.4; font-variant-numeric: tabular-nums; color: var(--accent-primary);">
+            TW-2026-041058<br>
+            WH-TPE-A03-R12<br>
+            25.0340°N 121.5645°E<br>
+            1,247.50 kg &bull; 3.2 CBM
+          </div>
+        </div>
+      </div>
+
+      <div class="type-specimen mt-16">
+        <div class="type-meta">LABEL / GEIST MONO 500 &mdash; 10px / UPPERCASE / 1.5px tracking</div>
+        <div style="font-family: var(--font-mono); font-size: 10px; font-weight: 500; letter-spacing: 1.5px; text-transform: uppercase; color: var(--text-muted);">
+          SHIPMENT ID &bull; WAREHOUSE &bull; COORDINATES &bull; WEIGHT &bull; VOLUME &bull; ETA &bull; STATUS
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== COLORS ==================== -->
+    <section class="section">
+      <div class="section-label">Color Palette</div>
+      <div class="section-title">色彩系統</div>
+
+      <div class="grid-2">
+        <div>
+          <div class="swatch-group">
+            <div class="swatch-group-title">Accent Colors</div>
+            <div class="swatch">
+              <div class="swatch-color" style="background: #F59E0B; box-shadow: 0 0 20px rgba(245,158,11,0.3);"></div>
+              <div class="swatch-info">
+                <div class="swatch-name">Signal Amber</div>
+                <div class="swatch-hex">#F59E0B — Primary accent</div>
+              </div>
+            </div>
+            <div class="swatch">
+              <div class="swatch-color" style="background: #3B82F6; box-shadow: 0 0 20px rgba(59,130,246,0.3);"></div>
+              <div class="swatch-info">
+                <div class="swatch-name">Route Blue</div>
+                <div class="swatch-hex">#3B82F6 — Secondary accent</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="swatch-group">
+            <div class="swatch-group-title">Semantic Status</div>
+            <div class="swatch">
+              <div class="swatch-color" style="background: #34D399; box-shadow: 0 0 12px rgba(52,211,153,0.4);"></div>
+              <div class="swatch-info">
+                <div class="swatch-name">Success / Delivered</div>
+                <div class="swatch-hex">#34D399</div>
+              </div>
+            </div>
+            <div class="swatch">
+              <div class="swatch-color" style="background: #FBBF24; box-shadow: 0 0 12px rgba(251,191,36,0.4);"></div>
+              <div class="swatch-info">
+                <div class="swatch-name">Warning / Pending</div>
+                <div class="swatch-hex">#FBBF24</div>
+              </div>
+            </div>
+            <div class="swatch">
+              <div class="swatch-color" style="background: #F87171; box-shadow: 0 0 12px rgba(248,113,113,0.4);"></div>
+              <div class="swatch-info">
+                <div class="swatch-name">Error / Delayed</div>
+                <div class="swatch-hex">#F87171</div>
+              </div>
+            </div>
+            <div class="swatch">
+              <div class="swatch-color" style="background: #60A5FA;"></div>
+              <div class="swatch-info">
+                <div class="swatch-name">Info</div>
+                <div class="swatch-hex">#60A5FA</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <div class="swatch-group">
+            <div class="swatch-group-title">Background Surfaces</div>
+            <div class="swatch">
+              <div class="swatch-color" style="background: #0A0D14; box-shadow: 0 0 0 1px rgba(255,255,255,0.1);"></div>
+              <div class="swatch-info">
+                <div class="swatch-name">Deep</div>
+                <div class="swatch-hex">#0A0D14 — Page background</div>
+              </div>
+            </div>
+            <div class="swatch">
+              <div class="swatch-color" style="background: #111621; box-shadow: 0 0 0 1px rgba(255,255,255,0.1);"></div>
+              <div class="swatch-info">
+                <div class="swatch-name">Surface 1</div>
+                <div class="swatch-hex">#111621 — Sidebar, panels</div>
+              </div>
+            </div>
+            <div class="swatch">
+              <div class="swatch-color" style="background: #1A2030; box-shadow: 0 0 0 1px rgba(255,255,255,0.1);"></div>
+              <div class="swatch-info">
+                <div class="swatch-name">Surface 2</div>
+                <div class="swatch-hex">#1A2030 — Cards, modals</div>
+              </div>
+            </div>
+            <div class="swatch">
+              <div class="swatch-color" style="background: #222B3C; box-shadow: 0 0 0 1px rgba(255,255,255,0.1);"></div>
+              <div class="swatch-info">
+                <div class="swatch-name">Surface 3</div>
+                <div class="swatch-hex">#222B3C — Hover states</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="swatch-group">
+            <div class="swatch-group-title">Text</div>
+            <div class="swatch">
+              <div class="swatch-color" style="background: #E8ECF1;"></div>
+              <div class="swatch-info">
+                <div class="swatch-name">Primary</div>
+                <div class="swatch-hex">#E8ECF1</div>
+              </div>
+            </div>
+            <div class="swatch">
+              <div class="swatch-color" style="background: #8892A0;"></div>
+              <div class="swatch-info">
+                <div class="swatch-name">Secondary</div>
+                <div class="swatch-hex">#8892A0</div>
+              </div>
+            </div>
+            <div class="swatch">
+              <div class="swatch-color" style="background: #4A5568;"></div>
+              <div class="swatch-info">
+                <div class="swatch-name">Muted</div>
+                <div class="swatch-hex">#4A5568</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== COMPONENTS ==================== -->
+    <section class="section">
+      <div class="section-label">Components</div>
+      <div class="section-title">元件系統</div>
+
+      <!-- Buttons -->
+      <div style="font-family: var(--font-display); font-size: 18px; font-weight: 700; letter-spacing: -0.3px; margin-bottom: 12px;">Buttons</div>
+      <div class="flex flex-wrap gap-12 mb-16">
+        <button class="btn btn-primary">新增運單</button>
+        <button class="btn btn-primary btn-pill">派車調度</button>
+        <button class="btn btn-secondary">匯出報表</button>
+        <button class="btn btn-secondary btn-pill">篩選</button>
+        <button class="btn btn-ghost">取消</button>
+        <button class="btn btn-danger">刪除運單</button>
+      </div>
+
+      <!-- Nav Chips -->
+      <div style="font-family: var(--font-display); font-size: 18px; font-weight: 700; letter-spacing: -0.3px; margin-bottom: 12px; margin-top: 24px;">Navigation Chips</div>
+      <div class="nav-chips mb-16">
+        <button class="nav-chip active">全部運單</button>
+        <button class="nav-chip">在途中</button>
+        <button class="nav-chip">已送達</button>
+        <button class="nav-chip">待出貨</button>
+        <button class="nav-chip">異常</button>
+      </div>
+
+      <!-- Badges -->
+      <div style="font-family: var(--font-display); font-size: 18px; font-weight: 700; letter-spacing: -0.3px; margin-bottom: 12px; margin-top: 24px;">Status Badges</div>
+      <div class="flex flex-wrap gap-8 mb-16">
+        <span class="badge badge-transit">在途中</span>
+        <span class="badge badge-delivered">已送達</span>
+        <span class="badge badge-delayed">延遲</span>
+        <span class="badge badge-pending">待處理</span>
+        <span class="badge badge-info">排程中</span>
+      </div>
+
+      <!-- Alerts -->
+      <div style="font-family: var(--font-display); font-size: 18px; font-weight: 700; letter-spacing: -0.3px; margin-bottom: 12px; margin-top: 24px;">Alerts</div>
+      <div class="alert alert-success">&#10003; 運單 TW-2026-041058 已成功送達台北倉庫</div>
+      <div class="alert alert-warning">&#9888; 車輛 V-103 預計延遲 25 分鐘抵達</div>
+      <div class="alert alert-error">&#10007; 運單 TW-2026-041062 配送異常 — 地址無法送達</div>
+      <div class="alert alert-info">&#8505; 系統將於今晚 23:00 進行排程維護</div>
+
+      <!-- Form Inputs -->
+      <div style="font-family: var(--font-display); font-size: 18px; font-weight: 700; letter-spacing: -0.3px; margin-bottom: 12px; margin-top: 24px;">Form Inputs</div>
+      <div class="grid-2">
+        <div class="input-group">
+          <label class="input-label">運單編號</label>
+          <input class="input input-data" type="text" placeholder="TW-2026-XXXXXX" />
+        </div>
+        <div class="input-group">
+          <label class="input-label">收件地址</label>
+          <input class="input" type="text" placeholder="台北市信義區松仁路 100 號" />
+        </div>
+        <div class="input-group">
+          <label class="input-label">貨物重量 (kg)</label>
+          <input class="input input-data" type="text" placeholder="0.00" />
+        </div>
+        <div class="input-group">
+          <label class="input-label">備註</label>
+          <input class="input" type="text" placeholder="輸入配送備註..." />
+        </div>
+      </div>
+    </section>
+
+    <div class="divider"></div>
+
+    <!-- ==================== DASHBOARD MOCKUP ==================== -->
+    <section class="section">
+      <div class="section-label">Dashboard Mockup</div>
+      <div class="section-title">儀表板模擬</div>
+
+      <div class="dashboard-mockup">
+        <!-- Sidebar -->
+        <div class="sidebar-preview">
+          <div class="sidebar-logo">
+            <div class="sidebar-logo-icon">&#9670;</div>
+            <div class="sidebar-logo-text">LogiERP</div>
+          </div>
+          <div class="sidebar-section-label">Main</div>
+          <div class="sidebar-item active">
+            <span class="sidebar-item-icon">&#9632;</span> 儀表板
+          </div>
+          <div class="sidebar-item">
+            <span class="sidebar-item-icon">&#9993;</span> 運單管理
+            <span class="sidebar-badge">12</span>
+          </div>
+          <div class="sidebar-item">
+            <span class="sidebar-item-icon">&#9733;</span> 車隊管理
+          </div>
+          <div class="sidebar-item">
+            <span class="sidebar-item-icon">&#9873;</span> 倉庫管理
+          </div>
+          <div class="sidebar-section-label">Analytics</div>
+          <div class="sidebar-item">
+            <span class="sidebar-item-icon">&#9672;</span> 報表中心
+          </div>
+          <div class="sidebar-item">
+            <span class="sidebar-item-icon">&#9881;</span> 系統設定
+          </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="dashboard-main">
+          <div class="dashboard-header">
+            <div class="dashboard-title">今日運輸總覽</div>
+            <div class="nav-chips">
+              <button class="nav-chip active">全部</button>
+              <button class="nav-chip">北部</button>
+              <button class="nav-chip">中部</button>
+              <button class="nav-chip">南部</button>
+            </div>
+          </div>
+
+          <!-- KPI Cards -->
+          <div class="grid-4 mb-16">
+            <div class="card kpi-card">
+              <div class="kpi-label">TODAY'S SHIPMENTS</div>
+              <div class="kpi-value">247</div>
+              <div class="kpi-change up">&#9650; 12.3% vs 昨日</div>
+            </div>
+            <div class="card kpi-card">
+              <div class="kpi-label">IN TRANSIT</div>
+              <div class="kpi-value">89</div>
+              <div class="kpi-change" style="color: var(--text-muted);">&#8212; 正常</div>
+            </div>
+            <div class="card kpi-card">
+              <div class="kpi-label">ON-TIME RATE</div>
+              <div class="kpi-value">96.3%</div>
+              <div class="kpi-change up">&#9650; 1.2%</div>
+            </div>
+            <div class="card kpi-card">
+              <div class="kpi-label">DELAYED</div>
+              <div class="kpi-value" style="color: var(--error);">5</div>
+              <div class="kpi-change down">&#9660; 需要注意</div>
+            </div>
+          </div>
+
+          <!-- Data Table -->
+          <div class="data-table-container">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Shipment ID</th>
+                  <th>Route</th>
+                  <th>Weight</th>
+                  <th>Vehicle</th>
+                  <th>ETA</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><span class="data-tracking">TW-2026-041058</span></td>
+                  <td>台北 → 高雄</td>
+                  <td><span class="data-mono">1,247.50 kg</span></td>
+                  <td><span class="data-mono">V-103</span></td>
+                  <td><span class="data-mono">14:30</span></td>
+                  <td><span class="badge badge-transit">在途中</span></td>
+                </tr>
+                <tr>
+                  <td><span class="data-tracking">TW-2026-041057</span></td>
+                  <td>桃園 → 台中</td>
+                  <td><span class="data-mono">832.00 kg</span></td>
+                  <td><span class="data-mono">V-087</span></td>
+                  <td><span class="data-mono">12:15</span></td>
+                  <td><span class="badge badge-delivered">已送達</span></td>
+                </tr>
+                <tr>
+                  <td><span class="data-tracking">TW-2026-041062</span></td>
+                  <td>新竹 → 台南</td>
+                  <td><span class="data-mono">2,105.75 kg</span></td>
+                  <td><span class="data-mono">V-215</span></td>
+                  <td><span class="data-mono">16:00</span></td>
+                  <td><span class="badge badge-delayed">延遲</span></td>
+                </tr>
+                <tr>
+                  <td><span class="data-tracking">TW-2026-041063</span></td>
+                  <td>台北 → 花蓮</td>
+                  <td><span class="data-mono">456.30 kg</span></td>
+                  <td><span class="data-mono">V-142</span></td>
+                  <td><span class="data-mono">—</span></td>
+                  <td><span class="badge badge-pending">待處理</span></td>
+                </tr>
+                <tr>
+                  <td><span class="data-tracking">TW-2026-041059</span></td>
+                  <td>高雄 → 屏東</td>
+                  <td><span class="data-mono">678.20 kg</span></td>
+                  <td><span class="data-mono">V-091</span></td>
+                  <td><span class="data-mono">11:45</span></td>
+                  <td><span class="badge badge-delivered">已送達</span></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== SPACING & RADIUS ==================== -->
+    <section class="section">
+      <div class="section-label">Spacing & Radius</div>
+      <div class="section-title">間距與圓角</div>
+
+      <div class="grid-2">
+        <div>
+          <div style="font-family: var(--font-display); font-size: 18px; font-weight: 700; letter-spacing: -0.3px; margin-bottom: 16px;">Spacing Scale (8px base)</div>
+          <div class="flex items-center gap-12 mb-8" style="flex-wrap: wrap;">
+            <div style="display: flex; align-items: center; gap: 8px;">
+              <div style="width: 2px; height: 24px; background: var(--accent-primary); border-radius: 1px;"></div>
+              <span class="data-mono" style="font-size: 11px; color: var(--text-muted);">2xs: 2px</span>
+            </div>
+            <div style="display: flex; align-items: center; gap: 8px;">
+              <div style="width: 4px; height: 24px; background: var(--accent-primary); border-radius: 2px;"></div>
+              <span class="data-mono" style="font-size: 11px; color: var(--text-muted);">xs: 4px</span>
+            </div>
+            <div style="display: flex; align-items: center; gap: 8px;">
+              <div style="width: 8px; height: 24px; background: var(--accent-primary); border-radius: 2px;"></div>
+              <span class="data-mono" style="font-size: 11px; color: var(--text-muted);">sm: 8px</span>
+            </div>
+            <div style="display: flex; align-items: center; gap: 8px;">
+              <div style="width: 16px; height: 24px; background: var(--accent-primary); border-radius: 2px;"></div>
+              <span class="data-mono" style="font-size: 11px; color: var(--text-muted);">md: 16px</span>
+            </div>
+            <div style="display: flex; align-items: center; gap: 8px;">
+              <div style="width: 24px; height: 24px; background: var(--accent-primary); border-radius: 2px;"></div>
+              <span class="data-mono" style="font-size: 11px; color: var(--text-muted);">lg: 24px</span>
+            </div>
+            <div style="display: flex; align-items: center; gap: 8px;">
+              <div style="width: 32px; height: 24px; background: var(--accent-primary); border-radius: 2px;"></div>
+              <span class="data-mono" style="font-size: 11px; color: var(--text-muted);">xl: 32px</span>
+            </div>
+            <div style="display: flex; align-items: center; gap: 8px;">
+              <div style="width: 48px; height: 24px; background: var(--accent-primary); border-radius: 2px;"></div>
+              <span class="data-mono" style="font-size: 11px; color: var(--text-muted);">2xl: 48px</span>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <div style="font-family: var(--font-display); font-size: 18px; font-weight: 700; letter-spacing: -0.3px; margin-bottom: 16px;">Border Radius</div>
+          <div class="flex items-center gap-12" style="flex-wrap: wrap;">
+            <div style="text-align: center;">
+              <div style="width: 48px; height: 48px; background: var(--bg-surface-3); border-radius: 4px; box-shadow: var(--border-shadow);"></div>
+              <span class="data-mono" style="font-size: 11px; color: var(--text-muted); display: block; margin-top: 4px;">sm: 4px</span>
+            </div>
+            <div style="text-align: center;">
+              <div style="width: 48px; height: 48px; background: var(--bg-surface-3); border-radius: 8px; box-shadow: var(--border-shadow);"></div>
+              <span class="data-mono" style="font-size: 11px; color: var(--text-muted); display: block; margin-top: 4px;">md: 8px</span>
+            </div>
+            <div style="text-align: center;">
+              <div style="width: 48px; height: 48px; background: var(--bg-surface-3); border-radius: 12px; box-shadow: var(--border-shadow);"></div>
+              <span class="data-mono" style="font-size: 11px; color: var(--text-muted); display: block; margin-top: 4px;">lg: 12px</span>
+            </div>
+            <div style="text-align: center;">
+              <div style="width: 48px; height: 48px; background: var(--bg-surface-3); border-radius: 16px; box-shadow: var(--border-shadow);"></div>
+              <span class="data-mono" style="font-size: 11px; color: var(--text-muted); display: block; margin-top: 4px;">xl: 16px</span>
+            </div>
+            <div style="text-align: center;">
+              <div style="width: 64px; height: 32px; background: var(--accent-primary); border-radius: 9999px;"></div>
+              <span class="data-mono" style="font-size: 11px; color: var(--text-muted); display: block; margin-top: 4px;">pill</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== SHADOW DEPTH ==================== -->
+    <section class="section">
+      <div class="section-label">Depth & Elevation</div>
+      <div class="section-title">陰影與層次</div>
+
+      <div class="grid-4">
+        <div style="padding: 24px; background: var(--bg-surface-2); border-radius: 8px; text-align: center;">
+          <div class="type-meta" style="margin-bottom: 8px;">LEVEL 1 — BORDER</div>
+          <div style="width: 80px; height: 60px; margin: 0 auto; background: var(--bg-surface-3); border-radius: 8px; box-shadow: 0 0 0 1px rgba(255,255,255,0.06);"></div>
+          <div style="font-family: var(--font-mono); font-size: 10px; color: var(--text-muted); margin-top: 8px;">shadow-as-border</div>
+        </div>
+        <div style="padding: 24px; background: var(--bg-surface-2); border-radius: 8px; text-align: center;">
+          <div class="type-meta" style="margin-bottom: 8px;">LEVEL 2 — CARD</div>
+          <div style="width: 80px; height: 60px; margin: 0 auto; background: var(--bg-surface-3); border-radius: 8px; box-shadow: 0 0 0 1px rgba(255,255,255,0.06), 0 2px 8px rgba(0,0,0,0.3);"></div>
+          <div style="font-family: var(--font-mono); font-size: 10px; color: var(--text-muted); margin-top: 8px;">shadow-card</div>
+        </div>
+        <div style="padding: 24px; background: var(--bg-surface-2); border-radius: 8px; text-align: center;">
+          <div class="type-meta" style="margin-bottom: 8px;">LEVEL 3 — ELEVATED</div>
+          <div style="width: 80px; height: 60px; margin: 0 auto; background: var(--bg-surface-3); border-radius: 8px; box-shadow: 0 0 0 1px rgba(255,255,255,0.06), 0 8px 32px rgba(0,0,0,0.4);"></div>
+          <div style="font-family: var(--font-mono); font-size: 10px; color: var(--text-muted); margin-top: 8px;">shadow-elevated</div>
+        </div>
+        <div style="padding: 24px; background: var(--bg-surface-2); border-radius: 8px; text-align: center;">
+          <div class="type-meta" style="margin-bottom: 8px;">GLOW — AMBER</div>
+          <div style="width: 80px; height: 60px; margin: 0 auto; background: var(--bg-surface-3); border-radius: 8px; box-shadow: 0 0 20px rgba(245,158,11,0.15), 0 0 60px rgba(245,158,11,0.05), 0 0 0 1px rgba(245,158,11,0.2);"></div>
+          <div style="font-family: var(--font-mono); font-size: 10px; color: var(--text-muted); margin-top: 8px;">shadow-glow-amber</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== FOOTER ==================== -->
+    <div class="divider"></div>
+    <div style="text-align: center; padding: 32px 0;">
+      <div style="font-family: var(--font-mono); font-size: 10px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--text-muted);">
+        Logistics ERP Design System &bull; 2026-04-10 &bull; Generated by /design-consultation
+      </div>
+      <div style="font-family: var(--font-body); font-size: 12px; color: var(--text-muted); margin-top: 8px;">
+        References: SpaceX + Vercel + Superhuman + Uber
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    function toggleTheme() {
+      const html = document.documentElement;
+      const icon = document.getElementById('theme-icon');
+      if (html.getAttribute('data-theme') === 'dark') {
+        html.setAttribute('data-theme', 'light');
+        icon.textContent = '\u2600';
+      } else {
+        html.setAttribute('data-theme', 'dark');
+        icon.textContent = '\u263E';
+      }
+    }
+
+    // Chip interaction
+    document.querySelectorAll('.nav-chips').forEach(group => {
+      group.querySelectorAll('.nav-chip').forEach(chip => {
+        chip.addEventListener('click', () => {
+          group.querySelectorAll('.nav-chip').forEach(c => c.classList.remove('active'));
+          chip.classList.add('active');
+        });
+      });
+    });
+  </script>
+</body>
+</html>
