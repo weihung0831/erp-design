@@ -23,8 +23,10 @@ awesome-design-md/       # submodule — 59 套參考設計系統（Linear, BMW,
 - 食品廠：Gradient Green `#10B981`
 - 物流業：Signal Amber `#F59E0B`
 - 金屬加工：Forge Orange `#FF6B2C`
+- 紡織業：Indigo `#6366F1`
+- 製藥業：Clinical Teal `#14B8A6`
 
-共通慣例：深色優先、Geist Mono 等寬數據、8px 間距基準、LED 發光狀態標籤。
+共通慣例：亮色預設、Geist Mono 等寬數據、8px 間距基準、LED 發光狀態標籤。
 
 ## 新增產業流程
 
@@ -37,4 +39,10 @@ awesome-design-md/       # submodule — 59 套參考設計系統（Linear, BMW,
 
 ```bash
 open designs/<產業>/preview.html
+```
+
+## 前置設定
+
+```bash
+git submodule update --init   # 初始化 awesome-design-md 參考設計
 ```

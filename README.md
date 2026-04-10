@@ -1,6 +1,6 @@
 # ERP Design
 
-Industry-specific dark-mode design systems for manufacturing ERP applications. Each industry gets a tailored `DESIGN.md` (design tokens, typography, color, components) and a `preview.html` (interactive browser preview).
+Industry-specific design systems for manufacturing ERP applications. Each industry gets a tailored `DESIGN.md` (design tokens, typography, color, components) and a `preview.html` (interactive browser preview with light/dark toggle).
 
 [繁體中文](README.zh-TW.md)
 
@@ -12,8 +12,8 @@ Industry-specific dark-mode design systems for manufacturing ERP applications. E
 | [Food Factory](designs/食品廠/) | Gradient Green `#10B981` | ✅ Complete |
 | [Logistics](designs/物流業/) | Signal Amber `#F59E0B` | ✅ Complete |
 | [Metal Processing](designs/金屬加工/) | Forge Orange `#FF6B2C` | ✅ Complete |
-| [Textile](designs/紡織業/) | — | 🔲 Planned |
-| [Pharmaceutical](designs/製藥業/) | — | 🔲 Planned |
+| [Textile](designs/紡織業/) | Indigo `#6366F1` | ✅ Complete |
+| [Pharmaceutical](designs/製藥業/) | Clinical Teal `#14B8A6` | ✅ Complete |
 
 ## Structure
 
@@ -31,8 +31,12 @@ designs/
 ├── 金屬加工/        # Metal Processing — forge orange, cold steel, CNC precision
 │   ├── DESIGN.md
 │   └── preview.html
-├── 紡織業/          # Textile — planned
-└── 製藥業/          # Pharmaceutical — planned
+├── 紡織業/          # Textile — indigo, loom gradient, warm purple-gray
+│   ├── DESIGN.md
+│   └── preview.html
+└── 製藥業/          # Pharmaceutical — clinical teal, lab precision, cold blue-black
+    ├── DESIGN.md
+    └── preview.html
 ```
 
 ## Design System Format
@@ -78,7 +82,7 @@ git submodule update --init
 
 All industry designs share these conventions while maintaining distinct visual identities:
 
-- **Dark mode first** — deep backgrounds, status colors pop
+- **Light mode default** — preview defaults to light, with dark mode toggle
 - **Monospace data** — Geist Mono with `tabular-nums` for all numerical data
 - **8px spacing base** — compact-first for data-dense ERP layouts
 - **LED-glow status badges** — pill-shaped with animated dot indicators

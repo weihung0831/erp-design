@@ -1,6 +1,6 @@
 # ERP Design
 
-為製造業 ERP 應用打造的產業別深色模式設計系統。每個產業擁有專屬的 `DESIGN.md`（設計代碼、字型、色彩、元件）與 `preview.html`（瀏覽器互動式預覽）。
+為製造業 ERP 應用打造的產業別設計系統。每個產業擁有專屬的 `DESIGN.md`（設計代碼、字型、色彩、元件）與 `preview.html`（瀏覽器互動式預覽，含明暗模式切換）。
 
 [English](README.md)
 
@@ -12,8 +12,8 @@
 | [食品廠](designs/食品廠/) | Gradient Green `#10B981` | ✅ 完成 |
 | [物流業](designs/物流業/) | Signal Amber `#F59E0B` | ✅ 完成 |
 | [金屬加工](designs/金屬加工/) | Forge Orange `#FF6B2C` | ✅ 完成 |
-| [紡織業](designs/紡織業/) | — | 🔲 規劃中 |
-| [製藥業](designs/製藥業/) | — | 🔲 規劃中 |
+| [紡織業](designs/紡織業/) | Indigo `#6366F1` | ✅ 完成 |
+| [製藥業](designs/製藥業/) | Clinical Teal `#14B8A6` | ✅ 完成 |
 
 ## 目錄結構
 
@@ -31,8 +31,12 @@ designs/
 ├── 金屬加工/        # 鍛造橙、冷鋼灰、CNC 精密感
 │   ├── DESIGN.md
 │   └── preview.html
-├── 紡織業/          # 規劃中
-└── 製藥業/          # 規劃中
+├── 紡織業/          # 靛藍、織物漸層、暖紫灰色階
+│   ├── DESIGN.md
+│   └── preview.html
+└── 製藥業/          # 臨床 Teal、實驗室精密、冷藍黑色階
+    ├── DESIGN.md
+    └── preview.html
 ```
 
 ## 設計系統格式
@@ -78,7 +82,7 @@ git submodule update --init
 
 所有產業設計系統共享以下慣例，同時保持各自的視覺獨特性：
 
-- **深色模式優先** — 深色背景，狀態色彩更鮮明
+- **亮色模式預設** — 預覽預設亮色，可切換深色模式
 - **等寬數據字型** — Geist Mono + `tabular-nums`，所有數值資料
 - **8px 間距基準** — Compact-first，適配資料密集型 ERP
 - **LED 發光狀態標籤** — 膠囊形 + 動態脈衝指示
