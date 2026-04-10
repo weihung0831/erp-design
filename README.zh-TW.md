@@ -1,6 +1,6 @@
 # ERP Design
 
-為製造業 ERP 應用打造的產業別設計系統。每個產業擁有專屬的 `DESIGN.md`（設計代碼、字型、色彩、元件）與 `preview.html`（瀏覽器互動式預覽，含明暗模式切換）。
+為製造業 ERP 應用打造的產業別設計系統。每個產業擁有專屬的 `DESIGN.md`（設計代碼、字型、色彩、元件）。統一的 Astro 展示網站可即時瀏覽和比較所有設計系統。
 
 [English](README.md)
 
@@ -15,28 +15,43 @@
 | [紡織業](designs/紡織業/) | Indigo `#6366F1` | ✅ 完成 |
 | [製藥業](designs/製藥業/) | Clinical Teal `#14B8A6` | ✅ 完成 |
 
+## 快速開始
+
+```bash
+git submodule update --init   # 初始化參考設計
+npm install
+npm run dev                   # 啟動開發伺服器 http://localhost:4321
+```
+
+## 展示網站
+
+使用 **Astro** 建構（Vercel 風格：黑白中性底色、Geist 字型、shadow-as-border）。中性底色讓各產業的 accent 色成為視覺主角。
+
+- **首頁** — 6 個產業的卡片總覽
+- **詳情頁** — 嵌入即時 preview，主題同步切換 + 下載 DESIGN.md
+- **Preview** — 統一 7 區塊：字型、色彩、元件、間距圓角、陰影層次、KPI 卡片、儀表板 Mockup
+
 ## 目錄結構
 
 ```
 designs/
-├── 電子業/          # 電青色、玻璃擬態、電路板美學
-│   ├── DESIGN.md
-│   └── preview.html
-├── 食品廠/          # 漸層綠、紅綠燈系統、暖灰色階
-│   ├── DESIGN.md
-│   └── preview.html
-├── 物流業/          # 琥珀信號、shadow-as-border、膠囊導航
-│   ├── DESIGN.md
-│   └── preview.html
-├── 金屬加工/        # 鍛造橙、冷鋼灰、CNC 精密感
-│   ├── DESIGN.md
-│   └── preview.html
-├── 紡織業/          # 靛藍、織物漸層、暖紫灰色階
-│   ├── DESIGN.md
-│   └── preview.html
-└── 製藥業/          # 臨床 Teal、實驗室精密、冷藍黑色階
-    ├── DESIGN.md
-    └── preview.html
+├── <產業>/
+│   └── DESIGN.md              # 設計規格（唯一來源）
+src/
+├── data/
+│   ├── industry-slugs.json    # 產業 slug 映射（單一來源）
+│   ├── industries.ts          # 產業 metadata
+│   └── design-tokens.ts       # 各產業完整設計 token
+├── components/
+│   └── PreviewTemplate.astro  # 共用 preview 模板（7 區塊）
+├── pages/
+│   ├── index.astro            # 首頁卡片總覽
+│   ├── designs/[slug].astro   # 詳情頁（iframe + 下載）
+│   └── preview/[slug].astro   # 即時 preview 頁面
+├── layouts/Base.astro
+└── styles/global.css
+scripts/prebuild.mjs           # 打包 DESIGN.md 為下載 zip
+awesome-design-md/             # submodule — 59 套參考設計系統
 ```
 
 ## 設計系統格式
@@ -54,29 +69,9 @@ designs/
 - **元件模式** — 按鈕、表格、標籤、KPI 卡片、導航
 - **Do's and Don'ts** — 一致性護欄
 
-## 預覽
-
-在瀏覽器中開啟任何 `preview.html` 即可查看完整設計系統：
-
-```bash
-open designs/金屬加工/preview.html
-```
-
-每份預覽包含：
-- 色彩調色盤
-- 字型排版展示
-- 元件展示（按鈕、輸入框、狀態標籤）
-- 間距與圓角比例尺
-- 完整 ERP 儀表板 Mockup（Sidebar + KPI + 資料表格）
-- 明暗模式切換
-
 ## 設計參考
 
 本專案以 submodule 引入 [awesome-design-md](https://github.com/VoltAgent/awesome-design-md)，包含 59 套參考設計系統（Linear、Stripe、BMW、Tesla、SpaceX 等）作為靈感來源。
-
-```bash
-git submodule update --init
-```
 
 ## 共通慣例
 
@@ -86,8 +81,12 @@ git submodule update --init
 - **等寬數據字型** — Geist Mono + `tabular-nums`，所有數值資料
 - **8px 間距基準** — Compact-first，適配資料密集型 ERP
 - **LED 發光狀態標籤** — 膠囊形 + 動態脈衝指示
-- **56px 固定 Header** — 一致的導航框架
-- **220px 可收合 Sidebar** — 收合至 64px icon-only
+
+## 技術棧
+
+- [Astro](https://astro.build/) — 靜態站產生器
+- [Geist](https://vercel.com/font) — Sans + Mono 字型
+- 部署於 [Zeabur](https://zeabur.com/)
 
 ## 授權
 

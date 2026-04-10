@@ -1,6 +1,6 @@
 # ERP Design
 
-Industry-specific design systems for manufacturing ERP applications. Each industry gets a tailored `DESIGN.md` (design tokens, typography, color, components) and a `preview.html` (interactive browser preview with light/dark toggle).
+Industry-specific design systems for manufacturing ERP applications. Each industry has a tailored `DESIGN.md` with design tokens, typography, color, and component patterns. A unified Astro showcase site lets you browse and compare all designs with live previews.
 
 [繁體中文](README.zh-TW.md)
 
@@ -15,28 +15,43 @@ Industry-specific design systems for manufacturing ERP applications. Each indust
 | [Textile](designs/紡織業/) | Indigo `#6366F1` | ✅ Complete |
 | [Pharmaceutical](designs/製藥業/) | Clinical Teal `#14B8A6` | ✅ Complete |
 
+## Quick Start
+
+```bash
+git submodule update --init   # Initialize reference designs
+npm install
+npm run dev                   # Start dev server at http://localhost:4321
+```
+
+## Showcase Site
+
+Built with **Astro** (Vercel-style UI: monochrome base, Geist fonts, shadow-as-border). The neutral black/white palette lets each industry's accent color stand out.
+
+- **Homepage** — Card grid with all 6 industries
+- **Detail page** — Embedded live preview with dark/light sync + DESIGN.md download
+- **Preview** — 7 unified sections: Typography, Color, Components, Spacing & Radius, Shadows, KPI Cards, Dashboard Mockup
+
 ## Structure
 
 ```
 designs/
-├── 電子業/          # Electronics — cyan, glassmorphism, circuit board aesthetic
-│   ├── DESIGN.md
-│   └── preview.html
-├── 食品廠/          # Food Factory — green, traffic light system, warm stone grays
-│   ├── DESIGN.md
-│   └── preview.html
-├── 物流業/          # Logistics — amber, shadow-as-border, pill nav chips
-│   ├── DESIGN.md
-│   └── preview.html
-├── 金屬加工/        # Metal Processing — forge orange, cold steel, CNC precision
-│   ├── DESIGN.md
-│   └── preview.html
-├── 紡織業/          # Textile — indigo, loom gradient, warm purple-gray
-│   ├── DESIGN.md
-│   └── preview.html
-└── 製藥業/          # Pharmaceutical — clinical teal, lab precision, cold blue-black
-    ├── DESIGN.md
-    └── preview.html
+├── <industry>/
+│   └── DESIGN.md              # Design spec (source of truth)
+src/
+├── data/
+│   ├── industry-slugs.json    # Slug mapping (single source)
+│   ├── industries.ts          # Industry metadata
+│   └── design-tokens.ts       # Full design tokens per industry
+├── components/
+│   └── PreviewTemplate.astro  # Shared preview template (7 sections)
+├── pages/
+│   ├── index.astro            # Homepage card grid
+│   ├── designs/[slug].astro   # Detail page (iframe + download)
+│   └── preview/[slug].astro   # Live preview page
+├── layouts/Base.astro
+└── styles/global.css
+scripts/prebuild.mjs           # Zip DESIGN.md for download
+awesome-design-md/             # Submodule — 59 reference design systems
 ```
 
 ## Design System Format
@@ -54,29 +69,9 @@ Each `DESIGN.md` includes:
 - **Component Patterns** — buttons, tables, badges, KPI cards, nav
 - **Do's and Don'ts** — guard rails for consistency
 
-## Preview
-
-Open any `preview.html` in a browser to see the full design system rendered:
-
-```bash
-open designs/金屬加工/preview.html
-```
-
-Each preview includes:
-- Color palette swatches
-- Typography specimen
-- Component showcase (buttons, inputs, badges)
-- Spacing & border radius scale
-- Full ERP dashboard mockup with sidebar, KPI cards, and data table
-- Dark/Light mode toggle
-
 ## Design References
 
 This repo includes [awesome-design-md](https://github.com/VoltAgent/awesome-design-md) as a submodule with 59 reference design systems (Linear, Stripe, BMW, Tesla, SpaceX, etc.) used as inspiration.
-
-```bash
-git submodule update --init
-```
 
 ## Shared Conventions
 
@@ -86,8 +81,12 @@ All industry designs share these conventions while maintaining distinct visual i
 - **Monospace data** — Geist Mono with `tabular-nums` for all numerical data
 - **8px spacing base** — compact-first for data-dense ERP layouts
 - **LED-glow status badges** — pill-shaped with animated dot indicators
-- **56px fixed header** — consistent navigation frame
-- **220px collapsible sidebar** — icon-only at 64px
+
+## Tech Stack
+
+- [Astro](https://astro.build/) — Static site generator
+- [Geist](https://vercel.com/font) — Sans + Mono fonts
+- Deployed on [Zeabur](https://zeabur.com/)
 
 ## License
 
