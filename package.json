@@ -1,0 +1,14 @@
+{
+  "name": "erp-design-showcase",
+  "type": "module",
+  "version": "0.0.1",
+  "scripts": {
+    "prebuild": "node scripts/prebuild.mjs",
+    "dev": "node scripts/prebuild.mjs && astro dev",
+    "build": "node scripts/prebuild.mjs && astro build",
+    "preview": "astro preview"
+  },
+  "dependencies": {
+    "astro": "^5.0.0"
+  }
+}

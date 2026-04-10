@@ -1,0 +1,8 @@
+[
+  { "dirName": "電子業", "slug": "electronics" },
+  { "dirName": "食品廠", "slug": "food" },
+  { "dirName": "物流業", "slug": "logistics" },
+  { "dirName": "金屬加工", "slug": "metalwork" },
+  { "dirName": "紡織業", "slug": "textile" },
+  { "dirName": "製藥業", "slug": "pharma" }
+]
