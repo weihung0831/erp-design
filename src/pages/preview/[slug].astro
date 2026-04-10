@@ -1,0 +1,14 @@
+---
+import PreviewTemplate from '../../components/PreviewTemplate.astro';
+import { industries } from '../../data/industries';
+
+export function getStaticPaths() {
+  return industries.map((ind) => ({
+    params: { slug: ind.slug },
+    props: { slug: ind.slug },
+  }));
+}
+
+const { slug } = Astro.props;
+---
+<PreviewTemplate slug={slug} />

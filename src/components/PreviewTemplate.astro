@@ -1,0 +1,439 @@
+---
+import { designTokens, type DesignTokens } from '../data/design-tokens';
+
+interface Props {
+  slug: string;
+}
+
+const { slug } = Astro.props;
+const tokens = designTokens[slug];
+if (!tokens) throw new Error(`No design tokens found for slug: ${slug}`);
+
+function buildCssVars(vars: Record<string, string>): string {
+  return Object.entries(vars).map(([k, v]) => `${k}: ${v};`).join('\n    ');
+}
+
+function buildOverrides(overrides: Record<string, string>): string {
+  return Object.entries(overrides)
+    .filter(([, v]) => v !== '')
+    .map(([selector, props]) => `  ${selector} { ${props} }`)
+    .join('\n');
+}
+---
+<!DOCTYPE html>
+<html lang="zh-TW" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{tokens.title}</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+{tokens.googleFontsLinks.map((href) => (
+  <link href={href} rel="stylesheet" />
+))}
+<style set:html={`
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    ${buildCssVars(tokens.colors.dark)}
+    --font-display: ${tokens.fonts.display};
+    --font-body: ${tokens.fonts.body};
+    --font-mono: ${tokens.fonts.mono};
+  }
+
+  [data-theme="light"] {
+    ${buildCssVars(tokens.colors.light)}
+  }
+
+  body {
+    background: var(--bg-deep);
+    color: var(--text-primary);
+    font-family: var(--font-body);
+    font-size: 14px;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .theme-toggle {
+    position: fixed; top: 16px; right: 16px; z-index: 100;
+    display: flex; background: var(--bg-surface-2);
+    border: 1px solid var(--border-standard); border-radius: 9999px; padding: 3px; gap: 2px;
+  }
+  .theme-toggle button {
+    font-family: var(--font-body); font-size: 12px; font-weight: 600;
+    padding: 6px 14px; border: none; border-radius: 9999px; cursor: pointer;
+    background: transparent; color: var(--text-secondary); transition: all 150ms ease-out;
+  }
+  .theme-toggle button.active { background: var(--accent-primary); color: var(--text-on-accent); }
+
+  .preview-container { max-width: 1200px; margin: 0 auto; padding: 48px 24px; }
+  .section { margin-bottom: 64px; }
+  .section-label {
+    font-family: var(--font-mono); font-size: 10px; font-weight: 500;
+    letter-spacing: 1.5px; text-transform: uppercase; color: var(--text-muted); margin-bottom: 16px;
+  }
+  .section-title {
+    font-family: var(--font-display); font-size: 22px; font-weight: 600;
+    letter-spacing: -0.3px; color: var(--text-primary); margin-bottom: 24px;
+  }
+
+  .hero { text-align: center; padding: 80px 0 64px; }
+  .hero-title {
+    font-family: var(--font-display); font-size: 48px; font-weight: 700;
+    letter-spacing: -1.2px; line-height: 1.05; margin-bottom: 12px;
+  }
+  .hero-title span { background: var(--gradient-primary); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+  .hero-subtitle { font-family: var(--font-body); font-size: 16px; color: var(--text-secondary); max-width: 480px; margin: 0 auto; }
+
+  .type-specimen { display: flex; flex-direction: column; gap: 16px; }
+  .type-row { display: flex; align-items: baseline; gap: 24px; padding: 12px 0; border-bottom: 1px solid var(--border-subtle); }
+  .type-meta { flex-shrink: 0; width: 130px; font-family: var(--font-mono); font-size: 10px; letter-spacing: 1px; text-transform: uppercase; color: var(--text-muted); }
+  .type-sample { flex: 1; }
+  .t-dxl { font-family: var(--font-display); font-size: 48px; font-weight: 700; letter-spacing: -1.2px; line-height: 1.05; }
+  .t-d { font-family: var(--font-display); font-size: 32px; font-weight: 600; letter-spacing: -0.8px; line-height: 1.1; }
+  .t-h { font-family: var(--font-display); font-size: 22px; font-weight: 600; letter-spacing: -0.3px; line-height: 1.2; }
+  .t-hsm { font-family: var(--font-display); font-size: 18px; font-weight: 600; letter-spacing: -0.2px; line-height: 1.3; }
+  .t-blg { font-family: var(--font-body); font-size: 16px; font-weight: 400; line-height: 1.5; }
+  .t-b { font-family: var(--font-body); font-size: 14px; font-weight: 400; line-height: 1.5; }
+  .t-cap { font-family: var(--font-body); font-size: 12px; font-weight: 500; line-height: 1.4; color: var(--text-secondary); }
+  .t-data { font-family: var(--font-mono); font-size: 13px; font-weight: 500; line-height: 1.4; font-variant-numeric: tabular-nums; color: var(--accent-primary); }
+  .t-label { font-family: var(--font-mono); font-size: 10px; font-weight: 500; letter-spacing: 1.5px; text-transform: uppercase; color: var(--text-muted); }
+
+  .color-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 12px; }
+  .swatch { border-radius: 8px; overflow: hidden; border: 1px solid var(--border-subtle); }
+  .swatch-block { height: 72px; }
+  .swatch-info { padding: 8px 10px; background: var(--bg-surface-1); }
+  .swatch-name { font-family: var(--font-body); font-size: 12px; font-weight: 600; color: var(--text-primary); }
+  .swatch-hex { font-family: var(--font-mono); font-size: 11px; color: var(--text-muted); }
+
+  .btn-group { display: flex; gap: 12px; flex-wrap: wrap; align-items: center; }
+  .btn {
+    font-family: var(--font-body); font-size: 13px; font-weight: 600;
+    padding: 8px 18px; border-radius: 8px; border: none; cursor: pointer;
+    transition: all 150ms ease-out; display: inline-flex; align-items: center; gap: 6px;
+  }
+  .btn-primary { background: var(--accent-primary); color: var(--text-on-accent); }
+  .btn-primary:hover { box-shadow: var(--shadow-glow-accent); transform: translateY(-1px); }
+  .btn-secondary { background: transparent; color: var(--accent-primary); border: 1px solid var(--border-standard); }
+  .btn-secondary:hover { border-color: var(--accent-primary); background: var(--accent-primary-dim); }
+  .btn-ghost { background: transparent; color: var(--text-secondary); border: 1px solid var(--border-standard); }
+  .btn-ghost:hover { background: var(--bg-surface-3); }
+  .btn-danger { background: var(--error-dim); color: var(--error); border: 1px solid rgba(248,81,73,0.2); }
+  .btn-danger:hover { box-shadow: 0 0 12px var(--error-glow); }
+
+  .badge-row { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 24px; }
+  .badge {
+    font-family: var(--font-body); font-size: 12px; font-weight: 600;
+    padding: 3px 10px; border-radius: 9999px; display: inline-flex; align-items: center; gap: 5px;
+  }
+  .badge::before { content: ''; width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; }
+  .badge-accent { background: var(--accent-primary-dim); color: var(--accent-primary); }
+  .badge-accent::before { background: var(--accent-primary); box-shadow: 0 0 6px var(--accent-primary-glow); animation: pulse 2s ease-in-out infinite; }
+  .badge-secondary { background: var(--accent-secondary-dim); color: var(--accent-secondary); }
+  .badge-secondary::before { background: var(--accent-secondary); }
+  .badge-success { background: var(--success-dim); color: var(--success); }
+  .badge-success::before { background: var(--success); box-shadow: 0 0 6px var(--success-glow); }
+  .badge-warning { background: var(--warning-dim); color: var(--warning); }
+  .badge-warning::before { background: var(--warning); box-shadow: 0 0 6px var(--warning-glow); }
+  .badge-error { background: var(--error-dim); color: var(--error); }
+  .badge-error::before { background: var(--error); box-shadow: 0 0 6px var(--error-glow); animation: alarm-pulse 1.5s ease-in-out infinite; }
+  .badge-idle { background: var(--bg-surface-3); color: var(--text-secondary); }
+  .badge-idle::before { background: var(--text-muted); }
+
+  @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
+  @keyframes alarm-pulse { 0%, 100% { opacity: 1; box-shadow: 0 0 8px var(--error-glow); } 50% { opacity: 0.4; box-shadow: 0 0 16px var(--error-glow); } }
+
+  .alert { padding: 12px 16px; border-radius: 8px; font-size: 13px; display: flex; align-items: center; gap: 8px; margin-bottom: 12px; }
+  .alert-success { background: var(--success-dim); color: var(--success); }
+  .alert-warning { background: var(--warning-dim); color: var(--warning); }
+  .alert-error { background: var(--error-dim); color: var(--error); }
+  .alert-info { background: var(--info-dim); color: var(--info); }
+
+  .form-group { margin-bottom: 16px; }
+  .form-label { display: block; font-family: var(--font-body); font-size: 13px; font-weight: 600; color: var(--text-primary); margin-bottom: 6px; }
+  .form-input { width: 100%; max-width: 360px; padding: 8px 12px; background: var(--bg-surface-2); border: 1px solid var(--border-standard); border-radius: 8px; color: var(--text-primary); font-family: var(--font-body); font-size: 14px; outline: none; transition: border-color 150ms ease-out; }
+  .form-input:focus { border-color: var(--accent-primary); box-shadow: 0 0 0 3px var(--accent-primary-dim); }
+  .form-input::placeholder { color: var(--text-muted); }
+  .form-input-mono { font-family: var(--font-mono); font-size: 13px; font-variant-numeric: tabular-nums; }
+
+  .spacing-scale { display: flex; flex-wrap: wrap; gap: 16px; align-items: flex-end; margin-bottom: 32px; }
+  .spacing-item { display: flex; flex-direction: column; align-items: center; gap: 6px; }
+  .spacing-block { background: var(--accent-primary-dim); border: 1px solid var(--accent-primary); border-radius: 4px; }
+  .spacing-label { font-family: var(--font-mono); font-size: 10px; letter-spacing: 1px; text-transform: uppercase; color: var(--text-muted); }
+  .spacing-value { font-family: var(--font-mono); font-size: 11px; color: var(--text-secondary); }
+  .radius-row { display: flex; flex-wrap: wrap; gap: 16px; align-items: center; }
+  .radius-item { display: flex; flex-direction: column; align-items: center; gap: 6px; }
+  .radius-block { width: 64px; height: 64px; background: var(--accent-primary-dim); border: 1px solid var(--accent-primary); }
+
+  .shadow-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 20px; }
+  .shadow-card { padding: 24px; border-radius: 8px; text-align: center; }
+  .shadow-label { font-family: var(--font-mono); font-size: 10px; letter-spacing: 1px; text-transform: uppercase; color: var(--text-muted); margin-bottom: 4px; }
+  .shadow-desc { font-family: var(--font-body); font-size: 12px; color: var(--text-secondary); }
+
+  .card-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 16px; }
+  .ind-card {
+    background: var(--bg-surface-1); border: 1px solid var(--border-subtle);
+    border-radius: 8px; box-shadow: var(--shadow-card); position: relative;
+    overflow: hidden; padding: 20px; transition: all 200ms ease-out;
+  }
+  .ind-card:hover { border-color: var(--border-accent); transform: translateY(-1px); }
+  .kpi-label { font-family: var(--font-mono); font-size: 10px; font-weight: 500; letter-spacing: 1.5px; text-transform: uppercase; color: var(--text-muted); margin-bottom: 8px; }
+  .kpi-value { font-family: var(--font-display); font-size: 28px; font-weight: 700; color: var(--text-primary); margin-bottom: 4px; }
+  .kpi-trend { font-family: var(--font-mono); font-size: 12px; font-weight: 500; display: flex; align-items: center; gap: 4px; }
+  .kpi-trend.up { color: var(--success); }
+  .kpi-trend.down { color: var(--error); }
+
+  .table-wrapper { background: var(--bg-surface-1); border: 1px solid var(--border-subtle); border-radius: 8px; overflow: hidden; box-shadow: var(--shadow-card); }
+  table { width: 100%; border-collapse: collapse; }
+  thead { background: var(--bg-surface-2); }
+  th { font-family: var(--font-mono); font-size: 10px; font-weight: 500; letter-spacing: 1.5px; text-transform: uppercase; color: var(--text-muted); padding: 10px 16px; text-align: left; }
+  td { padding: 12px 16px; border-bottom: 1px solid var(--border-subtle); font-size: 13px; }
+  tr:hover td { background: var(--bg-surface-2); }
+  tr:last-child td { border-bottom: none; }
+  .dc { font-family: var(--font-mono); font-size: 13px; font-weight: 500; font-variant-numeric: tabular-nums; }
+  .dl { font-family: var(--font-mono); font-size: 13px; font-weight: 500; color: var(--accent-primary); text-decoration: none; }
+  .dl:hover { text-decoration: underline; }
+
+  .dashboard-mockup { display: grid; grid-template-columns: 220px 1fr; gap: 0; border: 1px solid var(--border-subtle); border-radius: 12px; overflow: hidden; min-height: 480px; box-shadow: var(--shadow-elevated); }
+  .sidebar { background: var(--bg-surface-1); border-right: 1px solid var(--border-subtle); padding: 16px 0; display: flex; flex-direction: column; }
+  .sidebar-logo { padding: 0 16px 16px; font-family: var(--font-display); font-size: 16px; font-weight: 700; color: var(--text-primary); display: flex; align-items: center; gap: 8px; border-bottom: 1px solid var(--border-subtle); margin-bottom: 12px; }
+  .sidebar-logo .logo-icon { width: 28px; height: 28px; border-radius: 6px; background: var(--gradient-primary); display: flex; align-items: center; justify-content: center; font-size: 14px; }
+  .sidebar-section { font-family: var(--font-mono); font-size: 10px; font-weight: 500; letter-spacing: 1.5px; text-transform: uppercase; color: var(--text-muted); padding: 12px 16px 6px; }
+  .sidebar-item { display: flex; align-items: center; gap: 10px; padding: 8px 16px; font-family: var(--font-body); font-size: 13px; font-weight: 500; color: var(--text-secondary); cursor: pointer; transition: all 100ms ease-out; border-left: 3px solid transparent; }
+  .sidebar-item:hover { background: var(--bg-surface-2); color: var(--text-primary); }
+  .sidebar-item.active { background: var(--accent-primary-dim); color: var(--accent-primary); border-left-color: var(--accent-primary); font-weight: 600; }
+  .sidebar-item .item-badge { margin-left: auto; font-family: var(--font-mono); font-size: 10px; font-weight: 600; padding: 1px 6px; border-radius: 9999px; background: var(--error-dim); color: var(--error); }
+  .main-content { background: var(--bg-deep); padding: 24px; overflow: auto; }
+  .main-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; }
+  .main-title { font-family: var(--font-display); font-size: 22px; font-weight: 600; letter-spacing: -0.3px; }
+
+  @media (max-width: 768px) {
+    .dashboard-mockup { grid-template-columns: 1fr; }
+    .sidebar { display: none; }
+    .hero-title { font-size: 32px; }
+    .card-grid { grid-template-columns: 1fr; }
+    .color-grid { grid-template-columns: repeat(3, 1fr); }
+  }
+  @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition: none !important; } }
+
+  /* Per-industry overrides */
+${buildOverrides(tokens.cssOverrides)}
+`} />
+</head>
+<body>
+
+<div class="theme-toggle">
+  <button onclick="setTheme('dark')">Dark</button>
+  <button class="active" onclick="setTheme('light')">Light</button>
+</div>
+
+<div class="preview-container">
+
+  <section class="hero">
+    <h1 class="hero-title"><span set:html={tokens.heroTitleSpan} /> ERP</h1>
+    <p class="hero-subtitle">{tokens.heroSubtitle}</p>
+  </section>
+
+  <!-- Section 1: Typography -->
+  <section class="section">
+    <div class="section-label">Typography</div>
+    <div class="section-title">字型系統</div>
+    <div class="type-specimen">
+      {tokens.typography.map((t) => (
+        <div class="type-row">
+          <div class="type-meta" set:html={t.meta} />
+          <div class={`type-sample ${t.className}`}>{t.sampleText}</div>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <!-- Section 2: Color -->
+  <section class="section">
+    <div class="section-label">Color</div>
+    <div class="section-title">色彩系統</div>
+    <div class="color-grid">
+      {tokens.swatches.map((s) => (
+        <div class="swatch">
+          <div class="swatch-block" style={s.style || `background: ${s.hex};`} />
+          <div class="swatch-info">
+            <div class="swatch-name">{s.name}</div>
+            <div class="swatch-hex">{s.hex}</div>
+          </div>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <!-- Section 3: Components -->
+  <section class="section">
+    <div class="section-label">Components</div>
+    <div class="section-title">元件</div>
+    <h3 style="font-family: var(--font-display); font-size: 16px; font-weight: 600; margin-bottom: 12px; color: var(--text-secondary);">按鈕</h3>
+    <div class="btn-group">
+      {tokens.buttons.map((b) => (
+        <button class={`btn ${b.className}`}>{b.label}</button>
+      ))}
+    </div>
+
+    <h3 style="font-family: var(--font-display); font-size: 16px; font-weight: 600; margin: 24px 0 12px; color: var(--text-secondary);">狀態標籤</h3>
+    <div class="badge-row" style="margin-top: 0;">
+      {tokens.badges.map((b) => (
+        <span class={`badge ${b.className}`}>{b.label}</span>
+      ))}
+    </div>
+
+    <h3 style="font-family: var(--font-display); font-size: 16px; font-weight: 600; margin: 24px 0 12px; color: var(--text-secondary);">提示訊息</h3>
+    {tokens.alerts.map((a) => (
+      <div class={`alert ${a.className}`}>{a.icon} {a.text}</div>
+    ))}
+
+    <h3 style="font-family: var(--font-display); font-size: 16px; font-weight: 600; margin: 24px 0 12px; color: var(--text-secondary);">表單元素</h3>
+    {tokens.forms.map((f) => (
+      <div class="form-group">
+        <label class="form-label">{f.label}</label>
+        <input class={`form-input${f.mono ? ' form-input-mono' : ''}`} type="text" placeholder={f.placeholder} value={f.value || ''} />
+      </div>
+    ))}
+  </section>
+
+  <!-- Section 4: Spacing & Radius -->
+  <section class="section">
+    <div class="section-label">Spacing &amp; Radius</div>
+    <div class="section-title">間距與圓角</div>
+    <h3 style="font-family: var(--font-display); font-size: 16px; font-weight: 600; margin-bottom: 16px; color: var(--text-secondary);">間距比例尺 (8px base)</h3>
+    <div class="spacing-scale">
+      {[
+        { label: '2xs', value: '2px', size: 2 },
+        { label: 'xs', value: '4px', size: 4 },
+        { label: 'sm', value: '8px', size: 8 },
+        { label: 'md', value: '16px', size: 16 },
+        { label: 'lg', value: '24px', size: 24 },
+        { label: 'xl', value: '32px', size: 32 },
+        { label: '2xl', value: '48px', size: 48 },
+        { label: '3xl', value: '64px', size: 64 },
+      ].map((s) => (
+        <div class="spacing-item">
+          <div class="spacing-block" style={`width: ${s.size}px; height: ${s.size}px;`} />
+          <div class="spacing-label">{s.label}</div>
+          <div class="spacing-value">{s.value}</div>
+        </div>
+      ))}
+    </div>
+    <h3 style="font-family: var(--font-display); font-size: 16px; font-weight: 600; margin-bottom: 16px; color: var(--text-secondary);">圓角比例尺</h3>
+    <div class="radius-row">
+      {tokens.radius.map((r) => (
+        <div class="radius-item">
+          <div class="radius-block" style={`border-radius: ${r.value};`} />
+          <div class="spacing-label">{r.label}</div>
+          <div class="spacing-value">{r.value}</div>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <!-- Section 5: Shadows & Depth -->
+  <section class="section">
+    <div class="section-label">Shadows &amp; Depth</div>
+    <div class="section-title">陰影與層次</div>
+    <div class="shadow-grid">
+      {tokens.shadows.map((s) => (
+        <div class="shadow-card" style={s.style}>
+          <div class="shadow-label">{s.label}</div>
+          <div class="shadow-desc">{s.desc}</div>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <!-- Section 6: KPI Cards -->
+  <section class="section">
+    <div class="section-label">KPI Cards</div>
+    <div class="section-title">KPI 卡片</div>
+    <div class="card-grid">
+      {tokens.kpis.map((k) => (
+        <div class="ind-card">
+          <div class="kpi-label">{k.label}</div>
+          <div class="kpi-value">{k.value}</div>
+          <div class={`kpi-trend ${k.trendDirection}`}>{k.trend}</div>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <!-- Section 7: Dashboard Layout -->
+  <section class="section">
+    <div class="section-label">Dashboard</div>
+    <div class="section-title">儀表板佈局</div>
+    <div class="dashboard-mockup">
+      <div class="sidebar">
+        <div class="sidebar-logo"><div class="logo-icon" set:html={tokens.sidebar.logoIcon} />{tokens.sidebar.logoText}</div>
+        {tokens.sidebar.sections.map((sec) => (
+          <>
+            <div class="sidebar-section">{sec.title}</div>
+            {sec.items.map((item) => (
+              <div class={`sidebar-item${item.active ? ' active' : ''}`}>
+                <span set:html={item.icon} /> {item.label}
+                {item.badge && <span class="item-badge">{item.badge}</span>}
+              </div>
+            ))}
+          </>
+        ))}
+      </div>
+      <div class="main-content">
+        <div class="main-header">
+          <div class="main-title">儀表板</div>
+          <div class="btn-group">
+            {tokens.dashboardButtons.map((b) => (
+              <button class={`btn ${b.className}`} style="font-size: 12px; padding: 6px 12px;">{b.label}</button>
+            ))}
+          </div>
+        </div>
+        <div class="card-grid" style="margin-bottom: 20px;">
+          {tokens.kpisDashboard.map((k) => (
+            <div class="ind-card">
+              <div class="kpi-label">{k.label}</div>
+              <div class="kpi-value">{k.value}</div>
+              <div class={`kpi-trend ${k.trendDirection}`}>{k.trend}</div>
+            </div>
+          ))}
+        </div>
+        <div style="margin-bottom: 12px;"><div class="section-label" style="margin-bottom: 10px;">{tokens.tableLabel}</div></div>
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                {tokens.table.headers.map((h) => <th>{h}</th>)}
+              </tr>
+            </thead>
+            <tbody>
+              {tokens.table.rows.map((row) => (
+                <tr>
+                  {row.cells.map((cell) => (
+                    <td class={cell.className || ''}>
+                      {cell.isLink ? <a class="dl" href="#">{cell.content}</a>
+                        : cell.isBadge ? <span class={`badge ${cell.badgeClass}`}>{cell.content}</span>
+                        : cell.content}
+                    </td>
+                  ))}
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<script is:inline>
+function setTheme(theme) {
+  document.documentElement.setAttribute('data-theme', theme);
+  document.querySelectorAll('.theme-toggle button').forEach(function(btn) {
+    btn.classList.toggle('active', btn.textContent.toLowerCase() === theme);
+  });
+}
+</script>
+</body>
+</html>

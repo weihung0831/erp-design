@@ -1,0 +1,131 @@
+---
+import Base from '../../layouts/Base.astro';
+import DownloadButton from '../../components/DownloadButton.astro';
+import { industries } from '../../data/industries';
+
+export function getStaticPaths() {
+  return industries.map((ind) => ({
+    params: { slug: ind.slug },
+    props: { industry: ind },
+  }));
+}
+
+const { industry } = Astro.props;
+const base = import.meta.env.BASE_URL;
+---
+<Base title={`${industry.nameZh} — ERP Design Systems`}>
+  <div class="detail-header" style={`--accent: ${industry.accent};`}>
+    <div class="detail-header-inner">
+      <a href={base} class="back-link">← 返回</a>
+      <div class="detail-meta">
+        <span class="accent-dot" />
+        <h1 class="detail-title">{industry.nameZh}</h1>
+        <span class="detail-en">{industry.nameEn}</span>
+      </div>
+      <div class="detail-actions">
+        <DownloadButton href={`${base}downloads/${encodeURIComponent(industry.dirName)}-DESIGN.zip`} label="下載 DESIGN.md" />
+      </div>
+    </div>
+  </div>
+  <div class="preview-container">
+    <iframe
+      src={`${base}preview/${industry.slug}`}
+      title={`${industry.nameZh} Preview`}
+      class="preview-iframe"
+    />
+  </div>
+</Base>
+
+<script is:inline>
+  function syncTheme() {
+    const theme = document.documentElement.getAttribute('data-theme') || 'light';
+    const iframe = document.querySelector('.preview-iframe');
+    if (!iframe || !iframe.contentDocument) return;
+    iframe.contentDocument.documentElement.setAttribute('data-theme', theme);
+    // Also click the matching button if the preview has Light/Dark toggle buttons
+    const btns = iframe.contentDocument.querySelectorAll('button');
+    btns.forEach(btn => {
+      if (btn.textContent.trim() === (theme === 'dark' ? 'Dark' : 'Light')) {
+        btn.click();
+      }
+    });
+  }
+
+  // Sync on iframe load
+  document.querySelector('.preview-iframe').addEventListener('load', syncTheme);
+
+  // Sync when parent theme changes
+  const observer = new MutationObserver(syncTheme);
+  observer.observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
+</script>
+
+<style>
+  .detail-header {
+    border-bottom: 1px solid var(--border-solid);
+  }
+
+  .detail-header-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 24px 24px 16px;
+  }
+
+  .back-link {
+    display: inline-block;
+    font-size: 14px;
+    color: var(--text-tertiary);
+    text-decoration: none;
+    margin-bottom: 12px;
+  }
+
+  .back-link:hover {
+    color: var(--text-primary);
+  }
+
+  .detail-meta {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 12px;
+    flex-wrap: wrap;
+  }
+
+  .accent-dot {
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--accent);
+    flex-shrink: 0;
+  }
+
+  .detail-title {
+    font-size: 32px;
+    font-weight: 600;
+    letter-spacing: -1.28px;
+    line-height: 1.25;
+  }
+
+  .detail-en {
+    font-size: 16px;
+    color: var(--text-secondary);
+  }
+
+  .detail-actions {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+
+  .preview-container {
+    width: 100%;
+    height: calc(100vh - 160px);
+    min-height: 500px;
+  }
+
+  .preview-iframe {
+    width: 100%;
+    height: 100%;
+    border: none;
+  }
+</style>

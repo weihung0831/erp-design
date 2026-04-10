@@ -1,0 +1,73 @@
+---
+import Base from '../layouts/Base.astro';
+import IndustryCard from '../components/IndustryCard.astro';
+import { industries } from '../data/industries';
+---
+<Base title="ERP Design Systems">
+  <div class="hero">
+    <h1 class="hero-title">ERP Design Systems</h1>
+    <p class="hero-subtitle">6 個產業的 ERP 設計系統規範，統一瀏覽與下載</p>
+  </div>
+  <div class="grid">
+    {industries.map((ind) => (
+      <IndustryCard
+        slug={ind.slug}
+        nameZh={ind.nameZh}
+        nameEn={ind.nameEn}
+        accent={ind.accent}
+        description={ind.description}
+      />
+    ))}
+  </div>
+</Base>
+
+<style>
+  .hero {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 64px 24px 48px;
+    text-align: center;
+  }
+
+  .hero-title {
+    font-size: 48px;
+    font-weight: 600;
+    letter-spacing: -2.4px;
+    line-height: 1.0;
+    margin-bottom: 12px;
+  }
+
+  .hero-subtitle {
+    font-size: 18px;
+    color: var(--text-secondary);
+    line-height: 1.6;
+  }
+
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 24px 80px;
+  }
+
+  @media (max-width: 1024px) {
+    .grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (max-width: 640px) {
+    .grid {
+      grid-template-columns: 1fr;
+    }
+    .hero {
+      padding: 40px 24px 32px;
+    }
+    .hero-title {
+      font-size: 32px;
+      letter-spacing: -1.28px;
+    }
+  }
+</style>
