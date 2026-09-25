@@ -1,0 +1,388 @@
+@import 'tailwindcss';
+
+@source '../views/**/*.blade.php';
+@source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
+@source '../../storage/framework/views/*.php';
+
+@theme {
+    --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
+        'Segoe UI Symbol', 'Noto Color Emoji';
+}
+
+@layer base {
+    html {
+        min-width: 320px;
+        background: #f5f7fb;
+    }
+
+    body {
+        min-height: 100vh;
+        font-family: var(--font-sans);
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+    }
+
+    button,
+    input {
+        font: inherit;
+    }
+
+    button:focus-visible,
+    input:focus-visible,
+    a:focus-visible {
+        outline: 3px solid rgb(121 154 211 / 28%);
+        outline-offset: 2px;
+    }
+
+    ::selection {
+        color: #162137;
+        background: #b9f4d8;
+    }
+}
+
+@layer components {
+    .erp-sidebar {
+        scrollbar-width: thin;
+        scrollbar-color: rgb(255 255 255 / 14%) transparent;
+    }
+
+    .erp-sidebar.is-open {
+        transform: translateX(0);
+    }
+
+    .sidebar-link {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        border-radius: 0.75rem;
+        padding: 0.7rem 0.75rem;
+        color: #91a0b9;
+        font-size: 0.75rem;
+        font-weight: 500;
+        transition: color 150ms ease, background-color 150ms ease, transform 150ms ease;
+    }
+
+    .sidebar-link:hover {
+        color: #f6fbff;
+        background: rgb(255 255 255 / 6%);
+        transform: translateX(2px);
+    }
+
+    .sidebar-link-active {
+        color: #d9ffed;
+        background: linear-gradient(90deg, rgb(141 240 193 / 17%), rgb(141 240 193 / 7%));
+        box-shadow: inset 2px 0 0 #8df0c1;
+    }
+
+    .sidebar-count {
+        display: inline-flex;
+        min-width: 1.25rem;
+        height: 1.25rem;
+        align-items: center;
+        justify-content: center;
+        border-radius: 0.4rem;
+        background: rgb(255 255 255 / 8%);
+        padding: 0 0.3rem;
+        color: #9caac0;
+        font-size: 0.625rem;
+    }
+
+    .sidebar-count-alert {
+        color: #ffc0b5;
+        background: rgb(242 126 109 / 15%);
+    }
+
+    .metric-card,
+    .panel-card {
+        border: 1px solid #e7ebf2;
+        background: #fff;
+        box-shadow: 0 4px 18px rgb(44 61 91 / 3%);
+    }
+
+    .metric-card {
+        border-radius: 1rem;
+        padding: 1.25rem;
+        transition: transform 180ms ease, box-shadow 180ms ease, border-color 180ms ease;
+    }
+
+    .metric-card:hover {
+        border-color: #dce4ef;
+        box-shadow: 0 12px 28px rgb(44 61 91 / 8%);
+        transform: translateY(-2px);
+    }
+
+    .metric-icon {
+        display: flex;
+        height: 2.5rem;
+        width: 2.5rem;
+        align-items: center;
+        justify-content: center;
+        border-radius: 0.8rem;
+    }
+
+    .metric-trend,
+    .metric-tag {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.25rem;
+        border-radius: 999px;
+        padding: 0.3rem 0.5rem;
+        font-size: 0.625rem;
+        font-weight: 600;
+    }
+
+    .metric-trend-up {
+        color: #3fa874;
+        background: #edf9f3;
+    }
+
+    .section-title {
+        color: #1b2940;
+        font-size: 0.875rem;
+        font-weight: 600;
+        letter-spacing: -0.01em;
+    }
+
+    .panel-card {
+        border-radius: 1rem;
+        padding: 1.25rem;
+    }
+
+    .icon-button {
+        display: flex;
+        height: 2rem;
+        width: 2rem;
+        align-items: center;
+        justify-content: center;
+        border-radius: 0.6rem;
+        color: #8a97aa;
+        transition: color 150ms ease, background-color 150ms ease;
+    }
+
+    .icon-button:hover {
+        color: #526a95;
+        background: #f3f6fa;
+    }
+
+    .chart-range {
+        min-width: 2rem;
+        border-radius: 0.4rem;
+        padding: 0.35rem 0.45rem;
+        color: #96a1b1;
+        font-size: 0.625rem;
+        font-weight: 600;
+        transition: color 150ms ease, background-color 150ms ease, box-shadow 150ms ease;
+    }
+
+    .chart-range-active {
+        color: #526d9d;
+        background: #fff;
+        box-shadow: 0 1px 4px rgb(53 75 111 / 9%);
+    }
+
+    .inventory-donut {
+        position: relative;
+        background: conic-gradient(#55c996 0deg 337deg, #f1bd62 337deg 347deg, #f17f71 347deg 360deg);
+    }
+
+    .transaction-tab {
+        position: relative;
+        white-space: nowrap;
+        padding: 0.65rem 0.7rem;
+        color: #9aa5b5;
+        font-size: 0.6875rem;
+        font-weight: 600;
+        transition: color 150ms ease;
+    }
+
+    .transaction-tab span {
+        margin-left: 0.25rem;
+        color: #b7c0cd;
+        font-size: 0.625rem;
+        font-weight: 500;
+    }
+
+    .transaction-tab:hover {
+        color: #516d9f;
+    }
+
+    .transaction-tab-active {
+        color: #4e6ea5;
+    }
+
+    .transaction-tab-active::after {
+        position: absolute;
+        right: 0.65rem;
+        bottom: -1px;
+        left: 0.65rem;
+        height: 2px;
+        border-radius: 99px;
+        background: #6e94d2;
+        content: '';
+    }
+
+    .table-type,
+    .status-pill {
+        display: inline-flex;
+        align-items: center;
+        white-space: nowrap;
+        border-radius: 0.45rem;
+        padding: 0.3rem 0.45rem;
+        font-size: 0.625rem;
+        font-weight: 600;
+    }
+
+    .table-type-sales {
+        color: #4e9a78;
+        background: #edf9f3;
+    }
+
+    .table-type-procurement {
+        color: #bb8541;
+        background: #fff7ed;
+    }
+
+    .table-type-finance {
+        color: #7186c3;
+        background: #eef3ff;
+    }
+
+    .table-type-inventory {
+        color: #a56dbf;
+        background: #f7effb;
+    }
+
+    .status-pill {
+        gap: 0.35rem;
+        background: #f5f7fa;
+    }
+
+    .status-pill i {
+        height: 0.3rem;
+        width: 0.3rem;
+        border-radius: 50%;
+    }
+
+    .status-success {
+        color: #48a977;
+        background: #edf9f3;
+    }
+
+    .status-success i {
+        background: #55c996;
+    }
+
+    .status-warning {
+        color: #c68c42;
+        background: #fff7ed;
+    }
+
+    .status-warning i {
+        background: #f0bb60;
+    }
+
+    .status-info {
+        color: #6382c5;
+        background: #eef3ff;
+    }
+
+    .status-info i {
+        background: #7699e2;
+    }
+
+    .status-processing {
+        color: #a26bc1;
+        background: #f7effb;
+    }
+
+    .status-processing i {
+        background: #c08bda;
+    }
+
+    .task-item {
+        display: flex;
+        width: 100%;
+        align-items: center;
+        gap: 0.75rem;
+        border-radius: 0.75rem;
+        padding: 0.7rem 0.55rem;
+        transition: background-color 150ms ease;
+    }
+
+    .task-item:hover {
+        background: #fafbfd;
+    }
+
+    .task-icon {
+        display: flex;
+        height: 2rem;
+        width: 2rem;
+        flex-shrink: 0;
+        align-items: center;
+        justify-content: center;
+        border-radius: 0.65rem;
+    }
+
+    .quick-action {
+        display: flex;
+        min-height: 4.7rem;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 0.45rem;
+        border: 1px solid #edf0f5;
+        border-radius: 0.75rem;
+        color: #6f7d92;
+        font-size: 0.625rem;
+        font-weight: 600;
+        transition: border-color 150ms ease, background-color 150ms ease, transform 150ms ease;
+    }
+
+    .quick-action:hover {
+        border-color: #d8e2f1;
+        background: #fbfcfe;
+        transform: translateY(-1px);
+    }
+
+    .quick-action-icon {
+        display: flex;
+        height: 1.75rem;
+        width: 1.75rem;
+        align-items: center;
+        justify-content: center;
+        border-radius: 0.55rem;
+    }
+
+    .popover-panel {
+        animation: popover-in 160ms ease-out;
+    }
+
+    @keyframes popover-in {
+        from {
+            opacity: 0;
+            transform: translateY(-4px) scale(0.98);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
+    }
+
+    @media (max-width: 639px) {
+        .panel-card {
+            padding: 1rem;
+        }
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        scroll-behavior: auto !important;
+        transition-duration: 0.01ms !important;
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+    }
+}
