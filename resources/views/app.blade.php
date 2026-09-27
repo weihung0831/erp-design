@@ -4,6 +4,18 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
+        <script>
+            (function () {
+                let appearance = null;
+                try {
+                    appearance = localStorage.getItem('appearance');
+                } catch (error) {}
+                const isDark = appearance === 'dark' || (appearance !== 'light' && window.matchMedia('(prefers-color-scheme: dark)').matches);
+                document.documentElement.classList.toggle('dark', isDark);
+                document.documentElement.style.colorScheme = isDark ? 'dark' : 'light';
+            })();
+        </script>
+
         @fonts
         @viteReactRefresh
         @vite(['resources/css/app.css', 'resources/js/app.tsx'])
