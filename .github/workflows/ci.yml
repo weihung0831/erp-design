@@ -1,0 +1,67 @@
+name: CI/CD
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: 8.4
+          tools: composer:v2
+          coverage: none
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 25
+          cache: npm
+      - run: composer install --no-interaction --prefer-dist
+      - run: npm ci
+      - run: npm run build
+      - run: |
+          cp .env.example .env
+          php artisan key:generate --force
+      - run: vendor/bin/pint --test
+      - run: php artisan test
+
+  deploy:
+    needs: check
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    runs-on: [self-hosted, macmini]
+    concurrency:
+      group: deploy
+      cancel-in-progress: false
+    env:
+      PATH: /opt/homebrew/bin:/usr/bin:/bin:/usr/sbin:/sbin
+    steps:
+      - name: Update code
+        run: |
+          cd "$HOME/Sites/erp-design"
+          git fetch --quiet origin main
+          git reset --hard ${{ github.sha }}
+      - name: Build and restart
+        run: |
+          cd "$HOME/Sites/erp-design"
+          docker compose up -d --build --remove-orphans
+          docker image prune -f
+      - name: Health check
+        run: |
+          cd "$HOME/Sites/erp-design"
+          PORT=$(grep '^PORT=' .env 2>/dev/null | cut -d= -f2-)
+          for i in $(seq 1 60); do
+            up=$(curl -s -o /dev/null -w '%{http_code}' "http://127.0.0.1:${PORT:-3300}/up" || true)
+            home=$(curl -s -o /dev/null -w '%{http_code}' "http://127.0.0.1:${PORT:-3300}/" || true)
+            [ "$up" = 200 ] && [ "$home" = 200 ] && echo "healthy" && exit 0
+            sleep 2
+          done
+          echo "last status: up=$up home=$home"
+          docker compose ps
+          docker compose logs --tail 50 app
+          exit 1
