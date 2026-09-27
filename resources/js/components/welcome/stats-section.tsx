@@ -1,5 +1,5 @@
-import { motion, useInView, useSpring, useTransform } from "motion/react";
-import { useEffect, useRef } from "react";
+import { motion } from "motion/react";
+import { AnimatedNumber } from "@/components/ui/animated-number";
 
 export default function StatsSection() {
   const items = [
@@ -62,30 +62,4 @@ export default function StatsSection() {
       </div>
     </section>
   );
-}
-
-function AnimatedNumber({
-  value,
-  initial = 0,
-}: {
-  value: number;
-  initial?: number;
-}) {
-  const ref = useRef(null);
-  const isInView = useInView(ref);
-
-  const spring = useSpring(initial, { mass: 0.8, stiffness: 75, damping: 15 });
-  const display = useTransform(spring, (current) =>
-    Math.round(current).toLocaleString(),
-  );
-
-  useEffect(() => {
-    if (isInView) {
-      spring.set(value);
-    } else {
-      spring.set(initial);
-    }
-  }, [isInView, spring, value, initial]);
-
-  return <motion.span ref={ref}>{display}</motion.span>;
 }
