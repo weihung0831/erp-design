@@ -15,8 +15,10 @@ import CtaSection from '@/components/welcome/cta-section';
 import DashboardPreview from '@/components/welcome/dashboard-preview';
 import FaqSection from '@/components/welcome/faq-section';
 import FeatureBento from '@/components/welcome/feature-bento';
+import LogoCloud from '@/components/welcome/logo-cloud';
 import ModuleHubHero, { HubGlyph } from '@/components/welcome/module-hub-hero';
 import { PillLink } from '@/components/welcome/pill-link';
+import PricingSection from '@/components/welcome/pricing-section';
 import SiteFooter from '@/components/welcome/site-footer';
 import StatsSection from '@/components/welcome/stats-section';
 import WorkflowSteps from '@/components/welcome/workflow-steps';
@@ -25,6 +27,7 @@ const navItems = [
     { name: '平台特色', link: '#features' },
     { name: '功能模組', link: '#modules' },
     { name: '導入流程', link: '#workflow' },
+    { name: '方案價格', link: '#pricing' },
     { name: '常見問題', link: '#faq' },
 ];
 
@@ -93,10 +96,12 @@ export default function Welcome() {
 
                 <main>
                     <ModuleHubHero />
+                    <LogoCloud />
                     <DashboardPreview />
                     <StatsSection />
                     <FeatureBento />
                     <WorkflowSteps />
+                    <PricingSection />
                     <FaqSection />
                     <CtaSection />
                 </main>

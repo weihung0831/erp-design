@@ -7,6 +7,7 @@ const pages = [
   { title: "平台特色", href: "#features" },
   { title: "功能模組", href: "#modules" },
   { title: "導入流程", href: "#workflow" },
+  { title: "方案價格", href: "#pricing" },
   { title: "常見問題", href: "#faq" },
   { title: "隱私權政策", href: "#" },
   { title: "服務條款", href: "#" },
