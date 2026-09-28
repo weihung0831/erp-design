@@ -102,18 +102,26 @@ const GlowingEffect = memo(
 
       const handleScroll = () => handleMove();
       const handlePointerMove = (e: PointerEvent) => handleMove(e);
+      const handlePointerLeave = () => {
+        if (animationFrameRef.current) {
+          cancelAnimationFrame(animationFrameRef.current);
+        }
+        containerRef.current?.style.setProperty("--active", "0");
+      };
 
-      window.addEventListener("scroll", handleScroll, { passive: true });
+      window.addEventListener("scroll", handleScroll, { passive: true, capture: true });
       document.body.addEventListener("pointermove", handlePointerMove, {
         passive: true,
       });
+      document.documentElement.addEventListener("pointerleave", handlePointerLeave);
 
       return () => {
         if (animationFrameRef.current) {
           cancelAnimationFrame(animationFrameRef.current);
         }
-        window.removeEventListener("scroll", handleScroll);
+        window.removeEventListener("scroll", handleScroll, { capture: true });
         document.body.removeEventListener("pointermove", handlePointerMove);
+        document.documentElement.removeEventListener("pointerleave", handlePointerLeave);
       };
     }, [handleMove, disabled]);
 
@@ -170,7 +178,7 @@ const GlowingEffect = memo(
             className={cn(
               "glow",
               "rounded-[inherit]",
-              'after:content-[""] after:rounded-[inherit] after:absolute after:inset-[calc(-1*var(--glowingeffect-border-width))]',
+              'after:content-[""] after:rounded-[inherit] after:absolute after:inset-0',
               "after:[border:var(--glowingeffect-border-width)_solid_transparent]",
               "after:[background:var(--gradient)]",
               "after:opacity-[var(--active)] after:transition-opacity after:duration-300",
