@@ -6,12 +6,21 @@ import {
   useReducedMotion,
   useScroll,
 } from "motion/react";
+import type { RefObject } from "react";
 import { useState } from "react";
+import { cn } from "@/lib/utils";
 
 const SHOW_AFTER_PX = 600;
 
-export default function BackToTop() {
-  const { scrollY } = useScroll();
+export default function BackToTop({
+  containerRef,
+  className,
+}: {
+  /** Scrollable element to watch; defaults to the window. */
+  containerRef?: RefObject<HTMLElement | null>;
+  className?: string;
+}) {
+  const { scrollY } = useScroll(containerRef ? { container: containerRef } : undefined);
   const shouldReduceMotion = useReducedMotion();
   const [isVisible, setIsVisible] = useState(false);
 
@@ -20,7 +29,7 @@ export default function BackToTop() {
   });
 
   const scrollToTop = () => {
-    window.scrollTo({ top: 0, behavior: shouldReduceMotion ? "auto" : "smooth" });
+    (containerRef?.current ?? window).scrollTo({ top: 0, behavior: shouldReduceMotion ? "auto" : "smooth" });
   };
 
   return (
@@ -36,7 +45,10 @@ export default function BackToTop() {
           whileHover={shouldReduceMotion ? undefined : { y: -2 }}
           whileTap={shouldReduceMotion ? undefined : { scale: 0.94 }}
           transition={{ duration: 0.2, ease: [0.23, 1, 0.32, 1] }}
-          className="fixed right-4 bottom-4 z-50 grid size-11 cursor-pointer place-items-center rounded-full bg-(--hub-card) text-(--hub-ink) shadow-[0_8px_24px_-8px_oklch(0_0_0/0.25)] ring-1 ring-black/10 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-(--hub-ink) sm:right-6 sm:bottom-6 dark:ring-white/12"
+          className={cn(
+            "fixed right-4 bottom-4 z-50 grid size-11 cursor-pointer place-items-center rounded-full bg-(--hub-card) text-(--hub-ink) shadow-[0_8px_24px_-8px_oklch(0_0_0/0.25)] ring-1 ring-black/10 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-(--hub-ink) sm:right-6 sm:bottom-6 dark:ring-white/12",
+            className,
+          )}
         >
           <ArrowUp className="size-4.5" strokeWidth={2} />
         </motion.button>

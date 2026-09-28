@@ -27,7 +27,9 @@ import {
     Warehouse,
 } from 'lucide-react';
 import type { ReactNode } from 'react';
+import { useRef } from 'react';
 import { APPROVALS } from '@/components/approvals/approvals-data';
+import BackToTop from '@/components/back-to-top';
 import NotificationBell from '@/components/notifications/notification-bell';
 import { NOTIFICATIONS } from '@/components/notifications/notifications-data';
 import ThemeToggle from '@/components/theme-toggle';
@@ -269,14 +271,20 @@ function AdminHeader() {
 }
 
 export default function AdminLayout({ children }: { children: ReactNode }) {
+    const scrollContainerRef = useRef<HTMLDivElement>(null);
+
     return (
         <SidebarProvider>
-            <div className="flex h-dvh w-full overflow-hidden bg-(--admin-canvas) text-neutral-900 antialiased [--admin-canvas:#f5f7ff] [--admin-accent-ink:#3b57d9] [--admin-accent:#4b6bfb] [--hub-ink:#1a1a1a] dark:bg-neutral-950 dark:text-neutral-100 dark:[--admin-accent-ink:#8aa0ff] dark:[--hub-ink:#f4f4f0]">
+            <div className="flex h-dvh w-full overflow-hidden bg-(--admin-canvas) text-neutral-900 antialiased [--admin-canvas:#f5f7ff] [--hub-card:#ffffff] dark:[--hub-card:#171717] [--admin-accent-ink:#3b57d9] [--admin-accent:#4b6bfb] [--hub-ink:#1a1a1a] dark:bg-neutral-950 dark:text-neutral-100 dark:[--admin-accent-ink:#8aa0ff] dark:[--hub-ink:#f4f4f0]">
                 <AdminSidebar />
-                <div className="relative flex min-w-0 flex-1 flex-col overflow-y-auto bg-white md:mt-2 md:rounded-tl-2xl md:border-t md:border-l md:border-[#e3e8fc] md:shadow-[0_8px_40px_-16px_rgba(75,107,251,0.16)] dark:bg-neutral-900 dark:md:shadow-none dark:md:border-neutral-800">
+                <div
+                    ref={scrollContainerRef}
+                    className="relative flex min-w-0 flex-1 flex-col overflow-y-auto bg-white md:mt-2 md:rounded-tl-2xl md:border-t md:border-l md:border-[#e3e8fc] md:shadow-[0_8px_40px_-16px_rgba(75,107,251,0.16)] dark:bg-neutral-900 dark:md:shadow-none dark:md:border-neutral-800"
+                >
                     <AdminHeader />
                     <main className="relative flex-1 px-4 pt-6 pb-32 md:px-8">{children}</main>
                 </div>
+                <BackToTop containerRef={scrollContainerRef} className="bottom-24 sm:bottom-24 md:right-8 md:bottom-8" />
             </div>
         </SidebarProvider>
     );

@@ -9,8 +9,8 @@ import {
     Navbar,
     NavItems,
 } from '@/components/ui/resizable-navbar';
+import BackToTop from '@/components/back-to-top';
 import ThemeToggle from '@/components/theme-toggle';
-import BackToTop from '@/components/welcome/back-to-top';
 import CtaSection from '@/components/welcome/cta-section';
 import DashboardPreview from '@/components/welcome/dashboard-preview';
 import FaqSection from '@/components/welcome/faq-section';
