@@ -27,6 +27,9 @@ import {
     Warehouse,
 } from 'lucide-react';
 import type { ReactNode } from 'react';
+import { APPROVALS } from '@/components/approvals/approvals-data';
+import NotificationBell from '@/components/notifications/notification-bell';
+import { NOTIFICATIONS } from '@/components/notifications/notifications-data';
 import ThemeToggle from '@/components/theme-toggle';
 import { AnimatedTooltip } from '@/components/ui/animated-tooltip';
 import {
@@ -42,10 +45,14 @@ import type { SidebarGroupItem, SidebarLinkItem } from '@/components/ui/grouped-
 import { PlaceholdersAndVanishInput } from '@/components/ui/placeholders-and-vanish-input';
 import { HubGlyph } from '@/components/welcome/module-hub-hero';
 
+// ponytail: counts come from the pages' mock data and won't follow in-page approve/read actions; switch to Inertia shared props once the backend exists.
+const PENDING_APPROVAL_COUNT = APPROVALS.length;
+const UNREAD_NOTIFICATION_COUNT = NOTIFICATIONS.filter((notification) => !notification.isRead).length;
+
 const PRIMARY_LINKS: SidebarLinkItem[] = [
     { label: '儀表板', href: '/dashboard', icon: <LayoutDashboard />, tone: 'from-[#6d8bff] to-[#4b6bfb]' },
-    { label: '待我簽核', href: '/dashboard/approvals', icon: <ClipboardCheck />, badge: 5, tone: 'from-teal-400 to-teal-600' },
-    { label: '通知中心', icon: <Bell />, tone: 'from-pink-400 to-pink-600' },
+    { label: '待我簽核', href: '/dashboard/approvals', icon: <ClipboardCheck />, badge: PENDING_APPROVAL_COUNT || undefined, tone: 'from-teal-400 to-teal-600' },
+    { label: '通知中心', href: '/dashboard/notifications', icon: <Bell />, badge: UNREAD_NOTIFICATION_COUNT || undefined, tone: 'from-pink-400 to-pink-600' },
 ];
 
 const MODULE_GROUPS: SidebarGroupItem[] = [
@@ -254,17 +261,7 @@ function AdminHeader() {
                     <AnimatedTooltip items={ONLINE_TEAMMATES} />
                     <span className="ml-4 text-xs text-neutral-500 dark:text-neutral-400">4 人在線</span>
                 </div>
-                <button
-                    type="button"
-                    aria-label="通知"
-                    className="relative grid size-10 place-items-center rounded-full text-neutral-700 ring-1 ring-black/10 hover:bg-black/5 dark:text-neutral-200 dark:ring-white/12 dark:hover:bg-white/8"
-                >
-                    <Bell className="size-4.5" strokeWidth={1.75} />
-                    <span className="absolute top-2 right-2.5 flex size-2">
-                        <span className="absolute inline-flex size-full animate-ping rounded-full bg-(--admin-accent) opacity-60" />
-                        <span className="relative inline-flex size-2 rounded-full bg-(--admin-accent)" />
-                    </span>
-                </button>
+                <NotificationBell />
                 <ThemeToggle />
             </div>
         </header>
