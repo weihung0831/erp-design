@@ -162,7 +162,7 @@ const ONLINE_TEAMMATES = [
     { id: 4, name: '吳佩珊', designation: '會計', initial: '吳', color: '#ec4899' },
 ];
 
-const SEARCH_PLACEHOLDERS = ['搜尋銷貨單，例如 SO-1882', '搜尋客戶：大宏科技', '搜尋料號：PK-0012', '搜尋採購單，例如 PO-2411', '搜尋員工或供應商'];
+const SEARCH_PLACEHOLDERS = ['請輸入銷貨單號', '請輸入客戶名稱', '請輸入料號', '請輸入採購單號', '請輸入員工或供應商名稱'];
 
 function withActiveState(link: SidebarLinkItem, currentPath: string): SidebarLinkItem {
     return { ...link, isActive: link.href !== undefined && (link.href === '/dashboard' ? currentPath === link.href : currentPath.startsWith(link.href)) };

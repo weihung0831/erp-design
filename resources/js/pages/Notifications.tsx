@@ -15,7 +15,7 @@ import { NOTIFICATION_FILTERS, NOTIFICATION_GROUPS, NOTIFICATION_KIND_STYLES, NO
 import NotificationsEmptyState from '@/components/notifications/notifications-empty-state';
 import { PlaceholdersAndVanishInput } from '@/components/ui/placeholders-and-vanish-input';
 
-const SEARCH_PLACEHOLDERS = ['搜尋通知標題…', '搜尋單號…', '搜尋通知內容…'];
+const SEARCH_PLACEHOLDERS = ['請輸入通知標題', '請輸入單號', '請輸入通知內容'];
 
 const PAGE_SIZE = 8;
 

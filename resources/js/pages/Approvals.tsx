@@ -15,7 +15,7 @@ import { Panel, PillTabs } from '@/components/dashboard/panel';
 import { PlaceholdersAndVanishInput } from '@/components/ui/placeholders-and-vanish-input';
 import { cn } from '@/lib/utils';
 
-const SEARCH_PLACEHOLDERS = ['搜尋單號…', '搜尋申請人…', '搜尋部門…', '搜尋單據標題…'];
+const SEARCH_PLACEHOLDERS = ['請輸入單號', '請輸入申請人', '請輸入部門', '請輸入單據標題'];
 
 const PAGE_SIZE = 5;
 

@@ -242,7 +242,7 @@ export default function ApprovalDetail({
                                     rows={3}
                                     value={reason}
                                     onChange={(event) => setReason(event.target.value)}
-                                    placeholder="請說明退回原因，申請人會收到通知"
+                                    placeholder="請輸入退回原因"
                                     className="resize-none rounded-xl bg-neutral-50 p-3 text-sm ring-1 ring-black/8 outline-none placeholder:text-neutral-400 focus:ring-2 focus:ring-rose-400 dark:bg-neutral-900 dark:ring-white/10"
                                 />
                             </form>
