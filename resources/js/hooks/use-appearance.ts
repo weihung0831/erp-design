@@ -1,17 +1,8 @@
-import { useCallback, useEffect } from 'react';
+import { useCallback } from 'react';
 
 export type Appearance = 'light' | 'dark';
 
 const STORAGE_KEY = 'appearance';
-
-function readStoredAppearance(): Appearance | null {
-    try {
-        const value = localStorage.getItem(STORAGE_KEY);
-        return value === 'light' || value === 'dark' ? value : null;
-    } catch {
-        return null;
-    }
-}
 
 function storeAppearance(appearance: Appearance): void {
     try {
@@ -32,19 +23,6 @@ function prefersReducedMotion(): boolean {
 }
 
 export function useAppearance(): { toggleAppearance: () => void } {
-    useEffect(() => {
-        const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
-
-        const handleSystemChange = (event: MediaQueryListEvent) => {
-            if (readStoredAppearance() === null) {
-                applyAppearance(event.matches ? 'dark' : 'light');
-            }
-        };
-
-        mediaQuery.addEventListener('change', handleSystemChange);
-        return () => mediaQuery.removeEventListener('change', handleSystemChange);
-    }, []);
-
     const toggleAppearance = useCallback(() => {
         const nextAppearance: Appearance = document.documentElement.classList.contains('dark') ? 'light' : 'dark';
         storeAppearance(nextAppearance);

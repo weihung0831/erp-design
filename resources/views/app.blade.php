@@ -10,7 +10,7 @@
                 try {
                     appearance = localStorage.getItem('appearance');
                 } catch (error) {}
-                const isDark = appearance === 'dark' || (appearance !== 'light' && window.matchMedia('(prefers-color-scheme: dark)').matches);
+                const isDark = appearance === 'dark';
                 document.documentElement.classList.toggle('dark', isDark);
                 document.documentElement.style.colorScheme = isDark ? 'dark' : 'light';
             })();
