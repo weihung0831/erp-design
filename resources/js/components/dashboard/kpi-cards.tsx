@@ -16,7 +16,7 @@ const KPI_ICONS: Record<KpiIcon, LucideIcon> = {
     inventory: Boxes,
 };
 
-function EdgeElement() {
+export function EdgeElement() {
     return (
         <div className="absolute top-0 right-0 size-10 overflow-hidden border-b border-l border-neutral-200 bg-white shadow-[-3px_4px_9px_0px_rgba(0,0,0,0.14)] transition duration-200 group-hover/card:translate-x-14 group-hover/card:-translate-y-14 dark:border-neutral-800 dark:bg-neutral-900 dark:shadow-[-3px_4px_9px_0px_rgba(255,255,255,0.2)]">
             <div className="absolute top-0 left-0 h-px w-[141%] origin-top-left rotate-45 bg-neutral-100 dark:bg-neutral-800" />

@@ -1,3 +1,4 @@
+import { Link } from '@inertiajs/react';
 import { motion } from 'motion/react';
 import type { ReactNode } from 'react';
 import { cn } from '@/lib/utils';
@@ -34,14 +35,27 @@ export function Panel({
     );
 }
 
-export function PanelLinkButton({ children }: { children: ReactNode }) {
-    return (
-        <button
-            type="button"
-            className="group/link inline-flex shrink-0 cursor-pointer items-center gap-1 rounded-full px-3 py-1 text-xs font-medium text-neutral-600 ring-1 ring-black/8 transition hover:bg-neutral-50 hover:text-neutral-900 dark:text-neutral-300 dark:ring-white/10 dark:hover:bg-white/5 dark:hover:text-white"
-        >
+export function PanelLinkButton({ href, children }: { href?: string; children: ReactNode }) {
+    const className =
+        'group/link inline-flex shrink-0 cursor-pointer items-center gap-1 rounded-full px-3 py-1 text-xs font-medium text-neutral-600 ring-1 ring-black/8 transition hover:bg-neutral-50 hover:text-neutral-900 dark:text-neutral-300 dark:ring-white/10 dark:hover:bg-white/5 dark:hover:text-white';
+    const content = (
+        <>
             {children}
             <span className="transition-transform duration-200 group-hover/link:translate-x-0.5">→</span>
+        </>
+    );
+
+    if (href) {
+        return (
+            <Link href={href} className={className}>
+                {content}
+            </Link>
+        );
+    }
+
+    return (
+        <button type="button" className={className}>
+            {content}
         </button>
     );
 }

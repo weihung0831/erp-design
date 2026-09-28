@@ -41,7 +41,7 @@ export default function PendingApprovals({ approvals, className }: { approvals: 
                     </motion.span>
                 </AnimatePresence>
             }
-            action={<PanelLinkButton>全部</PanelLinkButton>}
+            action={<PanelLinkButton href="/dashboard/approvals">全部</PanelLinkButton>}
             className={className}
         >
             <ul className="-mx-3 flex flex-1 flex-col" onMouseLeave={() => setHoveredId(null)}>

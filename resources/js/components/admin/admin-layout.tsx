@@ -44,7 +44,7 @@ import { HubGlyph } from '@/components/welcome/module-hub-hero';
 
 const PRIMARY_LINKS: SidebarLinkItem[] = [
     { label: '儀表板', href: '/dashboard', icon: <LayoutDashboard />, tone: 'from-[#6d8bff] to-[#4b6bfb]' },
-    { label: '待我簽核', icon: <ClipboardCheck />, badge: 5, tone: 'from-teal-400 to-teal-600' },
+    { label: '待我簽核', href: '/dashboard/approvals', icon: <ClipboardCheck />, badge: 5, tone: 'from-teal-400 to-teal-600' },
     { label: '通知中心', icon: <Bell />, tone: 'from-pink-400 to-pink-600' },
 ];
 
@@ -156,7 +156,7 @@ const ONLINE_TEAMMATES = [
 const SEARCH_PLACEHOLDERS = ['搜尋銷貨單，例如 SO-1882', '搜尋客戶：大宏科技', '搜尋料號：PK-0012', '搜尋採購單，例如 PO-2411', '搜尋員工或供應商'];
 
 function withActiveState(link: SidebarLinkItem, currentPath: string): SidebarLinkItem {
-    return { ...link, isActive: link.href !== undefined && currentPath.startsWith(link.href) };
+    return { ...link, isActive: link.href !== undefined && (link.href === '/dashboard' ? currentPath === link.href : currentPath.startsWith(link.href)) };
 }
 
 function SidebarBrand() {
