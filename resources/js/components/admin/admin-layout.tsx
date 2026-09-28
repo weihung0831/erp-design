@@ -65,10 +65,10 @@ const MODULE_GROUPS: SidebarGroupItem[] = [
         tone: 'from-sky-400 to-sky-600',
         accent: 'text-sky-500',
         links: [
-            { label: '報價單', icon: <FileText /> },
-            { label: '銷貨訂單', icon: <ReceiptText /> },
-            { label: '出貨單', icon: <Truck /> },
-            { label: '客戶資料', icon: <Handshake /> },
+            { label: '報價單', href: '/dashboard/sales/quotations', icon: <FileText /> },
+            { label: '銷貨訂單', href: '/dashboard/sales/orders', icon: <ReceiptText /> },
+            { label: '出貨單', href: '/dashboard/sales/shipments', icon: <Truck /> },
+            { label: '客戶資料', href: '/dashboard/sales/customers', icon: <Handshake /> },
         ],
     },
     {

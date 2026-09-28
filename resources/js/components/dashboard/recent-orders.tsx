@@ -4,11 +4,11 @@ import type { OrderStatus, RecentOrder } from '@/components/dashboard/dashboard-
 import { Panel, PanelLinkButton, PillTabs } from '@/components/dashboard/panel';
 import { cn } from '@/lib/utils';
 
-const FILTERS = ['全部', '待確認', '備貨中', '已出貨', '已結案'] as const;
+export const ORDER_FILTERS = ['全部', '待確認', '備貨中', '已出貨', '已結案'] as const;
 
-type OrderFilter = (typeof FILTERS)[number];
+export type OrderFilter = (typeof ORDER_FILTERS)[number];
 
-const STATUS_STYLES: Record<OrderStatus, { dot: string; text: string }> = {
+export const ORDER_STATUS_STYLES: Record<OrderStatus, { dot: string; text: string }> = {
     待確認: { dot: 'bg-amber-500 shadow-amber-500/60', text: 'text-amber-700 dark:text-amber-400' },
     備貨中: { dot: 'bg-(--admin-accent) shadow-(--admin-accent)/60', text: 'text-(--admin-accent-ink)' },
     已出貨: { dot: 'bg-emerald-500 shadow-emerald-500/60', text: 'text-emerald-700 dark:text-emerald-400' },
@@ -20,9 +20,9 @@ export default function RecentOrders({ orders, className }: { orders: RecentOrde
     const visibleOrders = filter === '全部' ? orders : orders.filter((order) => order.status === filter);
 
     return (
-        <Panel title="近期銷貨訂單" description="最近 7 天建立的訂單" action={<PanelLinkButton>銷貨訂單</PanelLinkButton>} className={className}>
+        <Panel title="近期銷貨訂單" description="最近 7 天建立的訂單" action={<PanelLinkButton href="/dashboard/sales/orders">銷貨訂單</PanelLinkButton>} className={className}>
             <div className="-mt-1 mb-4 overflow-x-auto">
-                <PillTabs options={FILTERS} value={filter} onChange={setFilter} layoutId="order-filter" label="訂單狀態篩選" />
+                <PillTabs options={ORDER_FILTERS} value={filter} onChange={setFilter} layoutId="order-filter" label="訂單狀態篩選" />
             </div>
             <div className="-mx-5 overflow-x-auto md:-mx-6">
                 <table className="w-full min-w-xl text-left text-sm">
@@ -38,7 +38,7 @@ export default function RecentOrders({ orders, className }: { orders: RecentOrde
                     <tbody>
                         <AnimatePresence initial={false} mode="popLayout">
                             {visibleOrders.map((order, index) => {
-                                const status = STATUS_STYLES[order.status];
+                                const status = ORDER_STATUS_STYLES[order.status];
                                 return (
                                     <motion.tr
                                         key={order.id}

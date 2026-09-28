@@ -14,6 +14,8 @@ export type SummaryItem = {
     prefix?: string;
     suffix?: string;
     isAlert?: boolean;
+    icon?: LucideIcon;
+    tone?: string;
 };
 
 const SUMMARY_ICONS: { icon: LucideIcon; tone: string }[] = [
@@ -58,7 +60,9 @@ export default function ApprovalSummary({ items }: { items: SummaryItem[] }) {
     return (
         <div className={cn('grid grid-cols-2 overflow-hidden rounded-2xl bg-white xl:grid-cols-4 dark:bg-neutral-950', ACETERNITY_SHADOW)}>
             {items.map((item, index) => {
-                const { icon: Icon, tone } = SUMMARY_ICONS[index % SUMMARY_ICONS.length];
+                const fallback = SUMMARY_ICONS[index % SUMMARY_ICONS.length];
+                const Icon = item.icon ?? fallback.icon;
+                const tone = item.tone ?? fallback.tone;
                 const isAlerting = item.isAlert && item.value > 0;
 
                 return (
