@@ -54,7 +54,8 @@ export function useModalDialog(cardRef: RefObject<HTMLElement | null>, closeButt
         const previouslyFocused = document.activeElement instanceof HTMLElement ? document.activeElement : null;
         closeButtonRef.current?.focus();
         const handleEscape = (event: KeyboardEvent) => {
-            if (event.key === 'Escape') {
+            // An open dropdown takes this Escape for itself; only close the dialog when none is open.
+            if (event.key === 'Escape' && !document.querySelector('[data-radix-popper-content-wrapper]')) {
                 onClose();
             }
         };

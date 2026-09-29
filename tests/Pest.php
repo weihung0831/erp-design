@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Pest\Browser\Api\AwaitableWebpage;
 use Tests\TestCase;
 
 /*
@@ -47,4 +48,22 @@ expect()->extend('toBeOne', function () {
 function something()
 {
     // ..
+}
+
+/**
+ * Visit a server-rendered page and wait for React to hydrate, so the first click is not lost.
+ */
+function visitHydrated(string $url): AwaitableWebpage
+{
+    $page = visit($url)->waitForEvent('load');
+    $page->script(<<<'JS'
+        () => new Promise((resolve) => {
+            const check = () => Object.keys(document.getElementById('app')).some((key) => key.startsWith('__reactContainer'))
+                ? resolve(true)
+                : setTimeout(check, 20);
+            check();
+        })
+        JS);
+
+    return $page;
 }

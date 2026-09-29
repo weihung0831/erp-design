@@ -10,8 +10,18 @@ import { formatCurrency } from '@/components/approvals/approvals-data';
 import ApprovalsPagination from '@/components/approvals/approvals-pagination';
 import { Panel, PillTabs } from '@/components/dashboard/panel';
 import QuotationDetail, { VALIDITY_BADGES } from '@/components/sales/quotation-detail';
+import QuotationForm from '@/components/sales/quotation-form';
+import type { QuotationFormValues } from '@/components/sales/quotation-form';
 import type { Quotation, QuotationFilter } from '@/components/sales/quotations-data';
-import { QUOTATION_FILTERS, QUOTATION_STATUS_STYLES, quotationAmount, quotationValidity, QUOTATIONS } from '@/components/sales/quotations-data';
+import {
+    isEditableQuotation,
+    QUOTATION_FILTERS,
+    QUOTATION_STATUS_STYLES,
+    quotationAmount,
+    quotationValidity,
+    QUOTATIONS,
+} from '@/components/sales/quotations-data';
+import { CreateButton, RowActions, useIdSequence, useRecordForm } from '@/components/sales/sales-form';
 import { PlaceholdersAndVanishInput } from '@/components/ui/placeholders-and-vanish-input';
 import { cn } from '@/lib/utils';
 
@@ -29,6 +39,8 @@ export default function Quotations() {
     const [page, setPage] = useState(1);
     const [activeId, setActiveId] = useState<string | null>(null);
     const nextOrderNumber = useRef(FIRST_NEW_ORDER_NUMBER);
+    const nextQuotationId = useIdSequence('QT-', 943);
+    const recordForm = useRecordForm(setActiveId);
 
     const keyword = query.trim().toLowerCase();
     const visible = quotations.filter(
@@ -44,6 +56,23 @@ export default function Quotations() {
     const closeDetail = useCallback(() => setActiveId(null), []);
     const update = useCallback((id: string, changes: Partial<Quotation>) => {
         setQuotations((current) => current.map((quotation) => (quotation.id === id ? { ...quotation, ...changes } : quotation)));
+    }, []);
+    const editing = quotations.find((quotation) => quotation.id === recordForm.editingId);
+    const submitForm = (values: QuotationFormValues) => {
+        if (editing) {
+            update(editing.id, values);
+            recordForm.finishForm(editing.id);
+
+            return;
+        }
+        setQuotations((current) => [{ ...values, id: nextQuotationId(), status: '草稿' }, ...current]);
+        setStatusFilter('全部');
+        setPage(1);
+        recordForm.finishForm(null);
+    };
+    const remove = useCallback((id: string) => {
+        setQuotations((current) => current.filter((quotation) => quotation.id !== id));
+        setActiveId(null);
     }, []);
     const convert = useCallback(
         (id: string) => {
@@ -108,6 +137,7 @@ export default function Quotations() {
                             onSubmit={() => setQuery('')}
                             className="mx-0 h-10 w-full sm:ml-auto sm:max-w-64"
                         />
+                        <CreateButton label="新增報價單" onClick={recordForm.openCreate} />
                     </div>
 
                     <div className="-mx-5 overflow-x-auto md:-mx-6">
@@ -129,8 +159,11 @@ export default function Quotations() {
                                     <th scope="col" className="px-3 pb-2 font-medium">
                                         有效期限
                                     </th>
-                                    <th scope="col" className="px-5 pb-2 font-medium md:pr-6">
+                                    <th scope="col" className="px-3 pb-2 font-medium">
                                         狀態
+                                    </th>
+                                    <th scope="col" className="px-5 pb-2 text-right font-medium md:pr-6">
+                                        <span className="sr-only">操作</span>
                                     </th>
                                 </tr>
                             </thead>
@@ -195,7 +228,7 @@ export default function Quotations() {
                                                         </span>
                                                     )}
                                                 </td>
-                                                <td className="px-5 py-3 md:pr-6">
+                                                <td className="px-3 py-3">
                                                     <span
                                                         className={cn(
                                                             'inline-flex items-center gap-2 text-xs font-medium whitespace-nowrap',
@@ -209,6 +242,11 @@ export default function Quotations() {
                                                         <span className="block font-mono text-[11px] text-neutral-400 dark:text-neutral-500">
                                                             → {quotation.convertedOrderId}
                                                         </span>
+                                                    )}
+                                                </td>
+                                                <td className="w-24 px-5 py-3 md:pr-6">
+                                                    {isEditableQuotation(quotation) && (
+                                                        <RowActions id={quotation.id} onEdit={recordForm.openEdit} onDelete={remove} />
                                                     )}
                                                 </td>
                                             </motion.tr>
@@ -237,7 +275,22 @@ export default function Quotations() {
             </div>
 
             <AnimatePresence>
-                {active && <QuotationDetail key={active.id} quotation={active} onClose={closeDetail} onUpdate={update} onConvert={convert} />}
+                {active && (
+                    <QuotationDetail
+                        key={active.id}
+                        quotation={active}
+                        onClose={closeDetail}
+                        onUpdate={update}
+                        onConvert={convert}
+                        onEdit={recordForm.openEditFromDetail}
+                        onDelete={remove}
+                    />
+                )}
+            </AnimatePresence>
+            <AnimatePresence>
+                {recordForm.isFormOpen && (
+                    <QuotationForm key={editing?.id ?? 'new'} quotation={editing} onClose={recordForm.closeForm} onSubmit={submitForm} />
+                )}
             </AnimatePresence>
         </>
     );

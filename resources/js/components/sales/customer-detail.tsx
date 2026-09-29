@@ -4,7 +4,8 @@ import { motion } from 'motion/react';
 import { formatCurrency } from '@/components/approvals/approvals-data';
 import { ORDER_STATUS_STYLES } from '@/components/dashboard/recent-orders';
 import type { Customer } from '@/components/sales/customers-data';
-import { CREDIT_LEVEL_STYLES, creditLevel, creditUsage, TIER_STYLES } from '@/components/sales/customers-data';
+import { CREDIT_LEVEL_STYLES, creditLevel, creditUsage, isDeletableCustomer, TIER_STYLES } from '@/components/sales/customers-data';
+import { DetailActions } from '@/components/sales/sales-form';
 import { CurrencyHeadline, DetailCard, DetailFields, SECONDARY_BUTTON_CLASS, STATUS_BADGE_CLASS, StatusDot } from '@/components/sales/sales-shared';
 import { orderAmount, SALES_ORDERS } from '@/components/sales/sales-orders-data';
 import { cn } from '@/lib/utils';
@@ -47,7 +48,17 @@ export function CreditBar({ customer, className }: { customer: Customer; classNa
     );
 }
 
-export default function CustomerDetail({ customer, onClose }: { customer: Customer; onClose: () => void }) {
+export default function CustomerDetail({
+    customer,
+    onClose,
+    onEdit,
+    onDelete,
+}: {
+    customer: Customer;
+    onClose: () => void;
+    onEdit: (id: string) => void;
+    onDelete: (id: string) => void;
+}) {
     const level = creditLevel(customer);
     const levelStyle = CREDIT_LEVEL_STYLES[level];
     const recentOrders = SALES_ORDERS.filter((order) => order.customer === customer.name).slice(0, RECENT_ORDER_LIMIT);
@@ -73,15 +84,21 @@ export default function CustomerDetail({ customer, onClose }: { customer: Custom
             headline={{ label: '應收帳款', value: <CurrencyHeadline amount={customer.receivable} /> }}
             onClose={onClose}
             footer={
-                <Link
-                    href="/dashboard/sales/quotations"
-                    className={cn(
-                        SECONDARY_BUTTON_CLASS,
-                        'bg-linear-to-b from-sky-400 to-(--admin-accent) text-white shadow-sm shadow-(--admin-accent)/30',
-                    )}
-                >
-                    前往報價單 →
-                </Link>
+                <>
+                    <DetailActions
+                        onEdit={() => onEdit(customer.id)}
+                        onDelete={isDeletableCustomer(customer) ? () => onDelete(customer.id) : undefined}
+                    />
+                    <Link
+                        href="/dashboard/sales/quotations"
+                        className={cn(
+                            SECONDARY_BUTTON_CLASS,
+                            'bg-linear-to-b from-sky-400 to-(--admin-accent) text-white shadow-sm shadow-(--admin-accent)/30',
+                        )}
+                    >
+                        前往報價單 →
+                    </Link>
+                </>
             }
         >
             <section aria-label="信用額度" className="rounded-2xl p-4 ring-1 ring-black/5 dark:ring-white/10">

@@ -1,7 +1,8 @@
 import { ReceiptText } from 'lucide-react';
 import { ORDER_STATUS_STYLES } from '@/components/dashboard/recent-orders';
 import type { SalesOrder } from '@/components/sales/sales-orders-data';
-import { isDeliveryOverdue, NEXT_STEP_LABELS, ORDER_FLOW, orderAmount } from '@/components/sales/sales-orders-data';
+import { DetailActions } from '@/components/sales/sales-form';
+import { isDeliveryOverdue, isEditableOrder, NEXT_STEP_LABELS, ORDER_FLOW, orderAmount } from '@/components/sales/sales-orders-data';
 import {
     afterSuccess,
     CurrencyHeadline,
@@ -17,7 +18,19 @@ import {
 import { Button as StatefulButton } from '@/components/ui/stateful-button';
 import { cn } from '@/lib/utils';
 
-export default function SalesOrderDetail({ order, onClose, onAdvance }: { order: SalesOrder; onClose: () => void; onAdvance: (id: string) => void }) {
+export default function SalesOrderDetail({
+    order,
+    onClose,
+    onAdvance,
+    onEdit,
+    onDelete,
+}: {
+    order: SalesOrder;
+    onClose: () => void;
+    onAdvance: (id: string) => void;
+    onEdit: (id: string) => void;
+    onDelete: (id: string) => void;
+}) {
     const nextStepLabel = NEXT_STEP_LABELS[order.status];
     const isOverdue = isDeliveryOverdue(order);
 
@@ -36,11 +49,14 @@ export default function SalesOrderDetail({ order, onClose, onAdvance }: { order:
             headline={{ label: '訂單金額（未稅）', value: <CurrencyHeadline amount={orderAmount(order)} /> }}
             onClose={onClose}
             footer={
-                nextStepLabel && (
-                    <StatefulButton key={order.status} onClick={afterSuccess(() => onAdvance(order.id))} className={PRIMARY_BUTTON_CLASS}>
-                        {nextStepLabel}
-                    </StatefulButton>
-                )
+                <>
+                    {isEditableOrder(order) && <DetailActions onEdit={() => onEdit(order.id)} onDelete={() => onDelete(order.id)} />}
+                    {nextStepLabel && (
+                        <StatefulButton key={order.status} onClick={afterSuccess(() => onAdvance(order.id))} className={PRIMARY_BUTTON_CLASS}>
+                            {nextStepLabel}
+                        </StatefulButton>
+                    )}
+                </>
             }
         >
             <StepProgress steps={ORDER_FLOW} current={order.status} label="訂單進度" />

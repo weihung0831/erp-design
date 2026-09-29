@@ -1,4 +1,5 @@
 import { Truck } from 'lucide-react';
+import { DetailActions } from '@/components/sales/sales-form';
 import {
     afterSuccess,
     DetailCard,
@@ -12,6 +13,7 @@ import {
 } from '@/components/sales/sales-shared';
 import type { Shipment } from '@/components/sales/shipments-data';
 import {
+    isEditableShipment,
     isShipmentDelayed,
     SHIPMENT_FLOW,
     SHIPMENT_NEXT_STEP_LABELS,
@@ -25,10 +27,14 @@ export default function ShipmentDetail({
     shipment,
     onClose,
     onAdvance,
+    onEdit,
+    onDelete,
 }: {
     shipment: Shipment;
     onClose: () => void;
     onAdvance: (id: string) => void;
+    onEdit: (id: string) => void;
+    onDelete: (id: string) => void;
 }) {
     const nextStepLabel = SHIPMENT_NEXT_STEP_LABELS[shipment.status];
     const isDelayed = isShipmentDelayed(shipment);
@@ -56,11 +62,14 @@ export default function ShipmentDetail({
             }}
             onClose={onClose}
             footer={
-                nextStepLabel && (
-                    <StatefulButton key={shipment.status} onClick={afterSuccess(() => onAdvance(shipment.id))} className={PRIMARY_BUTTON_CLASS}>
-                        {nextStepLabel}
-                    </StatefulButton>
-                )
+                <>
+                    {isEditableShipment(shipment) && <DetailActions onEdit={() => onEdit(shipment.id)} onDelete={() => onDelete(shipment.id)} />}
+                    {nextStepLabel && (
+                        <StatefulButton key={shipment.status} onClick={afterSuccess(() => onAdvance(shipment.id))} className={PRIMARY_BUTTON_CLASS}>
+                            {nextStepLabel}
+                        </StatefulButton>
+                    )}
+                </>
             }
         >
             <StepProgress steps={SHIPMENT_FLOW} current={shipment.status} label="出貨進度" />

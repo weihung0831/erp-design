@@ -11,8 +11,11 @@ import ApprovalsPagination from '@/components/approvals/approvals-pagination';
 import { Panel, PillTabs } from '@/components/dashboard/panel';
 import type { OrderFilter } from '@/components/dashboard/recent-orders';
 import { ORDER_FILTERS, ORDER_STATUS_STYLES } from '@/components/dashboard/recent-orders';
+import { CreateButton, RowActions, useIdSequence, useRecordForm } from '@/components/sales/sales-form';
 import SalesOrderDetail from '@/components/sales/sales-order-detail';
-import { isDeliveryOverdue, ORDER_FLOW, orderAmount, SALES_ORDERS } from '@/components/sales/sales-orders-data';
+import SalesOrderForm from '@/components/sales/sales-order-form';
+import type { SalesOrderFormValues } from '@/components/sales/sales-order-form';
+import { isDeliveryOverdue, isEditableOrder, ORDER_FLOW, orderAmount, SALES_ORDERS } from '@/components/sales/sales-orders-data';
 import { PlaceholdersAndVanishInput } from '@/components/ui/placeholders-and-vanish-input';
 import { cn } from '@/lib/utils';
 
@@ -26,6 +29,8 @@ export default function SalesOrders() {
     const [query, setQuery] = useState('');
     const [page, setPage] = useState(1);
     const [activeId, setActiveId] = useState<string | null>(null);
+    const recordForm = useRecordForm(setActiveId);
+    const nextOrderId = useIdSequence('SO-', 1883);
 
     const keyword = query.trim().toLowerCase();
     const visible = orders.filter(
@@ -50,6 +55,24 @@ export default function SalesOrders() {
                     : order,
             ),
         );
+    }, []);
+
+    const editing = orders.find((order) => order.id === recordForm.editingId);
+    const submitForm = (values: SalesOrderFormValues) => {
+        if (editing) {
+            setOrders((current) => current.map((order) => (order.id === editing.id ? { ...order, ...values } : order)));
+            recordForm.finishForm(editing.id);
+
+            return;
+        }
+        setOrders((current) => [{ ...values, id: nextOrderId(), status: '待確認' }, ...current]);
+        setStatusFilter('全部');
+        setPage(1);
+        recordForm.finishForm(null);
+    };
+    const remove = useCallback((id: string) => {
+        setOrders((current) => current.filter((order) => order.id !== id));
+        setActiveId(null);
     }, []);
 
     const openOrders = orders.filter((order) => order.status === '待確認' || order.status === '備貨中');
@@ -112,6 +135,7 @@ export default function SalesOrders() {
                             onSubmit={() => setQuery('')}
                             className="mx-0 h-10 w-full sm:ml-auto sm:max-w-64"
                         />
+                        <CreateButton label="新增銷貨訂單" onClick={recordForm.openCreate} />
                     </div>
 
                     <div className="-mx-5 overflow-x-auto md:-mx-6">
@@ -133,8 +157,11 @@ export default function SalesOrders() {
                                     <th scope="col" className="px-3 pb-2 font-medium">
                                         交期
                                     </th>
-                                    <th scope="col" className="px-5 pb-2 font-medium md:pr-6">
+                                    <th scope="col" className="px-3 pb-2 font-medium">
                                         狀態
+                                    </th>
+                                    <th scope="col" className="px-5 pb-2 text-right font-medium md:pr-6">
+                                        <span className="sr-only">操作</span>
                                     </th>
                                 </tr>
                             </thead>
@@ -208,7 +235,7 @@ export default function SalesOrders() {
                                                     {order.deliveryDate}
                                                     {isOverdue && <span className="block text-[11px]">已逾期</span>}
                                                 </td>
-                                                <td className="px-5 py-3 md:pr-6">
+                                                <td className="px-3 py-3">
                                                     <span
                                                         className={cn(
                                                             'inline-flex items-center gap-2 text-xs font-medium whitespace-nowrap',
@@ -218,6 +245,11 @@ export default function SalesOrders() {
                                                         <span className={cn('size-1.5 rounded-full shadow-[0_0_8px_1px]', status.dot)} />
                                                         {order.status}
                                                     </span>
+                                                </td>
+                                                <td className="w-24 px-5 py-3 md:pr-6">
+                                                    {isEditableOrder(order) && (
+                                                        <RowActions id={order.id} onEdit={recordForm.openEdit} onDelete={remove} />
+                                                    )}
                                                 </td>
                                             </motion.tr>
                                         );
@@ -245,7 +277,21 @@ export default function SalesOrders() {
             </div>
 
             <AnimatePresence>
-                {active && <SalesOrderDetail key={active.id} order={active} onClose={closeDetail} onAdvance={advance} />}
+                {active && (
+                    <SalesOrderDetail
+                        key={active.id}
+                        order={active}
+                        onClose={closeDetail}
+                        onAdvance={advance}
+                        onEdit={recordForm.openEditFromDetail}
+                        onDelete={remove}
+                    />
+                )}
+            </AnimatePresence>
+            <AnimatePresence>
+                {recordForm.isFormOpen && (
+                    <SalesOrderForm key={editing?.id ?? 'new'} order={editing} onClose={recordForm.closeForm} onSubmit={submitForm} />
+                )}
             </AnimatePresence>
         </>
     );

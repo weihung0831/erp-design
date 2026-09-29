@@ -1,3 +1,5 @@
+import { SALES_ORDERS } from '@/components/sales/sales-orders-data';
+
 export type CustomerTier = 'A' | 'B' | 'C';
 
 export type Customer = {
@@ -21,6 +23,8 @@ export const CUSTOMER_FILTERS = ['全部', 'A 級', 'B 級', 'C 級', '額度警
 
 export type CustomerFilter = (typeof CUSTOMER_FILTERS)[number];
 
+export const CUSTOMER_TIERS: CustomerTier[] = ['A', 'B', 'C'];
+
 export const TIER_STYLES: Record<CustomerTier, string> = {
     A: 'from-amber-400 to-amber-600 shadow-amber-500/30',
     B: 'from-sky-400 to-sky-600 shadow-sky-500/30',
@@ -30,6 +34,11 @@ export const TIER_STYLES: Record<CustomerTier, string> = {
 /** Share of the credit limit tied up in receivables, from 0 to 1+. */
 export function creditUsage(customer: Customer): number {
     return customer.receivable / customer.creditLimit;
+}
+
+/** Only customers we have never traded with can be deleted; the rest keep their history. */
+export function isDeletableCustomer(customer: Customer): boolean {
+    return customer.receivable === 0 && !SALES_ORDERS.some((order) => order.customer === customer.name);
 }
 
 export type CreditLevel = 'normal' | 'warning' | 'over';

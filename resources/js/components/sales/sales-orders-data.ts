@@ -39,6 +39,13 @@ export function orderAmount(order: SalesOrder): number {
     return lineItemsTotal(order.lineItems);
 }
 
+/** Orders can still change until they are confirmed; after that, picking has started. */
+export function isEditableOrder(order: SalesOrder): boolean {
+    return order.status === '待確認';
+}
+
+export const PAYMENT_TERMS = ['貨到 7 天', '月結 30 天', '月結 60 天', '月結 90 天'];
+
 export function isDeliveryOverdue(order: SalesOrder): boolean {
     return (order.status === '待確認' || order.status === '備貨中') && order.deliveryDate < TODAY;
 }

@@ -10,9 +10,13 @@ import ApprovalsPagination from '@/components/approvals/approvals-pagination';
 import { Panel, PillTabs } from '@/components/dashboard/panel';
 import { StatusDot } from '@/components/sales/sales-shared';
 import { TODAY } from '@/components/sales/sales-orders-data';
+import { CreateButton, RowActions, useIdSequence, useRecordForm } from '@/components/sales/sales-form';
 import ShipmentDetail from '@/components/sales/shipment-detail';
+import ShipmentForm from '@/components/sales/shipment-form';
+import type { ShipmentFormValues } from '@/components/sales/shipment-form';
 import type { ShipmentFilter } from '@/components/sales/shipments-data';
 import {
+    isEditableShipment,
     isShipmentDelayed,
     SHIPMENT_FILTERS,
     SHIPMENT_FLOW,
@@ -33,6 +37,8 @@ export default function Shipments() {
     const [query, setQuery] = useState('');
     const [page, setPage] = useState(1);
     const [activeId, setActiveId] = useState<string | null>(null);
+    const recordForm = useRecordForm(setActiveId);
+    const nextShipmentId = useIdSequence('SH-', 562);
 
     const keyword = query.trim().toLowerCase();
     const visible = shipments.filter(
@@ -56,6 +62,24 @@ export default function Shipments() {
                 return { ...shipment, status, deliveredDate: status === '已送達' ? TODAY : shipment.deliveredDate };
             }),
         );
+    }, []);
+
+    const editing = shipments.find((shipment) => shipment.id === recordForm.editingId);
+    const submitForm = (values: ShipmentFormValues) => {
+        if (editing) {
+            setShipments((current) => current.map((shipment) => (shipment.id === editing.id ? { ...shipment, ...values } : shipment)));
+            recordForm.finishForm(editing.id);
+
+            return;
+        }
+        setShipments((current) => [{ ...values, id: nextShipmentId(), status: '待揀貨' }, ...current]);
+        setStatusFilter('全部');
+        setPage(1);
+        recordForm.finishForm(null);
+    };
+    const remove = useCallback((id: string) => {
+        setShipments((current) => current.filter((shipment) => shipment.id !== id));
+        setActiveId(null);
     }, []);
 
     const summary: SummaryItem[] = [
@@ -111,6 +135,7 @@ export default function Shipments() {
                             onSubmit={() => setQuery('')}
                             className="mx-0 h-10 w-full sm:ml-auto sm:max-w-64"
                         />
+                        <CreateButton label="新增出貨單" onClick={recordForm.openCreate} />
                     </div>
 
                     <div className="-mx-5 overflow-x-auto md:-mx-6">
@@ -132,8 +157,11 @@ export default function Shipments() {
                                     <th scope="col" className="px-3 pb-2 font-medium">
                                         預定出貨
                                     </th>
-                                    <th scope="col" className="px-5 pb-2 font-medium md:pr-6">
+                                    <th scope="col" className="px-3 pb-2 font-medium">
                                         狀態
+                                    </th>
+                                    <th scope="col" className="px-5 pb-2 text-right font-medium md:pr-6">
+                                        <span className="sr-only">操作</span>
                                     </th>
                                 </tr>
                             </thead>
@@ -202,8 +230,13 @@ export default function Shipments() {
                                                     {shipment.scheduledDate}
                                                     {isDelayed && <span className="block text-[11px]">已延遲</span>}
                                                 </td>
-                                                <td className="px-5 py-3 text-xs md:pr-6">
+                                                <td className="px-3 py-3 text-xs">
                                                     <StatusDot label={shipment.status} style={SHIPMENT_STATUS_STYLES[shipment.status]} />
+                                                </td>
+                                                <td className="w-24 px-5 py-3 md:pr-6">
+                                                    {isEditableShipment(shipment) && (
+                                                        <RowActions id={shipment.id} onEdit={recordForm.openEdit} onDelete={remove} />
+                                                    )}
                                                 </td>
                                             </motion.tr>
                                         );
@@ -231,7 +264,21 @@ export default function Shipments() {
             </div>
 
             <AnimatePresence>
-                {active && <ShipmentDetail key={active.id} shipment={active} onClose={closeDetail} onAdvance={advance} />}
+                {active && (
+                    <ShipmentDetail
+                        key={active.id}
+                        shipment={active}
+                        onClose={closeDetail}
+                        onAdvance={advance}
+                        onEdit={recordForm.openEditFromDetail}
+                        onDelete={remove}
+                    />
+                )}
+            </AnimatePresence>
+            <AnimatePresence>
+                {recordForm.isFormOpen && (
+                    <ShipmentForm key={editing?.id ?? 'new'} shipment={editing} onClose={recordForm.closeForm} onSubmit={submitForm} />
+                )}
             </AnimatePresence>
         </>
     );

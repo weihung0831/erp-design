@@ -30,6 +30,10 @@ export function useOutsideClick(ref: RefObject<HTMLElement | null>, callback: ()
             if (!ref.current || ref.current.contains(event.target as Node)) {
                 return;
             }
+            // While a dropdown from the card is open, the click (on an option or outside) only closes that dropdown.
+            if (document.querySelector('[data-radix-popper-content-wrapper]')) {
+                return;
+            }
             callback();
         };
 

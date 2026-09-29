@@ -10,8 +10,12 @@ import { formatCurrency } from '@/components/approvals/approvals-data';
 import ApprovalsPagination from '@/components/approvals/approvals-pagination';
 import { Panel, PillTabs } from '@/components/dashboard/panel';
 import CustomerDetail, { CreditBar, TierBadge } from '@/components/sales/customer-detail';
+import CustomerForm from '@/components/sales/customer-form';
+import type { CustomerFormValues } from '@/components/sales/customer-form';
 import type { Customer, CustomerFilter } from '@/components/sales/customers-data';
-import { CREDIT_LEVEL_STYLES, CUSTOMER_FILTERS, CUSTOMERS, creditLevel, creditUsage } from '@/components/sales/customers-data';
+import { CREDIT_LEVEL_STYLES, CUSTOMER_FILTERS, CUSTOMERS, creditLevel, creditUsage, isDeletableCustomer } from '@/components/sales/customers-data';
+import { CreateButton, RowActions, useIdSequence, useRecordForm } from '@/components/sales/sales-form';
+import { TODAY } from '@/components/sales/sales-orders-data';
 import { PlaceholdersAndVanishInput } from '@/components/ui/placeholders-and-vanish-input';
 import { cn } from '@/lib/utils';
 
@@ -31,13 +35,16 @@ function matchesFilter(customer: Customer, filter: CustomerFilter): boolean {
 }
 
 export default function Customers() {
+    const [customers, setCustomers] = useState(CUSTOMERS);
     const [filter, setFilter] = useState<CustomerFilter>('全部');
     const [query, setQuery] = useState('');
     const [page, setPage] = useState(1);
     const [activeId, setActiveId] = useState<string | null>(null);
+    const recordForm = useRecordForm(setActiveId);
+    const nextCustomerId = useIdSequence('C-', 53);
 
     const keyword = query.trim().toLowerCase();
-    const visible = CUSTOMERS.filter(
+    const visible = customers.filter(
         (customer) =>
             matchesFilter(customer, filter) &&
             [customer.id, customer.name, customer.taxId, customer.salesperson].some((field) => field.toLowerCase().includes(keyword)),
@@ -45,29 +52,46 @@ export default function Customers() {
     const pageCount = Math.max(1, Math.ceil(visible.length / PAGE_SIZE));
     const currentPage = Math.min(page, pageCount);
     const pagedCustomers = visible.slice((currentPage - 1) * PAGE_SIZE, currentPage * PAGE_SIZE);
-    const active = CUSTOMERS.find((customer) => customer.id === activeId);
+    const active = customers.find((customer) => customer.id === activeId);
 
     const closeDetail = useCallback(() => setActiveId(null), []);
+    const editing = customers.find((customer) => customer.id === recordForm.editingId);
+    const submitForm = (values: CustomerFormValues) => {
+        if (editing) {
+            setCustomers((current) => current.map((customer) => (customer.id === editing.id ? { ...customer, ...values } : customer)));
+            recordForm.finishForm(editing.id);
+
+            return;
+        }
+        setCustomers((current) => [{ ...values, id: nextCustomerId(), receivable: 0, since: TODAY.slice(0, 7) }, ...current]);
+        setFilter('全部');
+        setPage(1);
+        recordForm.finishForm(null);
+    };
+    const remove = useCallback((id: string) => {
+        setCustomers((current) => current.filter((customer) => customer.id !== id));
+        setActiveId(null);
+    }, []);
 
     const summary: SummaryItem[] = [
-        { label: '往來客戶', value: CUSTOMERS.length, suffix: '家', icon: Building2, tone: 'from-sky-400 to-sky-600 shadow-sky-500/30' },
+        { label: '往來客戶', value: customers.length, suffix: '家', icon: Building2, tone: 'from-sky-400 to-sky-600 shadow-sky-500/30' },
         {
             label: 'A 級客戶',
-            value: CUSTOMERS.filter((customer) => customer.tier === 'A').length,
+            value: customers.filter((customer) => customer.tier === 'A').length,
             suffix: '家',
             icon: Crown,
             tone: 'from-amber-400 to-amber-600 shadow-amber-500/30',
         },
         {
             label: '應收總額',
-            value: CUSTOMERS.reduce((sum, customer) => sum + customer.receivable, 0),
+            value: customers.reduce((sum, customer) => sum + customer.receivable, 0),
             prefix: 'NT$ ',
             icon: Wallet,
             tone: 'from-[#6d8bff] to-[#4b6bfb] shadow-[#4b6bfb]/30',
         },
         {
             label: '額度警示',
-            value: CUSTOMERS.filter((customer) => creditLevel(customer) !== 'normal').length,
+            value: customers.filter((customer) => creditLevel(customer) !== 'normal').length,
             suffix: '家',
             isAlert: true,
             icon: ShieldAlert,
@@ -102,6 +126,7 @@ export default function Customers() {
                             onSubmit={() => setQuery('')}
                             className="mx-0 h-10 w-full sm:ml-auto sm:max-w-64"
                         />
+                        <CreateButton label="新增客戶" onClick={recordForm.openCreate} />
                     </div>
 
                     <div className="-mx-5 overflow-x-auto md:-mx-6">
@@ -120,8 +145,11 @@ export default function Customers() {
                                     <th scope="col" className="px-3 pb-2 text-right font-medium">
                                         應收帳款
                                     </th>
-                                    <th scope="col" className="w-48 px-5 pb-2 font-medium md:pr-6">
+                                    <th scope="col" className="w-48 px-3 pb-2 font-medium">
                                         信用額度
+                                    </th>
+                                    <th scope="col" className="px-5 pb-2 text-right font-medium md:pr-6">
+                                        <span className="sr-only">操作</span>
                                     </th>
                                 </tr>
                             </thead>
@@ -173,12 +201,19 @@ export default function Customers() {
                                                 <td className="px-3 py-3 text-right font-semibold tabular-nums">
                                                     {formatCurrency(customer.receivable)}
                                                 </td>
-                                                <td className="px-5 py-3 md:pr-6">
+                                                <td className="px-3 py-3">
                                                     <CreditBar customer={customer} />
                                                     <span className={cn('mt-1 flex justify-between text-[11px] tabular-nums', levelStyle.text)}>
                                                         <span>{levelStyle.label}</span>
                                                         <span>{Math.round(creditUsage(customer) * 100)}%</span>
                                                     </span>
+                                                </td>
+                                                <td className="w-24 px-5 py-3 md:pr-6">
+                                                    <RowActions
+                                                        id={customer.id}
+                                                        onEdit={recordForm.openEdit}
+                                                        onDelete={isDeletableCustomer(customer) ? remove : undefined}
+                                                    />
                                                 </td>
                                             </motion.tr>
                                         );
@@ -205,7 +240,22 @@ export default function Customers() {
                 </Panel>
             </div>
 
-            <AnimatePresence>{active && <CustomerDetail key={active.id} customer={active} onClose={closeDetail} />}</AnimatePresence>
+            <AnimatePresence>
+                {active && (
+                    <CustomerDetail
+                        key={active.id}
+                        customer={active}
+                        onClose={closeDetail}
+                        onEdit={recordForm.openEditFromDetail}
+                        onDelete={remove}
+                    />
+                )}
+            </AnimatePresence>
+            <AnimatePresence>
+                {recordForm.isFormOpen && (
+                    <CustomerForm key={editing?.id ?? 'new'} customer={editing} onClose={recordForm.closeForm} onSubmit={submitForm} />
+                )}
+            </AnimatePresence>
         </>
     );
 }

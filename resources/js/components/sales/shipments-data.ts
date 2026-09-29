@@ -38,6 +38,13 @@ export const SHIPMENT_STATUS_STYLES: Record<ShipmentStatus, { dot: string; text:
     已送達: { dot: 'bg-emerald-500 shadow-emerald-500/60', text: 'text-emerald-700 dark:text-emerald-400' },
 };
 
+/** A shipment can change until picking starts. */
+export function isEditableShipment(shipment: Shipment): boolean {
+    return shipment.status === '待揀貨';
+}
+
+export const CARRIERS = ['新竹物流', '黑貓宅急便', '大榮貨運（冷藏）', '自有車隊'];
+
 export function isShipmentDelayed(shipment: Shipment): boolean {
     return shipment.status !== '已送達' && shipment.scheduledDate < TODAY;
 }

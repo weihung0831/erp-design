@@ -49,6 +49,29 @@ export function quotationAmount(quotation: Quotation): number {
     return lineItemsTotal(quotation.lineItems);
 }
 
+/** Only drafts are still ours to change; once sent, the customer holds that version. */
+export function isEditableQuotation(quotation: Quotation): boolean {
+    return quotation.status === '草稿';
+}
+
+export const SALESPEOPLE = ['張家瑜', '李承翰', '吳佩珊'];
+
+/** Price list used to prefill new quotation lines; the unit price stays editable per quote. */
+export const PRODUCT_CATALOG: SalesOrderLineItem[] = [
+    { sku: 'PK-0012', name: '工業級交換器 24 埠', quantity: 1, unitPrice: 12600 },
+    { sku: 'PK-0031', name: '光纖模組 SFP+', quantity: 1, unitPrice: 1720 },
+    { sku: 'PK-0104', name: '不鏽鋼保溫瓶 500ml', quantity: 1, unitPrice: 228 },
+    { sku: 'PK-0107', name: '禮盒包裝', quantity: 1, unitPrice: 60 },
+    { sku: 'PK-0220', name: '真空包裝袋（捲）', quantity: 1, unitPrice: 365 },
+    { sku: 'PK-0305', name: '伺服馬達 750W', quantity: 1, unitPrice: 11500 },
+    { sku: 'PK-0306', name: '驅動器', quantity: 1, unitPrice: 3400 },
+    { sku: 'PK-0410', name: '實木層板', quantity: 1, unitPrice: 580 },
+    { sku: 'PK-0520', name: '手持條碼掃描器', quantity: 1, unitPrice: 2850 },
+    { sku: 'PK-0601', name: '溫溼度感測器', quantity: 1, unitPrice: 1480 },
+    { sku: 'PK-0701', name: '中性筆（盒）', quantity: 1, unitPrice: 115 },
+    { sku: 'PK-0702', name: 'A5 筆記本', quantity: 1, unitPrice: 42 },
+];
+
 export const QUOTATIONS: Quotation[] = [
     {
         id: 'QT-0942',

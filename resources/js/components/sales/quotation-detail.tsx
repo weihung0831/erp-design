@@ -1,7 +1,7 @@
 import { Link } from '@inertiajs/react';
 import { FileText } from 'lucide-react';
 import type { Quotation, QuotationValidity } from '@/components/sales/quotations-data';
-import { QUOTATION_STATUS_STYLES, quotationAmount, quotationValidity } from '@/components/sales/quotations-data';
+import { isEditableQuotation, QUOTATION_STATUS_STYLES, quotationAmount, quotationValidity } from '@/components/sales/quotations-data';
 import {
     afterSuccess,
     CurrencyHeadline,
@@ -14,6 +14,7 @@ import {
     STATUS_BADGE_CLASS,
     StatusDot,
 } from '@/components/sales/sales-shared';
+import { DetailActions } from '@/components/sales/sales-form';
 import { Button as StatefulButton } from '@/components/ui/stateful-button';
 import { cn } from '@/lib/utils';
 
@@ -27,11 +28,15 @@ export default function QuotationDetail({
     onClose,
     onUpdate,
     onConvert,
+    onEdit,
+    onDelete,
 }: {
     quotation: Quotation;
     onClose: () => void;
     onUpdate: (id: string, changes: Partial<Quotation>) => void;
     onConvert: (id: string) => void;
+    onEdit: (id: string) => void;
+    onDelete: (id: string) => void;
 }) {
     const validity = quotationValidity(quotation);
     const validityBadge = validity === 'valid' ? null : VALIDITY_BADGES[validity];
@@ -57,6 +62,7 @@ export default function QuotationDetail({
             onClose={onClose}
             footer={
                 <>
+                    {isEditableQuotation(quotation) && <DetailActions onEdit={() => onEdit(quotation.id)} onDelete={() => onDelete(quotation.id)} />}
                     {quotation.status === '已送出' && (
                         <button
                             type="button"
